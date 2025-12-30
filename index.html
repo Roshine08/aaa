@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Authenticator</title>
+
+<style>
+:root{
+  --bg:#0b0f16; --card:#121a26; --border:#243043;
+  --text:#e8eefc; --muted:#9fb0c8; --accent:#4c8bf5;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f5f7fb; --card:#ffffff; --border:#e6eaf2; --text:#0b1220; --muted:#55657f; --accent:#2f6fe8; }
+}
+html,body{height:100%}
+body{
+  margin:0; display:flex; align-items:center; justify-content:center;
+  background:var(--bg); color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+.wrap{width:min(420px,92vw)}
+.card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:22px; padding:18px 16px 16px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);
+}
+.top{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+.logo{
+  width:36px; height:36px; border-radius:14px;
+  background:radial-gradient(circle at 30% 30%, #7db0ff, var(--accent));
+  box-shadow:0 10px 30px rgba(76,139,245,.35);
+}
+.title{font-weight:700}
+
+.code{
+  text-align:center;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size:56px; font-weight:900; letter-spacing:4px;
+  margin:10px 0 8px;
+}
+.hint{ text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px; }
+
+.barwrap{
+  height:10px; background:rgba(255,255,255,.08);
+  border-radius:999px; overflow:hidden;
+}
+.bar{height:10px; width:0%; background:var(--accent); transition:width .15s linear}
+
+input{
+  width:100%; box-sizing:border-box; margin-top:14px;
+  padding:12px; border-radius:14px;
+  border:1px solid var(--border);
+  background:transparent; color:var(--text);
+  font-size:14px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  outline:none;
+}
+input::placeholder{color:rgba(159,176,200,.7)}
+
+.row{display:flex; gap:10px; justify-content:center; margin-top:12px}
+button{
+  padding:10px 16px; border-radius:14px;
+  border:1px solid var(--border);
+  background:transparent; color:var(--text);
+  font-size:14px; cursor:pointer;
+}
+button.primary{background:var(--accent); border-color:transparent; color:#fff}
+
+.status{
+  margin-top:10px; text-align:center;
+  font-size:12px; color:var(--muted); min-height:16px
+}
+.err{color:#ff6b6b}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="top">
+      <div class="logo"></div>
+      <div class="title">Authenticator</div>
+    </div>
+
+    <div class="code" id="code">--------</div>
+    <div class="hint" id="remain"></div>
+    <div class="barwrap"><div class="bar" id="bar"></div></div>
+
+    <input id="secret" placeholder="Hex secret" autocomplete="off" spellcheck="false" />
+
+    <div class="row">
+      <button class="primary" id="copy">Copy</button>
+      <button id="clear">Clear</button>
+    </div>
+
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<script>
+const DIGITS=8, PERIOD=30;
+const $=id=>document.getElementById(id);
+
+function hexToBytes(hex){
+  const s=hex.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
+  if(!s) throw Error("Enter secret");
+  if(s.length%2) throw Error("Invalid hex");
+  const out=new Uint8Array(s.length/2);
+  for(let i=0;i<s.length;i+=2) out[i/2]=parseInt(s.slice(i,i+2),16);
+  return out;
+}
+function counterBytes(c){
+  const b=new Uint8Array(8); let x=BigInt(c);
+  for(let i=7;i>=0;i--){ b[i]=Number(x&0xffn); x>>=8n; }
+  return b;
+}
+async function hmacSha1(key,msg){
+  const k=await crypto.subtle.importKey("raw",key,{name:"HMAC",hash:{name:"SHA-1"}},false,["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
+}
+function truncate(mac){
+  const o=mac[mac.length-1]&0x0f;
+  return (((mac[o]&0x7f)<<24)|((mac[o+1]&0xff)<<16)|((mac[o+2]&0xff)<<8)|(mac[o+3]&0xff))>>>0;
+}
+function fmt(n){
+  return (n%(10**DIGITS)).toString().padStart(DIGITS,"0");
+}
+async function gen(){
+  try{
+    const key=hexToBytes($("secret").value);
+    const ctr=Math.floor(Date.now()/1000/PERIOD);
+    const mac=await hmacSha1(key,counterBytes(ctr));
+    $("code").textContent=fmt(truncate(mac));
+    $("status").textContent="";
+    $("status").classList.remove("err");
+  }catch(e){
+    $("code").textContent="--------";
+    $("status").textContent=e.message;
+    $("status").classList.add("err");
+  }
+}
+function tick(){
+  const s=Math.floor(Date.now()/1000);
+  const rem=PERIOD-(s%PERIOD);
+  $("remain").textContent=`${rem}s`;
+  $("bar").style.width=((PERIOD-rem)/PERIOD*100)+"%";
+}
+
+let last=-1;
+setInterval(()=>{ tick(); const s=Math.floor(Date.now()/1000); if(s!==last){ last=s; gen(); } },150);
+
+$("secret").addEventListener("input",gen);
+$("copy").addEventListener("click",async()=>{
+  const v=$("code").textContent;
+  if(v.includes("-")) return;
+  try{ await navigator.clipboard.writeText(v); $("status").textContent="Copied"; }
+  catch{ $("status").textContent="Copy blocked"; $("status").classList.add("err"); }
+});
+$("clear").addEventListener("click",()=>{
+  $("secret").value="";
+  $("code").textContent="--------";
+  $("status").textContent="";
+  $("status").classList.remove("err");
+});
+
+tick(); gen();
+</script>
+</body>
+</html>
