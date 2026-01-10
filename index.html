@@ -5,129 +5,47 @@
 <link rel="icon" href="logo.png"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 <style>
-:root{
-  --bg-dark:#0b0f16;--card-dark:#121a26;--border-dark:#243043;
-  --text-dark:#e8eefc;--muted-dark:#9fb0c8;--accent-dark:#23a8ff;
-  --bg-light:#f5f7fb;--card-light:#ffffff;--border-light:#e6eaf2;
-  --text-light:#0b1220;--muted-light:#55657f;--accent-light:#0078ff;
-  --bg:var(--bg-dark);--card:var(--card-dark);--border:var(--border-dark);
-  --text:var(--text-dark);--muted:var(--muted-dark);--accent:var(--accent-dark);
-}
-html[data-theme="dark"]{
-  --bg:var(--bg-dark);--card:var(--card-dark);--border:var(--border-dark);
-  --text:var(--text-dark);--muted:var(--muted-dark);--accent:var(--accent-dark);
-}
-html[data-theme="light"]{
-  --bg:var(--bg-light);--card:var(--card-light);--border:var(--border-light);
-  --text:var(--text-light);--muted:var(--muted-light);--accent:var(--accent-light);
-}
+:root{--bg-dark:#0b0f16;--card-dark:#121a26;--border-dark:#243043;--text-dark:#e8eefc;--muted-dark:#9fb0c8;--accent-dark:#23a8ff;--bg-light:#f5f7fb;--card-light:#ffffff;--border-light:#e6eaf2;--text-light:#0b1220;--muted-light:#55657f;--accent-light:#0078ff;--bg:var(--bg-dark);--card:var(--card-dark);--border:var(--border-dark);--text:var(--text-dark);--muted:var(--muted-dark);--accent:var(--accent-dark);}
+html[data-theme="dark"]{--bg:var(--bg-dark);--card:var(--card-dark);--border:var(--border-dark);--text:var(--text-dark);--muted:var(--muted-dark);--accent:var(--accent-dark);}
+html[data-theme="light"]{--bg:var(--bg-light);--card:var(--card-light);--border:var(--border-light);--text:var(--text-light);--muted:var(--muted-light);--accent:var(--accent-light);}
 html,body{height:100%}
-body{
-  margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--bg);color:var(--text);
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-}
-html[data-theme="dark"] body{
-  background:radial-gradient(circle at 50% 0,
-    rgba(22,58,107,.9) 0,
-    rgba(11,15,22,.3) 55%,
-    rgba(5,7,11,1) 100%);
-}
+body{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+html[data-theme="dark"] body{background:radial-gradient(circle at 50% 0,rgba(22,58,107,.9) 0,rgba(11,15,22,.3) 55%,rgba(5,7,11,1) 100%);}
 .wrap{width:min(420px,92vw)}
-.card{
-  position:relative;background:var(--card);border-radius:22px;
-  padding:18px 16px 16px;box-shadow:0 18px 40px rgba(0,0,0,.45);
-  overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;
-}
-.card::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
-  background:linear-gradient(135deg,
-    rgba(0,185,255,.8),
-    rgba(0,110,255,.65),
-    rgba(0,40,120,.7));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:.75;pointer-events:none;
-}
+.card{position:relative;background:var(--card);border-radius:22px;padding:18px 16px 16px;box-shadow:0 18px 40px rgba(0,0,0,.45);overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(0,185,255,.8),rgba(0,110,255,.65),rgba(0,40,120,.7));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.75;pointer-events:none;}
 .card:hover{transform:translateY(-2px);box-shadow:0 24px 55px rgba(0,0,0,.7)}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .top-left{display:flex;gap:10px;align-items:center}
-.top-right{display:flex;align-items:center;gap:8px}
-.logo-img{
-  width:36px;height:36px;border-radius:14px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-  transition:transform .18s ease,box-shadow .18s ease;
-}
+.top-right{display:flex;align-items:center;gap:12px}
+.logo-img{width:36px;height:36px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .18s ease,box-shadow .18s ease;}
 .logo-img:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(35,168,255,.9)}
 .title{font-weight:700;font-size:16px;letter-spacing:.02em;white-space:nowrap}
-.lang-select{
-  padding:4px 6px;border-radius:8px;border:1px solid var(--border);
-  background:rgba(0,0,0,.12);color:var(--text);font-size:12px;
-}
-html[data-theme="light"] .lang-select{background:rgba(255,255,255,.9)}
-.theme-toggle{
-  width:32px;height:32px;border-radius:50%;border:1px solid var(--border);
-  background:rgba(0,0,0,.08);color:var(--text);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:18px;
-  transition:background .15s ease,box-shadow .15s ease,transform .15s ease;
-}
+.lang-select{padding:4px 16px 4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(16,38,78,.95),rgba(7,19,43,.95));box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 10px rgba(35,168,255,.35);color:var(--text);font-size:12px;font-weight:600;appearance:none;-moz-appearance:none;-webkit-appearance:none;background-position:right 8px center;background-repeat:no-repeat;}
+html[data-theme="light"] .lang-select{background:linear-gradient(135deg,rgba(255,255,255,1),rgba(235,240,255,1));color:var(--text);border-color:rgba(0,0,0,.08);box-shadow:0 0 0 1px rgba(0,0,0,.05);}
+.theme-toggle{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(0,0,0,.08);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .15s ease,box-shadow .15s ease,transform .15s ease;}
 html[data-theme="light"] .theme-toggle{background:rgba(0,0,0,.02)}
 .theme-toggle:hover{box-shadow:0 0 10px rgba(35,168,255,.8);transform:translateY(-1px)}
-.code{
-  text-align:center;font-family:ui-monospace,monospace;
-  font-size:56px;font-weight:900;letter-spacing:4px;margin:10px 0 8px;
-}
+.code{text-align:center;font-family:ui-monospace,monospace;font-size:56px;font-weight:900;letter-spacing:4px;margin:10px 0 8px;}
 .hint{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px}
 #remain{color:rgba(110,125,150,.9)}
-.barwrap{
-  height:10px;background:rgba(255,255,255,.08);
-  border-radius:999px;overflow:hidden;
-}
+.barwrap{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;}
 html[data-theme="light"] .barwrap{background:rgba(0,0,0,.06)}
-.bar{
-  height:10px;width:0%;background:var(--accent);
-  background-image:linear-gradient(90deg,
-    rgba(255,255,255,.4),
-    rgba(255,255,255,.9),
-    rgba(255,255,255,.4));
-  background-size:200% 100%;
-  animation:stripe 1.3s linear infinite;
-  transition:width .15s linear;
-}
+.bar{height:10px;width:0%;background:var(--accent);background-image:linear-gradient(90deg,rgba(255,255,255,.4),rgba(255,255,255,.9),rgba(255,255,255,.4));background-size:200% 100%;animation:stripe 1.3s linear infinite;transition:width .15s linear;}
 @keyframes stripe{0%{background-position:0% 0}100%{background-position:200% 0}}
-.field-label{
-  margin-top:18px;font-size:12px;color:rgba(120,135,160,.95);
-}
-input{
-  width:100%;box-sizing:border-box;margin-top:6px;padding:12px;
-  border-radius:14px;border:1px solid var(--border);
-  background:rgba(0,0,0,.1);color:var(--text);font-family:ui-monospace,monospace;
-}
+.field-label{margin-top:18px;font-size:12px;color:rgba(120,135,160,.95);}
+input{width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border-radius:14px;border:1px solid var(--border);background:rgba(0,0,0,.1);color:var(--text);font-family:ui-monospace,monospace;}
 html[data-theme="light"] input{background:rgba(255,255,255,.7)}
 input::placeholder{color:rgba(159,176,200,.7)}
 html[data-theme="light"] input::placeholder{color:rgba(85,101,127,.7)}
-.row{
-  display:flex;gap:12px;justify-content:center;margin-top:12px;
-}
-button{
-  padding:10px 16px;border-radius:14px;border:1px solid var(--border);
-  background:rgba(0,0,0,.08);color:var(--text);cursor:pointer;
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  transition:background .15s ease,box-shadow .15s ease,transform .15s ease;
-  min-width:108px;
-}
+.row{display:flex;gap:12px;justify-content:center;margin-top:12px;}
+button{padding:10px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(0,0,0,.08);color:var(--text);cursor:pointer;font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;transition:background .15s ease,box-shadow .15s ease,transform .15s ease;min-width:108px;}
 button.primary{background:var(--accent);border-color:transparent;color:#fff}
 button.primary:hover{box-shadow:0 0 16px rgba(35,168,255,.9);transform:translateY(-1px)}
 button:not(.primary):hover{box-shadow:0 0 10px rgba(35,168,255,.6);transform:translateY(-1px)}
-.status{
-  margin-top:10px;text-align:center;font-size:12px;min-height:16px;
-}
+.status{margin-top:10px;text-align:center;font-size:12px;min-height:16px;}
 .status.ok{color:#4cd18c}.status.err{color:#ff6b6b}
-.footer{
-  margin-top:14px;font-size:12px;color:var(--muted);
-  text-align:center;user-select:none;opacity:.8;
-}
+.footer{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;user-select:none;opacity:.8;}
 @media (max-width:480px){
   .card{padding:16px 14px 14px;border-radius:18px}
   .title{font-size:14px}
@@ -170,124 +88,25 @@ button:not(.primary):hover{box-shadow:0 0 10px rgba(35,168,255,.6);transform:tra
 <div class="footer" id="footer"></div>
 
 <script>
-const D=8,P=30,TK="theme-choice",LK="locale-choice",Q=e=>document.getElementById(e),
-I18N={
-en:{title:"Battle.net Authenticator",secretLabel:"Secret (HEX)",placeholder:"Private Key",copy:"Copy",clear:"Clear",copied:"Copied",copyBlocked:"Copy blocked",enterKeyError:"Enter Your Private Key",invalidKey:"Invalid Private Key",footer:"© {year} Roshine — Overwatch Store. All rights reserved."},
-zh:{title:"Battle.net 身份验证器",secretLabel:"私钥（HEX）",placeholder:"私钥",copy:"复制",clear:"清空",copied:"已复制",copyBlocked:"浏览器禁止复制",enterKeyError:"请输入私钥",invalidKey:"无效的私钥",footer:"© {year} Roshine — Overwatch 商店。保留所有权利。"},
-ar:{title:"موثّق Battle.net",secretLabel:"المفتاح السري (HEX)",placeholder:"المفتاح السري",copy:"نسخ",clear:"مسح",copied:"تم النسخ",copyBlocked:"لم يتم السماح بالنسخ",enterKeyError:"أدخل المفتاح السري",invalidKey:"مفتاح سري غير صالح",footer:"© {year} Roshine — متجر أوفرووتش. جميع الحقوق محفوظة."}
-};
-let LANG="en";
-function TT(k){const d=I18N[LANG]||I18N.en;return d[k]||I18N.en[k]||k}
-function pathKey(){const p=(location.pathname||"/").split("/").filter(Boolean);if(!p.length)return null;const s=p[p.length-1];return/^[0-9a-fA-F]+$/.test(s)?s:null}
-function applyLang(l){
- if(!I18N[l])l="en";LANG=l;
- document.documentElement.lang=l;
- document.documentElement.dir=l==="ar"?"rtl":"ltr";
- const sel=Q("langSelect");if(sel)sel.value=l;
- Q("titleText").textContent=TT("title");
- Q("secretLabel").textContent=TT("secretLabel");
- Q("secret").placeholder=TT("placeholder");
- Q("copy").textContent=TT("copy");
- Q("clear").textContent=TT("clear");
- const y=(new Date).getFullYear();
- Q("footer").textContent=TT("footer").replace("{year}",y);
-}
-(function(){
-  const s=localStorage.getItem(LK);
-  let l=s;
-  if(!l){
-    const nav=(navigator.language||navigator.userLanguage||"en").toLowerCase();
-    if(nav.startsWith("zh"))l="zh";else if(nav.startsWith("ar"))l="ar";else l="en";
-  }
-  applyLang(l);
-})();
-function applyTheme(t){
- document.documentElement.setAttribute("data-theme",t);
- const b=Q("themeToggle");if(!b)return;
- b.textContent=t==="dark"?"☀️":"🌙";
-}
-(function(){
- const s=localStorage.getItem(TK);
- const pl=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches;
- const init=s|| (pl?"light":"dark");applyTheme(init);
-})();
-Q("themeToggle").addEventListener("click",()=>{
- const cur=document.documentElement.getAttribute("data-theme")||"dark";
- const n=cur==="dark"?"light":"dark";
- applyTheme(n);localStorage.setItem(TK,n);
-});
-Q("langSelect").addEventListener("change",e=>{
- const l=e.target.value;applyLang(l);localStorage.setItem(LK,l);
-});
-function hexToBytes(s){
- s=s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
- if(!s)throw new Error("ERR_EMPTY_KEY");
- if(s.length%2)throw new Error("ERR_INVALID_KEY");
- return Uint8Array.from(s.match(/../g).map(x=>parseInt(x,16)));
-}
-function counterBytes(c){
- const b=new Uint8Array(8);let x=BigInt(c);
- for(let i=7;i>=0;i--){b[i]=Number(x&0xffn);x>>=8n;}
- return b;
-}
-async function hmacSha1(k,m){
- const kk=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:"SHA-1"},!1,["sign"]);
- return new Uint8Array(await crypto.subtle.sign("HMAC",kk,m));
-}
-function truncate(m){
- const o=m[m.length-1]&15;
- return(((m[o]&127)<<24)|((m[o+1]&255)<<16)|((m[o+2]&255)<<8)|(m[o+3]&255))>>>0;
-}
-function fmt(n){
- const r=(n%(10**D)).toString().padStart(D,"0");
- return r.slice(0,4)+" "+r.slice(4);
-}
-async function gen(){
- const st=Q("status");
- try{
-   const key=hexToBytes(Q("secret").value);
-   const ctr=Math.floor(Date.now()/1e3/P);
-   const mac=await hmacSha1(key,counterBytes(ctr));
-   Q("code").textContent=fmt(truncate(mac));
-   if(st){st.textContent="";st.classList.remove("err","ok");}
- }catch(e){
-   Q("code").textContent="--------";
-   if(!st)return;
-   let msg;
-   if(e.message==="ERR_EMPTY_KEY")msg=TT("enterKeyError");
-   else if(e.message==="ERR_INVALID_KEY")msg=TT("invalidKey");
-   else msg=e.message;
-   st.textContent=msg;st.classList.add("err");st.classList.remove("ok");
- }
-}
-function tick(){
- const s=Math.floor(Date.now()/1e3);
- const rem=P-(s%P);
- Q("remain").textContent=`${rem}s`;
- Q("bar").style.width=((P-rem)/P*100)+"%";
-}
-let last=-1;
-setInterval(()=>{
- tick();
- const s=Math.floor(Date.now()/1e3);
- if(s!==last){last=s;gen();}
-},150);
+const D=8,P=30,TK="theme-choice",LK="locale-choice",Q=e=>document.getElementById(e),I18N={en:{title:"Battle.net Authenticator",secretLabel:"Secret (HEX)",placeholder:"Private Key",copy:"Copy",clear:"Clear",copied:"Copied",copyBlocked:"Copy blocked",enterKeyError:"Enter Your Private Key",invalidKey:"Invalid Private Key",footer:"© {year} Roshine — Overwatch Store. All rights reserved."},zh:{title:"Battle.net 身份验证器",secretLabel:"私钥（HEX）",placeholder:"私钥",copy:"复制",clear:"清空",copied:"已复制",copyBlocked:"浏览器禁止复制",enterKeyError:"请输入私钥",invalidKey:"无效的私钥",footer:"© {year} Roshine — Overwatch 商店。保留所有权利。"},ar:{title:"موثّق Battle.net",secretLabel:"المفتاح السري (HEX)",placeholder:"المفتاح السري",copy:"نسخ",clear:"مسح",copied:"تم النسخ",copyBlocked:"لم يتم السماح بالنسخ",enterKeyError:"أدخل المفتاح السري",invalidKey:"مفتاح سري غير صالح",footer:"© {year} Roshine — متجر أوفرووتش. جميع الحقوق محفوظة."}},TT=k=>{const d=I18N[LANG]||I18N.en;return d[k]||I18N.en[k]||k};let LANG="en";
+function getKeyFromURL(){const u=new URL(location.href),p=u.searchParams.get("key");if(p&&/^[0-9a-fA-F]+$/.test(p))return p;const parts=u.pathname.split("/").filter(Boolean);if(parts.length){const last=parts[parts.length-1];if(/^[0-9a-fA-F]+$/.test(last))return last}return null}
+function applyLang(l){I18N[l]||(l="en"),LANG=l,document.documentElement.lang=l,document.documentElement.dir="ar"===l?"rtl":"ltr";const s=Q("langSelect");s&&(s.value=l),Q("titleText").textContent=TT("title"),Q("secretLabel").textContent=TT("secretLabel"),Q("secret").placeholder=TT("placeholder"),Q("copy").textContent=TT("copy"),Q("clear").textContent=TT("clear");const y=(new Date).getFullYear();Q("footer").textContent=TT("footer").replace("{year}",y)}
+(function(){const s=localStorage.getItem(LK);let l=s;if(!l){const nav=(navigator.language||navigator.userLanguage||"en").toLowerCase();l=nav.startsWith("zh")?"zh":nav.startsWith("ar")?"ar":"en"}applyLang(l)})();
+function applyTheme(t){document.documentElement.setAttribute("data-theme",t);const b=Q("themeToggle");b&&(b.textContent="dark"===t?"☀️":"🌙")}
+(function(){const s=localStorage.getItem(TK),pl=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches,init=s||(pl?"light":"dark");applyTheme(init)})();
+Q("themeToggle").addEventListener("click",()=>{const c=document.documentElement.getAttribute("data-theme")||"dark",n="dark"===c?"light":"dark";applyTheme(n),localStorage.setItem(TK,n)});
+Q("langSelect").addEventListener("change",e=>{const l=e.target.value;applyLang(l),localStorage.setItem(LK,l)});
+function hexToBytes(s){if(s=s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,""),!s)throw new Error("ERR_EMPTY_KEY");if(s.length%2)throw new Error("ERR_INVALID_KEY");return Uint8Array.from(s.match(/../g).map(x=>parseInt(x,16)))}
+function counterBytes(c){const b=new Uint8Array(8);let x=BigInt(c);for(let i=7;i>=0;i--)b[i]=Number(x&255n),x>>=8n;return b}
+async function hmacSha1(k,m){const kk=await crypto.subtle.importKey("raw",k,{name:"HMAC",hash:"SHA-1"},!1,["sign"]);return new Uint8Array(await crypto.subtle.sign("HMAC",kk,m))}
+function truncate(m){const o=15&m[m.length-1];return(((127&m[o])<<24)|((255&m[o+1])<<16)|((255&m[o+2])<<8)|(255&m[o+3]))>>>0}
+function fmt(n){const r=(n%(10**D)).toString().padStart(D,"0");return r.slice(0,4)+" "+r.slice(4)}
+async function gen(){const st=Q("status");try{const key=hexToBytes(Q("secret").value),ctr=Math.floor(Date.now()/1e3/P),mac=await hmacSha1(key,counterBytes(ctr));Q("code").textContent=fmt(truncate(mac)),st&&(st.textContent="",st.classList.remove("err","ok"))}catch(e){if(Q("code").textContent="--------",!st)return;let msg;"ERR_EMPTY_KEY"===e.message?msg=TT("enterKeyError"):"ERR_INVALID_KEY"===e.message?msg=TT("invalidKey"):msg=e.message,st.textContent=msg,st.classList.add("err"),st.classList.remove("ok")}}
+function tick(){const s=Math.floor(Date.now()/1e3),r=P-s%P;Q("remain").textContent=`${r}s`,Q("bar").style.width=(P-r)/P*100+"%"}
+let last=-1;setInterval(()=>{tick();const s=Math.floor(Date.now()/1e3);s!==last&&(last=s,gen())},150);
 Q("secret").addEventListener("input",gen);
-Q("copy").addEventListener("click",async()=>{
- const v=Q("code").textContent,st=Q("status");
- if(v.includes("-"))return;
- try{
-   await navigator.clipboard.writeText(v.replace(/\s/g,""));
-   if(st){st.textContent=TT("copied");st.classList.remove("err");st.classList.add("ok");}
- }catch{
-   if(st){st.textContent=TT("copyBlocked");st.classList.remove("ok");st.classList.add("err");}
- }
-});
-Q("clear").addEventListener("click",()=>{
- Q("secret").value="";Q("code").textContent="--------";
- const st=Q("status");if(st){st.textContent="";st.classList.remove("err","ok");}
-});
-const pk=pathKey();if(pk)Q("secret").value=pk;
-tick();gen();
+Q("copy").addEventListener("click",async()=>{const v=Q("code").textContent,st=Q("status");if(v.includes("-"))return;try{await navigator.clipboard.writeText(v.replace(/\s/g,"")),st&&(st.textContent=TT("copied"),st.classList.remove("err"),st.classList.add("ok"))}catch{st&&(st.textContent=TT("copyBlocked"),st.classList.remove("ok"),st.classList.add("err"))}});
+Q("clear").addEventListener("click",()=>{Q("secret").value="",Q("code").textContent="--------";const st=Q("status");st&&(st.textContent="",st.classList.remove("err","ok"))});
+const pk=getKeyFromURL();pk&&(Q("secret").value=pk);tick();gen();
 </script>
 </body></html>
