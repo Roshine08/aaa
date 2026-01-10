@@ -19,13 +19,13 @@
   --muted-dark:#7c8aaa;       /* 次要文字：灰蓝 */
   --accent-dark:#29b6ff;      /* 高亮蓝：战网感 */
 
-  /* 浅色主题：Blizzard 风格的灰蓝 + 白卡片 */
-  --bg-light:#e5e9f3;         /* 页面背景：浅灰蓝 */
-  --card-light:#ffffff;       /* 卡片：纯白 */
-  --border-light:#cfd7e6;     /* 边框：淡灰蓝 */
-  --text-light:#0b1220;       /* 主文字：深蓝黑 */
-  --muted-light:#5c6a85;      /* 次要文字：冷灰 */
-  --accent-light:#007dfc;     /* 高亮：战网蓝 */
+  /* 亮色主题：改成“暗灰系”亮色，不晃眼 */
+  --bg-light:#171920;         /* 页面背景：深一点的灰蓝 */
+  --card-light:#1f222b;       /* 卡片：比背景稍亮 */
+  --border-light:#2c3140;     /* 边框：中灰蓝 */
+  --text-light:#e4e7f5;       /* 文字：浅灰白 */
+  --muted-light:#8b94aa;      /* 次要文字：灰蓝 */
+  --accent-light:#3aa3ff;     /* 高亮蓝：柔一点 */
 
   /* 当前实际使用（由 data-theme 决定） */
   --bg:var(--bg-dark);
@@ -71,10 +71,10 @@ html[data-theme="dark"] body{
     radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
 }
 
-/* 亮色：灰蓝背景，中心稍亮 */
+/* 亮色：暗灰背景，中心稍亮 */
 html[data-theme="light"] body{
   background:
-    radial-gradient(circle at 50% -10%, #ffffff 0%, #e5e9f3 70%, #d4d8e2 100%);
+    radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
 }
 
 /* 卡片整体更大 */
@@ -116,7 +116,7 @@ html[data-theme="light"] body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:26px; /* 顶部和验证码间距拉大 */
+  margin-bottom:26px;
 }
 .top-left{
   display:flex;
@@ -174,18 +174,19 @@ html[data-theme="light"] body{
 }
 /* 亮色下拉选项 */
 html[data-theme="light"] .lang-select option{
-  background:#ffffff;
-  color:#0b1220;
+  background:#1a1d26;
+  color:#e4e7f5;
 }
 
+/* 亮色下拉外观：改成暗灰渐变 */
 html[data-theme="light"] .lang-select{
   background:linear-gradient(
     135deg,
-    rgba(255,255,255,1),
-    rgba(235,240,255,1)
+    #262a35,
+    #1f222b
   );
   color:var(--text);
-  box-shadow:0 0 0 1px rgba(0,0,0,.08);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4);
 }
 
 /* 主题切换：无边框，只要柔和背景 */
@@ -200,7 +201,7 @@ html[data-theme="light"] .lang-select{
   transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
 }
 html[data-theme="light"] .theme-toggle{
-  background:rgba(0,0,0,.06);
+  background:rgba(0,0,0,.24);
 }
 .theme-toggle:hover{
   box-shadow:0 0 10px rgba(35,168,255,.8);
@@ -235,7 +236,7 @@ html[data-theme="light"] .theme-toggle{
   overflow:hidden;
 }
 html[data-theme="light"] .barwrap{
-  background:rgba(0,0,0,.06);
+  background:rgba(0,0,0,.35);
 }
 .bar{
   height:100%;
@@ -273,13 +274,13 @@ input{
   font-family:ui-monospace,monospace;
 }
 html[data-theme="light"] input{
-  background:rgba(255,255,255,.75);
+  background:rgba(255,255,255,.04); /* 比卡片稍亮一点 */
 }
 input::placeholder{
   color:rgba(159,176,200,.7);
 }
 html[data-theme="light"] input::placeholder{
-  color:rgba(85,101,127,.7);
+  color:rgba(180,190,210,.7);
 }
 
 /* 按钮行整体更宽松 */
@@ -567,7 +568,6 @@ function applyTheme(theme){
   document.documentElement.setAttribute("data-theme", theme);
   const btn = $("themeToggle");
   if (!btn) return;
-  // 当前主题为 dark 时，按钮显示“切成亮”的图标
   btn.textContent = theme === "dark" ? "☀️" : "🌙";
 }
 
