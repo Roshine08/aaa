@@ -3,52 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Roshine — Authenticator</title>
+  <title>Roshine — Overwatch Account Store</title>
   <link rel="icon" href="/assets/logo.png" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap">
 
   <style>
     :root{
       --bg-dark:#05060b;
+      --panel-dark:rgba(11,16,24,.58);
+      --panel2-dark:rgba(11,16,24,.42);
+      --border-dark:rgba(130,170,255,.14);
       --text-dark:#e6f0ff;
-      --muted-dark:#7c8aaa;
+      --muted-dark:#8a97b6;
       --accent-dark:#29b6ff;
 
       --bg-light:#171920;
+      --panel-light:rgba(255,255,255,.08);
+      --panel2-light:rgba(255,255,255,.06);
+      --border-light:rgba(0,0,0,.22);
       --text-light:#e4e7f5;
-      --muted-light:#8b94aa;
+      --muted-light:#7b849c;
       --accent-light:#3aa3ff;
 
       --bg:var(--bg-dark);
+      --panel:var(--panel-dark);
+      --panel2:var(--panel2-dark);
+      --border:var(--border-dark);
       --text:var(--text-dark);
       --muted:var(--muted-dark);
       --accent:var(--accent-dark);
 
-      --glass-bg: rgba(15, 18, 26, .46);
-      --glass-border: rgba(130, 170, 255, .18);
-      --glass-shadow: 0 30px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06) inset;
-
-      --radius-xl: 28px;
-      --radius-pill: 999px;
-
-      --wrap: 980px;
+      --blur: 14px;
+      --radius: 22px;
+      --shadow: 0 22px 70px rgba(0,0,0,.55);
     }
 
     html[data-theme="dark"]{
       --bg:var(--bg-dark);
+      --panel:var(--panel-dark);
+      --panel2:var(--panel2-dark);
+      --border:var(--border-dark);
       --text:var(--text-dark);
       --muted:var(--muted-dark);
       --accent:var(--accent-dark);
-      --glass-bg: rgba(15, 18, 26, .46);
-      --glass-border: rgba(130, 170, 255, .18);
     }
     html[data-theme="light"]{
       --bg:var(--bg-light);
+      --panel:var(--panel-light);
+      --panel2:var(--panel2-light);
+      --border:var(--border-light);
       --text:var(--text-light);
       --muted:var(--muted-light);
       --accent:var(--accent-light);
-      --glass-bg: rgba(255, 255, 255, .14);
-      --glass-border: rgba(0, 0, 0, .20);
     }
 
     html,body{height:100%}
@@ -56,55 +65,44 @@
       margin:0;
       font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--text);
-      background:var(--bg);
+      background: radial-gradient(900px 520px at 18% 12%, rgba(41,182,255,.16), transparent 55%),
+                  radial-gradient(760px 480px at 86% 18%, rgba(58,163,255,.12), transparent 60%),
+                  radial-gradient(980px 560px at 50% 90%, rgba(41,182,255,.08), transparent 60%),
+                  linear-gradient(180deg, #05060b 0%, #02030a 100%);
       overflow-x:hidden;
     }
+    html[data-theme="light"] body{
+      background: radial-gradient(900px 520px at 18% 12%, rgba(58,163,255,.14), transparent 55%),
+                  radial-gradient(760px 480px at 86% 18%, rgba(58,163,255,.10), transparent 60%),
+                  linear-gradient(180deg, #171920 0%, #0f1118 100%);
+    }
 
+    /* subtle grain */
     body::before{
       content:"";
-      position:fixed; inset:0;
+      position:fixed;
+      inset:-20%;
       pointer-events:none;
-      background:
-        radial-gradient(900px 520px at 18% 8%, rgba(41,182,255,.18), transparent 62%),
-        radial-gradient(820px 480px at 82% 14%, rgba(58,163,255,.14), transparent 64%),
-        radial-gradient(900px 700px at 55% 110%, rgba(41,182,255,.08), transparent 55%);
-      opacity:.55;
-      mix-blend-mode:screen;
-      filter:saturate(1.05);
-    }
-    body::after{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      background-image:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,.025),
-          rgba(255,255,255,.025) 1px,
-          transparent 1px,
-          transparent 14px
-        );
-      opacity:.035;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity:.07;
+      mix-blend-mode:overlay;
+      transform:translateZ(0);
     }
 
-    .wrap{
-      width:min(var(--wrap), 92vw);
+    .container{
+      width:min(1120px, 92vw);
       margin:0 auto;
-      position:relative;
-      z-index:1;
     }
 
-    /* ===== Top Nav ===== */
+    /* Top nav (glass) */
     .nav{
       position:sticky;
       top:0;
       z-index:50;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,0));
-    }
-    html[data-theme="light"] .nav{
-      background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+      padding:14px 0;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      background: linear-gradient(180deg, rgba(0,0,0,.32), rgba(0,0,0,0));
     }
 
     .nav-inner{
@@ -112,30 +110,33 @@
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      padding:18px 0 14px;
     }
 
     .brand{
-      display:flex; align-items:center; gap:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
       min-width:0;
     }
     .brand img{
-      width:40px;height:40px;border-radius:14px;
-      box-shadow:0 14px 42px rgba(0,0,0,.45);
+      width:42px;height:42px;
+      border-radius:16px;
+      box-shadow:0 12px 36px rgba(0,0,0,.45);
       flex:0 0 auto;
     }
-    .brand .name{
+    .brand .title{
       font-weight:900;
-      letter-spacing:.10em;
-      font-size:14px;
+      letter-spacing:.06em;
+      line-height:1.05;
       white-space:nowrap;
+      font-size:15px;
     }
     .brand .sub{
       margin-top:2px;
       font-size:12px;
       color:var(--muted);
-      max-width:66ch;
-      line-height:1.35;
+      line-height:1.25;
+      max-width:70ch;
     }
 
     .controls{
@@ -147,11 +148,11 @@
     }
 
     .pill{
-      height:34px;
+      height:36px;
       padding:0 14px;
-      border-radius:var(--radius-pill);
-      border:1px solid var(--glass-border);
-      background: rgba(0,0,0,.18);
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--panel2);
       color:var(--text);
       font-size:13px;
       font-weight:800;
@@ -161,20 +162,17 @@
       cursor:pointer;
       user-select:none;
       text-decoration:none;
-      box-shadow: 0 10px 26px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.05) inset;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      white-space:nowrap;
-      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
     }
-    html[data-theme="light"] .pill{ background: rgba(255,255,255,.10); }
     .pill:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 18px rgba(41,182,255,.16);
-      background: rgba(0,0,0,.26);
+      transform:translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35), 0 0 18px rgba(41,182,255,.18);
+      background:rgba(0,0,0,.18);
+      border-color:rgba(41,182,255,.26);
     }
-    html[data-theme="light"] .pill:hover{ background: rgba(255,255,255,.16); }
 
     .lang-select{
       appearance:none;
@@ -185,350 +183,233 @@
       padding:0 18px;
       text-align:center;
       cursor:pointer;
-      color:var(--text);
-      font-weight:800;
     }
     .lang-select option{ background:#050b16; color:#e8eefc; }
     html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
 
-    /* ===== Main ===== */
-    main{
-      min-height: calc(100vh - 86px);
+    /* Hero fullscreen */
+    .hero{
+      min-height: calc(100vh - 72px);
       display:flex;
       align-items:center;
-      padding: 22px 0 56px;
+      padding: 28px 0 52px;
     }
 
-    .panel{
-      width: min(720px, 94vw);
-      margin: 0 auto;
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--glass-border);
-      background: var(--glass-bg);
-      box-shadow: var(--glass-shadow);
-      padding: 26px 22px 22px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position:relative;
+    .hero-glass{
+      width:100%;
+      border-radius: calc(var(--radius) + 10px);
+      border:1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       overflow:hidden;
+      position:relative;
+      padding: clamp(22px, 3.2vw, 46px);
     }
-    .panel::before{
+
+    .hero-glass::before{
       content:"";
-      position:absolute; inset:0;
-      background: radial-gradient(700px 260px at 30% 0%, rgba(41,182,255,.16), transparent 62%);
-      opacity:.85;
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: linear-gradient(135deg, rgba(41,182,255,.22), rgba(58,163,255,.10), transparent 60%);
+      opacity:.8;
+    }
+    .hero-glass::after{
+      content:"";
+      position:absolute;
+      left:-25%;
+      top:-45%;
+      width:150%;
+      height:150%;
+      background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
+      transform:rotate(10deg);
+      animation:sweep 8.5s linear infinite;
+      opacity:.35;
       pointer-events:none;
     }
-
-    .panel-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      position:relative;
-      z-index:1;
-      margin-bottom:14px;
+    @keyframes sweep{
+      0%{ transform:translateX(-35%) rotate(10deg); opacity:0; }
+      10%{ opacity:.35; }
+      70%{ opacity:.16; }
+      100%{ transform:translateX(35%) rotate(10deg); opacity:0; }
     }
 
-    .panel-title{
-      font-weight:900;
-      letter-spacing:.06em;
-      font-size:14px;
-      opacity:.95;
-      display:flex;
+    .hero-content{ position:relative; z-index:1; }
+
+    .kicker{
+      display:inline-flex;
       align-items:center;
       gap:10px;
-      white-space:nowrap;
-    }
-
-    .badge{
-      height:34px;
-      padding:0 14px;
-      border-radius:var(--radius-pill);
-      border:1px solid var(--glass-border);
-      background: rgba(0,0,0,.14);
-      color:var(--muted);
+      font-weight:900;
+      letter-spacing:.18em;
       font-size:12px;
+      color:rgba(230,240,255,.78);
+      text-transform:uppercase;
+    }
+    .kicker .dot{
+      width:8px;height:8px;border-radius:99px;
+      background:var(--accent);
+      box-shadow:0 0 16px rgba(41,182,255,.65);
+    }
+
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(34px, 4.6vw, 64px);
+      line-height:1.02;
+      letter-spacing:.02em;
       font-weight:900;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 10px 26px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.05) inset;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      user-select:none;
-      white-space:nowrap;
     }
-    html[data-theme="light"] .badge{ background: rgba(255,255,255,.10); }
-
-    .panel-note{
-      margin:0 0 14px;
+    .lead{
+      margin:0;
       color:var(--muted);
-      font-size:13px;
-      line-height:1.7;
-      position:relative;
-      z-index:1;
+      font-size: clamp(14px, 1.5vw, 18px);
+      line-height:1.65;
+      max-width: 78ch;
     }
 
-    .code{
-      text-align:center;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: clamp(44px, 7.5vw, 78px);
-      font-weight: 900;
-      letter-spacing: 7px;
-      margin: 18px 0 10px;
-      position:relative;
-      z-index:1;
-    }
-
-    .hint{
-      text-align:center;
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:14px;
-      position:relative;
-      z-index:1;
-    }
-
-    .barwrap{
-      height: 10px;
-      border-radius: 999px;
-      overflow:hidden;
-      border:1px solid rgba(130,170,255,.14);
-      background: rgba(0,0,0,.14);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
-      position:relative;
-      z-index:1;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    html[data-theme="light"] .barwrap{ background: rgba(255,255,255,.10); }
-
-    .bar{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(41,182,255,1), rgba(25,145,240,1));
-      position:relative;
-      overflow:hidden;
-      transition: width .15s linear;
-    }
-    .bar::after{
-      content:"";
-      position:absolute; inset:-40% -60%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
-      transform: translateX(-30%);
-      animation: sheen 1.4s linear infinite;
-      opacity:.35;
-    }
-    @keyframes sheen{
-      0%{ transform: translateX(-35%); }
-      100%{ transform: translateX(35%); }
-    }
-
-    .field{
-      margin-top: 18px;
-      position:relative;
-      z-index:1;
-    }
-    .field-label{
-      font-size:13px;
-      font-weight:900;
-      letter-spacing:.04em;
-      color: rgba(230,240,255,.92);
-      margin-bottom:8px;
-    }
-    html[data-theme="light"] .field-label{ color: rgba(25,30,42,.90); }
-
-    input{
-      width:100%;
-      box-sizing:border-box;
-      padding: 14px 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(130,170,255,.18);
-      background: rgba(0,0,0,.14);
-      color: var(--text);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      outline:none;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    html[data-theme="light"] input{ background: rgba(255,255,255,.10); }
-    input::placeholder{ color: rgba(160,178,210,.70); }
-    html[data-theme="light"] input::placeholder{ color: rgba(90,98,120,.65); }
-
-    .row{
+    .actions{
+      margin-top: 22px;
       display:flex;
-      gap:12px;
-      margin-top: 14px;
       flex-wrap:wrap;
-      position:relative;
-      z-index:1;
+      gap:12px;
+      align-items:center;
     }
+
     .btn{
-      height:46px;
-      padding: 0 16px;
-      border-radius: 18px;
-      border: 1px solid var(--glass-border);
-      background: rgba(0,0,0,.14);
-      color: var(--text);
-      font-weight: 900;
+      height:48px;
+      padding:0 18px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--panel2);
+      color:var(--text);
+      font-weight:900;
+      letter-spacing:.02em;
       cursor:pointer;
+      text-decoration:none;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      flex: 1 1 220px;
-      box-shadow: 0 18px 46px rgba(0,0,0,.38), 0 0 0 1px rgba(255,255,255,.05) inset;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      min-width: 220px;
     }
-    html[data-theme="light"] .btn{ background: rgba(255,255,255,.10); }
     .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 22px 56px rgba(0,0,0,.46), 0 0 22px rgba(41,182,255,.16);
-      background: rgba(0,0,0,.20);
+      transform:translateY(-1px);
+      box-shadow:0 18px 46px rgba(0,0,0,.32), 0 0 18px rgba(41,182,255,.16);
+      border-color:rgba(41,182,255,.28);
+      background:rgba(0,0,0,.18);
     }
-    html[data-theme="light"] .btn:hover{ background: rgba(255,255,255,.16); }
     .btn.primary{
-      border-color: transparent;
-      color:#fff;
-      background: linear-gradient(180deg, rgba(41,182,255,1), rgba(25,145,240,1));
-      box-shadow: 0 22px 56px rgba(41,182,255,.18), 0 0 0 1px rgba(255,255,255,.10) inset;
+      border-color:transparent;
+      background: linear-gradient(135deg, rgba(41,182,255,1), rgba(58,163,255,.92));
+      color:white;
+      box-shadow:0 18px 50px rgba(41,182,255,.18);
     }
     .btn.primary:hover{
-      box-shadow: 0 0 26px rgba(41,182,255,.42), 0 22px 56px rgba(41,182,255,.18);
-      opacity:.98;
+      box-shadow:0 22px 60px rgba(41,182,255,.22), 0 0 22px rgba(41,182,255,.22);
     }
 
-    .status{
-      margin-top:12px;
-      min-height:18px;
-      text-align:center;
+    /* Sections (no cards, but glass strips) */
+    .sections{
+      padding: 18px 0 56px;
+    }
+
+    .strip{
+      border-radius: calc(var(--radius) + 6px);
+      border:1px solid var(--border);
+      background: var(--panel2);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      box-shadow: 0 16px 50px rgba(0,0,0,.45);
+      overflow:hidden;
+      margin-top:18px;
+    }
+
+    .strip-inner{
+      padding: 22px 22px;
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
+
+    .label{
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
       font-size:12px;
-      position:relative;
-      z-index:1;
+      color:rgba(230,240,255,.72);
+      margin:0 0 10px;
     }
-    .status.ok{ color:#4cd18c; }
-    .status.err{ color:#ff6b6b; }
+    .h2{
+      margin:0 0 10px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .muted{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+      max-width:72ch;
+    }
 
-    .foot{
+    .list{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:13px;
+    }
+    .list li{ margin:6px 0; }
+
+    .micro-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
       margin-top:14px;
+    }
+
+    .footer{
+      padding: 26px 0 42px;
       text-align:center;
-      color: var(--muted);
+      color:var(--muted);
       font-size:12px;
-      opacity:.88;
+      opacity:.85;
       user-select:none;
-      position:relative;
-      z-index:1;
     }
 
-    /* ===== Mobile optimization (more breathing room, less cramped) ===== */
-    @media (max-width: 860px){
-      .nav-inner{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:12px;
-      }
-      .controls{
-        width:100%;
-        justify-content:flex-start;
-        gap:10px;
-      }
+    /* Mobile */
+    @media (max-width: 880px){
+      .strip-inner{ grid-template-columns:1fr; }
     }
-
-    @media (max-width: 560px){
-      .wrap{ width:min(var(--wrap), 94vw); }
-
-      .nav-inner{ padding:16px 0 12px; }
-
-      .brand img{ width:38px; height:38px; border-radius:14px; }
-      .brand .name{ font-size:13px; letter-spacing:.09em; }
-      .brand .sub{ font-size:12px; max-width:46ch; }
-
-      /* controls becomes a nice 2-row grid */
-      .controls{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap:10px;
-        align-items:stretch;
-      }
-      .pill{
-        width:100%;
-        height:40px;                 /* bigger tap target */
-        justify-content:center;
-        box-shadow: 0 10px 26px rgba(0,0,0,.32), 0 0 0 1px rgba(255,255,255,.05) inset;
-      }
-      .lang-select{ padding:0 22px; }
-
-      /* panel spacing */
-      main{ padding: 16px 0 44px; }
-      .panel{
-        width: min(720px, 96vw);
-        padding: 22px 16px 18px;
-        border-radius: 24px;
-      }
-
-      .panel-head{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:10px;
-        margin-bottom:12px;
-      }
-      .panel-title{ font-size:14px; }
-      .badge{ width:100%; justify-content:center; height:38px; }
-
-      .panel-note{ font-size:13px; margin-bottom:12px; }
-
-      .code{
-        margin: 16px 0 10px;
-        letter-spacing: 4px;
-        font-size: clamp(40px, 12vw, 58px);
-      }
-
-      .barwrap{ height:12px; }      /* clearer on mobile */
-
-      .field{ margin-top:16px; }
-      input{
-        padding: 16px 14px;         /* less cramped */
-        border-radius: 18px;
-        font-size: 14px;
-      }
-
-      .row{
-        flex-direction:column;
-        gap:12px;
-        margin-top: 14px;
-      }
-      .btn{
-        width:100%;
-        height:52px;                /* bigger tap target */
-        border-radius: 18px;
-        flex: 1 1 auto;
-      }
-
-      .status{ margin-top:12px; }
-      .foot{ margin-top:14px; }
+    @media (max-width: 760px){
+      .brand .sub{ max-width: 46ch; }
+      .controls{ width:100%; justify-content:flex-start; }
+      .nav-inner{ flex-direction:column; align-items:flex-start; }
+      .hero{ min-height: calc(100vh - 118px); }
+      .btn{ width:100%; min-width:0; }
     }
-
-    /* extra small phones */
-    @media (max-width: 360px){
-      .controls{ grid-template-columns: 1fr; }
-      .code{ letter-spacing: 3px; }
+    @media (max-width: 420px){
+      .brand img{ width:38px;height:38px;border-radius:14px; }
+      .pill{ height:34px; }
+      .hero-glass{ padding: 18px; }
     }
   </style>
 </head>
 
 <body>
   <div class="nav">
-    <div class="wrap">
+    <div class="container">
       <div class="nav-inner">
         <div class="brand">
           <img src="/assets/logo.png" alt="Roshine Logo" />
           <div>
-            <div class="name">ROSHINE.LOVE</div>
+            <div class="title">Roshine.love</div>
             <div class="sub" id="subText">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
           </div>
         </div>
@@ -545,164 +426,382 @@
           </select>
 
           <button class="pill" id="themeToggle" title="Theme">☀️</button>
-          <a class="pill" href="/" id="backLink" title="Store">← <span id="backText">Back to Store</span></a>
-
-          <!-- NOTE:
-               On mobile, controls become 2-column grid. With 3 items, the 3rd will wrap to next row.
-               That makes spacing breathable and not cramped. -->
+          <a class="pill" href="/auth/" id="authLink" title="Authenticator">🔐 Authenticator</a>
         </div>
       </div>
     </div>
   </div>
 
-  <main>
-    <div class="wrap">
-      <section class="panel" aria-label="Authenticator">
-        <div class="panel-head">
-          <div class="panel-title" id="titleText">🔐 Battle.net Authenticator</div>
-          <div class="badge" id="modeBadge">TOTP • 30s</div>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-glass">
+        <div class="hero-content">
+          <div class="kicker"><span class="dot"></span><span id="kickerText">FAST • VERIFIED • SECURE</span></div>
+
+          <h1 id="heroTitle">Pick an account.<br>Join Discord.<br>Order.</h1>
+
+          <p class="lead" id="heroIntro">
+            All listings are in Google Sheet. Filter by price, rank, skins. Then send the account ID or a screenshot on Discord to confirm and buy.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
+               href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
+              📄 <span id="sheetBtnText">View Listings</span>
+            </a>
+            <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
+              💬 <span id="discordBtnText">Order on Discord</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sections">
+        <div class="strip">
+          <div class="strip-inner">
+            <div>
+              <div class="label" id="flowLabel">HOW TO BUY</div>
+              <div class="h2" id="flowTitle">Simple flow, no friction.</div>
+              <p class="muted" id="flowDesc">Pick from the Sheet, confirm on Discord, then receive delivery and security handover.</p>
+            </div>
+            <div>
+              <ol class="list" id="flowSteps"></ol>
+            </div>
+          </div>
         </div>
 
-        <p class="panel-note" id="descText">
-          Paste your Private Key to generate the current verification code. Then copy the code into Battle.net.
-        </p>
-
-        <div class="code" id="code">--------</div>
-        <div class="hint" id="remain"></div>
-        <div class="barwrap"><div class="bar" id="bar"></div></div>
-
-        <div class="field">
-          <div class="field-label" id="secretLabel">Private Key</div>
-          <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+        <div class="strip">
+          <div class="strip-inner">
+            <div>
+              <div class="label" id="faqLabel">FAQ</div>
+              <div class="h2" id="faqTitle">Quick answers.</div>
+              <p class="muted" id="faqDesc">Most questions are solved here. For anything else, ask on Discord.</p>
+            </div>
+            <div>
+              <ol class="list" id="faqSteps"></ol>
+              <div class="micro-actions">
+                <a class="pill" href="/auth/" id="miniAuth">🔐 <span id="miniAuthText">Open Authenticator</span></a>
+                <a class="pill" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="miniOrder">🧾 <span id="miniOrderText">Order Now</span></a>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="row">
-          <button class="btn primary" id="copy">📋 <span id="copyText">Copy Code</span></button>
-          <button class="btn" id="clear">🧹 <span id="clearText">Clear Key</span></button>
+        <div class="strip">
+          <div class="strip-inner">
+            <div>
+              <div class="label" id="wLabel">WARRANTY</div>
+              <div class="h2" id="wTitle">Best warranty. Best security.</div>
+              <p class="muted" id="wDesc">Built for trust: long-term protection and a complete security handover.</p>
+            </div>
+            <div>
+              <ol class="list" id="wSteps"></ol>
+            </div>
+          </div>
         </div>
 
-        <div class="status" id="status"></div>
-        <div class="foot" id="footer"></div>
-      </section>
+        <div class="footer" id="footer"></div>
+      </div>
     </div>
-  </main>
+  </div>
 
   <script>
-    // ===== TOTP =====
-    const DIGITS = 8;
-    const PERIOD = 30;
-
-    const THEME_KEY = "theme-choice";
-    const THEME_MODE_KEY = "theme-mode";
-    const LANG_KEY  = "locale-choice";
-
-    const $ = id => document.getElementById(id);
+    // ===== i18n =====
+    const LANG_KEY = "locale-choice";
 
     const i18n = {
       en: {
         sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
-        back: "Back to Store",
-        title: "🔐 Battle.net Authenticator",
-        desc: "Paste your Private Key to generate the current verification code. Then copy the code into Battle.net.",
-        secretLabel: "Private Key",
-        placeholder: "Private Key",
-        copy: "Copy Code",
-        clear: "Clear Key",
-        copied: "Copied",
-        copyBlocked: "Copy blocked",
-        enterKeyError: "Enter your Private Key",
-        invalidKey: "Invalid Private Key",
-        footer: "© {year} Roshine.love — Authenticator."
+        auth: "🔐 Authenticator",
+        kicker: "FAST • VERIFIED • SECURE",
+        heroTitle: "Pick an account.\nJoin Discord.\nOrder.",
+        heroIntro: "All listings are in Google Sheet. Filter by price, rank, skins. Then send the account ID or a screenshot on Discord to confirm and buy.",
+        sheetBtn: "View Listings",
+        discordBtn: "Order on Discord",
+
+        flowLabel: "HOW TO BUY",
+        flowTitle: "Simple flow, no friction.",
+        flowDesc: "Pick from the Sheet, confirm on Discord, then receive delivery and security handover.",
+        flow: [
+          "Open the Google Sheet listings and filter what you want.",
+          "Copy the account ID or screenshot the row.",
+          "Join Discord and send the ID/screenshot to confirm availability.",
+          "After confirmation, complete payment and receive login info.",
+          "Need verification codes? Use the Authenticator page."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "Quick answers.",
+        faqDesc: "Most questions are solved here. For anything else, ask on Discord.",
+        faq: [
+          "\"How often updated?\" — The Sheet is the source of truth. Sold accounts are marked quickly.",
+          "\"Payment methods?\" — Credit card, PayPal, crypto, and selected gift cards. Confirm details on Discord.",
+          "\"Authenticator?\" — Open the tool, paste Private Key, copy the code."
+        ],
+        miniAuth: "Open Authenticator",
+        miniOrder: "Order Now",
+
+        wLabel: "WARRANTY",
+        wTitle: "Best warranty. Best security.",
+        wDesc: "Built for trust: long-term protection and a complete security handover.",
+        w: [
+          "✅ Lifetime Warranty (Security Issues): hacked / stolen / reclaimed → full replacement or full compensation.",
+          "✅ After payment, you receive a complete security handover (Email access, Battle.net & Steam if applicable, Authenticator, Account ID, and more depending on the account)."
+        ],
+
+        footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
       },
+
       zh: {
         sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
-        back: "返回商店",
-        title: "🔐 战网安全令",
-        desc: "粘贴你的安全令秘钥生成当前验证码，然后复制到 Battle.net 使用。",
-        secretLabel: "安全令秘钥",
-        placeholder: "安全令秘钥",
-        copy: "复制验证码",
-        clear: "清空秘钥",
-        copied: "已复制验证码",
-        copyBlocked: "浏览器禁止复制",
-        enterKeyError: "请输入安全令秘钥",
-        invalidKey: "无效的安全令秘钥",
-        footer: "© {year} Roshine.love — 安全令工具。"
+        auth: "🔐 安全令",
+        kicker: "快速 • 可验证 • 更安全",
+        heroTitle: "挑账号。\n加 Discord。\n下单。",
+        heroIntro: "账号都在 Google Sheet。先按价格/段位/皮肤筛选，再到 Discord 发送账号编号或截图，确认后即可购买。",
+        sheetBtn: "打开账号列表",
+        discordBtn: "去 Discord 下单",
+
+        flowLabel: "购买流程",
+        flowTitle: "流程极简，沟通更少。",
+        flowDesc: "先选，再确认，再交付；需要验证码随时进安全令工具。",
+        flow: [
+          "打开 Google Sheet 列表，筛选你想要的账号。",
+          "记录账号编号（或截图对应行）。",
+          "加入 Discord，把编号/截图发我确认库存与价格。",
+          "确认后完成付款，并交付登录信息。",
+          "需要验证码：进入安全令工具复制验证码。"
+        ],
+
+        faqLabel: "常见问题",
+        faqTitle: "常见问题秒懂。",
+        faqDesc: "这里能解决大多数问题；更多细节直接 Discord 问。",
+        faq: [
+          "“列表多久更新？”—— 以 Sheet 为准，售出会尽快标记。",
+          "“支持什么支付方式？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；细节与手续费请 Discord 确认。",
+          "“怎么用安全令？”—— 打开工具页，粘贴 Private Key，复制验证码。"
+        ],
+        miniAuth: "打开安全令",
+        miniOrder: "立即下单",
+
+        wLabel: "质保",
+        wTitle: "最强质保。更安心。",
+        wDesc: "主打信任：终身安全质保 + 完整安全资料交接。",
+        w: [
+          "✅ 终身安全质保：如出现被盗 / 被黑 / 找回（reclaimed），提供全额补偿或同等账号替换，终身有效。",
+          "✅ 付款后交付完整安全资料包：按账号实际情况提供邮箱权限、Battle.net/Steam（如适用）、安全令信息、账号 ID 等关键资料。"
+        ],
+
+        footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
       },
+
       fr: {
         sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
-        back: "Retour boutique",
-        title: "🔐 Jeton Battle.net",
-        desc: "Collez votre clé privée pour générer le code, puis copiez-le dans Battle.net.",
-        secretLabel: "Clé privée",
-        placeholder: "Clé privée",
-        copy: "Copier le code",
-        clear: "Effacer la clé",
-        copied: "Code copié",
-        copyBlocked: "Copie bloquée",
-        enterKeyError: "Entrez votre clé privée",
-        invalidKey: "Clé privée invalide",
-        footer: "© {year} Roshine.love — Jeton."
+        auth: "🔐 Jeton",
+        kicker: "RAPIDE • VÉRIFIÉ • SÛR",
+        heroTitle: "Choisir.\nDiscord.\nCommander.",
+        heroIntro: "Tous les comptes sont dans Google Sheet. Filtrez puis envoyez l’ID ou une capture sur Discord pour confirmer et acheter.",
+        sheetBtn: "Voir la liste",
+        discordBtn: "Commander via Discord",
+
+        flowLabel: "ACHAT",
+        flowTitle: "Simple et direct.",
+        flowDesc: "Choisir → Confirmer → Livraison + remise sécurité.",
+        flow: [
+          "Ouvrez la liste Google Sheet et filtrez.",
+          "Copiez l’ID (ou capturez la ligne).",
+          "Envoyez l’ID/la capture sur Discord pour confirmer.",
+          "Après confirmation, paiement puis livraison des accès.",
+          "Besoin de codes ? Utilisez la page Jeton."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "Réponses rapides.",
+        faqDesc: "Si besoin, contactez-nous sur Discord.",
+        faq: [
+          "Mises à jour ? Le Sheet fait foi. Les comptes vendus sont marqués rapidement.",
+          "Paiement ? Carte, PayPal, crypto et certaines cartes cadeaux. Confirmez sur Discord.",
+          "Jeton ? Ouvrez l’outil, collez la clé privée, copiez le code."
+        ],
+        miniAuth: "Ouvrir le Jeton",
+        miniOrder: "Commander",
+
+        wLabel: "GARANTIE",
+        wTitle: "Garantie & sécurité.",
+        wDesc: "Protection long terme + remise complète des informations de sécurité.",
+        w: [
+          "✅ Garantie à vie (sécurité) : piraté / volé / récupéré → remplacement complet ou remboursement.",
+          "✅ Après paiement : remise complète des informations de sécurité (selon le compte)."
+        ],
+
+        footer: "© {year} Roshine.love — Boutique Overwatch."
       },
+
       de: {
         sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
-        back: "Zurück zum Shop",
-        title: "🔐 Battle.net-Token",
-        desc: "Füge deinen Private Key ein, generiere den Code und kopiere ihn in Battle.net.",
-        secretLabel: "Private Key",
-        placeholder: "Private Key",
-        copy: "Code kopieren",
-        clear: "Key löschen",
-        copied: "Kopiert",
-        copyBlocked: "Kopieren blockiert",
-        enterKeyError: "Private Key eingeben",
-        invalidKey: "Ungültiger Private Key",
-        footer: "© {year} Roshine.love — Token."
+        auth: "🔐 Token",
+        kicker: "SCHNELL • VERIFIZIERT • SICHER",
+        heroTitle: "Auswählen.\nDiscord.\nBestellen.",
+        heroIntro: "Alle Accounts stehen im Google Sheet. Filtern und dann ID/Screenshot per Discord senden, um zu bestätigen und zu kaufen.",
+        sheetBtn: "Liste ansehen",
+        discordBtn: "Über Discord bestellen",
+
+        flowLabel: "KAUF",
+        flowTitle: "Kurz. Klar. Schnell.",
+        flowDesc: "Auswahl → Bestätigung → Lieferung + Security-Handover.",
+        flow: [
+          "Google Sheet öffnen und filtern.",
+          "Account-ID kopieren (oder Screenshot).",
+          "ID/Screenshot über Discord senden, um zu bestätigen.",
+          "Nach Bestätigung zahlen und Login-Daten erhalten.",
+          "Codes nötig? Token-Seite nutzen."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "Schnelle Antworten.",
+        faqDesc: "Mehr Details auf Discord.",
+        faq: [
+          "Updates? Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
+          "Zahlung? Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Bitte über Discord bestätigen.",
+          "Token? Tool öffnen, Private Key einfügen, Code kopieren."
+        ],
+        miniAuth: "Token öffnen",
+        miniOrder: "Jetzt bestellen",
+
+        wLabel: "GARANTIE",
+        wTitle: "Garantie & Sicherheit.",
+        wDesc: "Langzeit-Schutz + vollständige Übergabe von Sicherheitsinfos.",
+        w: [
+          "✅ Lebenslange Garantie (Sicherheit): gehackt / gestohlen / reclaimed → Ersatz oder volle Erstattung.",
+          "✅ Nach Zahlung: vollständige Sicherheitsübergabe (je nach Account)."
+        ],
+
+        footer: "© {year} Roshine.love — Overwatch-Shop."
       },
+
       ru: {
         sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
-        back: "Назад в магазин",
-        title: "🔐 Токен Battle.net",
-        desc: "Вставьте Private Key, получите код и скопируйте его в Battle.net.",
-        secretLabel: "Private Key",
-        placeholder: "Private Key",
-        copy: "Скопировать код",
-        clear: "Очистить ключ",
-        copied: "Скопировано",
-        copyBlocked: "Копирование запрещено",
-        enterKeyError: "Введите Private Key",
-        invalidKey: "Недействительный Private Key",
-        footer: "© {year} Roshine.love — токен."
+        auth: "🔐 Токен",
+        kicker: "БЫСТРО • ПРОВЕРЕНО • БЕЗОПАСНО",
+        heroTitle: "Выбрать.\nDiscord.\nКупить.",
+        heroIntro: "Все аккаунты в Google Sheet. Отфильтруйте и отправьте ID/скрин в Discord для подтверждения и покупки.",
+        sheetBtn: "Открыть список",
+        discordBtn: "Купить в Discord",
+
+        flowLabel: "ПОКУПКА",
+        flowTitle: "Просто и быстро.",
+        flowDesc: "Выбор → подтверждение → выдача + безопасность.",
+        flow: [
+          "Откройте список (Google Sheet) и отфильтруйте.",
+          "Скопируйте ID (или сделайте скрин строки).",
+          "Отправьте ID/скрин в Discord для подтверждения.",
+          "После подтверждения — оплата и выдача данных для входа.",
+          "Нужны коды? Используйте страницу Токен."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "Коротко по делу.",
+        faqDesc: "Больше деталей — в Discord.",
+        faq: [
+          "Обновления? Sheet — источник истины. Проданное отмечается быстро.",
+          "Оплата? Карта, PayPal, крипто и некоторые подарочные карты. Уточняйте в Discord.",
+          "Токен? Откройте инструмент, вставьте Private Key, скопируйте код."
+        ],
+        miniAuth: "Открыть токен",
+        miniOrder: "Заказать",
+
+        wLabel: "ГАРАНТИЯ",
+        wTitle: "Гарантия и безопасность.",
+        wDesc: "Долгосрочная защита + полный пакет безопасности.",
+        w: [
+          "✅ Пожизненная гарантия (безопасность): взлом/кража/reclaimed → замена или полный возврат.",
+          "✅ После оплаты: полный пакет безопасности (в зависимости от аккаунта)."
+        ],
+
+        footer: "© {year} Roshine.love — магазин Overwatch."
       },
+
       it: {
         sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
-        back: "Torna al negozio",
-        title: "🔐 Token Battle.net",
-        desc: "Incolla il Private Key per generare il codice e copialo in Battle.net.",
-        secretLabel: "Private Key",
-        placeholder: "Private Key",
-        copy: "Copia codice",
-        clear: "Cancella key",
-        copied: "Copiato",
-        copyBlocked: "Copia bloccata",
-        enterKeyError: "Inserisci Private Key",
-        invalidKey: "Private Key non valido",
-        footer: "© {year} Roshine.love — Token."
+        auth: "🔐 Token",
+        kicker: "VELOCE • VERIFICATO • SICURO",
+        heroTitle: "Scegli.\nDiscord.\nAcquista.",
+        heroIntro: "Tutti gli account sono su Google Sheet. Filtra e invia ID/screenshot su Discord per confermare e acquistare.",
+        sheetBtn: "Apri lista",
+        discordBtn: "Ordina su Discord",
+
+        flowLabel: "ACQUISTO",
+        flowTitle: "Semplice e veloce.",
+        flowDesc: "Scelta → conferma → consegna + sicurezza.",
+        flow: [
+          "Apri la lista (Google Sheet) e filtra.",
+          "Copia l’ID (o screenshot della riga).",
+          "Invia ID/screenshot su Discord per conferma.",
+          "Dopo conferma: pagamento e consegna dati accesso.",
+          "Codici? Usa la pagina Token."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "Risposte rapide.",
+        faqDesc: "Per dettagli: Discord.",
+        faq: [
+          "Aggiornamenti? Il Sheet è la fonte. Venduti segnati rapidamente.",
+          "Pagamenti? Carta, PayPal, crypto e alcune gift card. Conferma su Discord.",
+          "Token? Apri lo strumento, incolla Private Key, copia il codice."
+        ],
+        miniAuth: "Apri Token",
+        miniOrder: "Ordina ora",
+
+        wLabel: "GARANZIA",
+        wTitle: "Garanzia e Sicurezza.",
+        wDesc: "Protezione a lungo termine + consegna completa dati di sicurezza.",
+        w: [
+          "✅ Garanzia a vita (sicurezza): hack/furto/reclaimed → sostituzione o rimborso completo.",
+          "✅ Dopo pagamento: consegna completa dati sicurezza (in base all’account)."
+        ],
+
+        footer: "© {year} Roshine.love — Negozio Overwatch."
       },
+
       ar: {
         sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
-        back: "العودة للمتجر",
-        title: "🔐 مُصدِّق Battle.net",
-        desc: "ألصق Private Key لتوليد الرمز ثم انسخه إلى Battle.net.",
-        secretLabel: "Private Key",
-        placeholder: "Private Key",
-        copy: "نسخ الرمز",
-        clear: "مسح المفتاح",
-        copied: "تم النسخ",
-        copyBlocked: "تم حظر النسخ",
-        enterKeyError: "أدخل Private Key",
-        invalidKey: "Private Key غير صالح",
-        footer: "© {year} Roshine.love — المُصدِّق."
+        auth: "🔐 المُصدِّق",
+        kicker: "سريع • مُوثَّق • آمن",
+        heroTitle: "اختر.\nDiscord.\nشراء.",
+        heroIntro: "جميع الحسابات في Google Sheet. قم بالتصفية ثم أرسل ID/لقطة عبر Discord للتأكيد والشراء.",
+        sheetBtn: "عرض القائمة",
+        discordBtn: "اطلب عبر Discord",
+
+        flowLabel: "الشراء",
+        flowTitle: "سهل وسريع.",
+        flowDesc: "اختيار → تأكيد → تسليم + أمان.",
+        flow: [
+          "افتح القائمة (Google Sheet) وقم بالتصفية.",
+          "انسخ ID (أو التقط لقطة للصف).",
+          "أرسل ID/اللقطة عبر Discord للتأكيد.",
+          "بعد التأكيد: ادفع واستلم بيانات الدخول.",
+          "تحتاج رمزاً؟ استخدم صفحة المُصدِّق."
+        ],
+
+        faqLabel: "FAQ",
+        faqTitle: "إجابات سريعة.",
+        faqDesc: "للتفاصيل: Discord.",
+        faq: [
+          "التحديثات؟ Google Sheet هو المرجع. يتم وضع علامة على المباع بسرعة.",
+          "طرق الدفع؟ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. أكد عبر Discord.",
+          "المُصدِّق؟ افتح الأداة والصق Private Key ثم انسخ الرمز."
+        ],
+        miniAuth: "فتح المُصدِّق",
+        miniOrder: "اطلب الآن",
+
+        wLabel: "الضمان",
+        wTitle: "الضمان والأمان.",
+        wDesc: "حماية طويلة + تسليم كامل معلومات الأمان.",
+        w: [
+          "✅ ضمان مدى الحياة (الأمان): اختراق/سرقة/reclaimed → استبدال أو تعويض كامل.",
+          "✅ بعد الدفع: تسليم كامل معلومات الأمان (حسب الحساب)."
+        ],
+
+        footer: "© {year} Roshine.love — متجر أوفرواتش."
       }
     };
 
@@ -720,43 +819,83 @@
       return "en";
     }
 
-    let currentLang = "en";
-    const t = (key) => (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
+    function setMultiline(el, text){
+      el.innerHTML = "";
+      String(text).split("\n").forEach((line, idx) => {
+        const span = document.createElement("span");
+        span.textContent = line;
+        el.appendChild(span);
+        if (idx !== String(text).split("\n").length - 1) el.appendChild(document.createElement("br"));
+      });
+    }
+
+    function fillList(listId, items){
+      const el = document.getElementById(listId);
+      el.innerHTML = "";
+      items.forEach(x => {
+        const li = document.createElement("li");
+        li.textContent = x;
+        el.appendChild(li);
+      });
+    }
 
     function applyLang(lang){
       if (!i18n[lang]) lang = "en";
-      currentLang = lang;
-
       document.documentElement.lang = lang;
       document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
 
-      const sel = $("langSelect");
+      const t = i18n[lang];
+      const sel = document.getElementById("langSelect");
       if (sel) sel.value = lang;
 
-      $("subText").textContent = t("sub");
-      $("backText").textContent = t("back");
-      $("titleText").textContent = t("title");
-      $("descText").textContent = t("desc");
-      $("secretLabel").textContent = t("secretLabel");
-      $("secret").placeholder = t("placeholder");
-      $("copyText").textContent = t("copy");
-      $("clearText").textContent = t("clear");
+      document.getElementById("subText").textContent = t.sub;
 
-      $("footer").textContent = t("footer").replace("{year}", new Date().getFullYear());
+      const authLink = document.getElementById("authLink");
+      authLink.textContent = t.auth;
+      authLink.setAttribute("title", t.auth.replace("🔐 ",""));
+
+      document.getElementById("kickerText").textContent = t.kicker;
+      setMultiline(document.getElementById("heroTitle"), t.heroTitle);
+      document.getElementById("heroIntro").textContent = t.heroIntro;
+
+      document.getElementById("sheetBtnText").textContent = t.sheetBtn;
+      document.getElementById("discordBtnText").textContent = t.discordBtn;
+
+      document.getElementById("flowLabel").textContent = t.flowLabel;
+      document.getElementById("flowTitle").textContent = t.flowTitle;
+      document.getElementById("flowDesc").textContent = t.flowDesc;
+      fillList("flowSteps", t.flow);
+
+      document.getElementById("faqLabel").textContent = t.faqLabel;
+      document.getElementById("faqTitle").textContent = t.faqTitle;
+      document.getElementById("faqDesc").textContent = t.faqDesc;
+      fillList("faqSteps", t.faq);
+      document.getElementById("miniAuthText").textContent = t.miniAuth;
+      document.getElementById("miniOrderText").textContent = t.miniOrder;
+
+      document.getElementById("wLabel").textContent = t.wLabel;
+      document.getElementById("wTitle").textContent = t.wTitle;
+      document.getElementById("wDesc").textContent = t.wDesc;
+      fillList("wSteps", t.w);
+
+      document.getElementById("footer").textContent =
+        t.footer.replace("{year}", new Date().getFullYear());
     }
 
     (function initLang(){
       applyLang(detectLang());
     })();
 
-    $("langSelect").addEventListener("change", e => {
+    document.getElementById("langSelect").addEventListener("change", e => {
       const lang = e.target.value;
       applyLang(lang);
       localStorage.setItem(LANG_KEY, lang);
-      if ($("status").classList.contains("err")) gen();
     });
 
-    // ===== Theme =====
+    // ===== theme (system -> dark -> light -> system) =====
+    const THEME_MODE_KEY = "theme-mode";
+    const THEME_KEY = "theme-choice";
+
     function getSystemTheme(){
       const prefersDark = window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -764,7 +903,7 @@
     }
     function applyTheme(theme){
       document.documentElement.setAttribute("data-theme", theme);
-      const btn = $("themeToggle");
+      const btn = document.getElementById("themeToggle");
       if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
     }
 
@@ -800,7 +939,7 @@
       }
     })();
 
-    $("themeToggle").addEventListener("click", () => {
+    document.getElementById("themeToggle").addEventListener("click", () => {
       let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
       let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
 
@@ -812,132 +951,6 @@
       localStorage.setItem(THEME_KEY, theme);
       applyTheme(theme);
     });
-
-    // ===== URL key support (?key= or /hex) =====
-    function getKeyFromURL(){
-      const u = new URL(location.href);
-      const paramKey = u.searchParams.get("key");
-      if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
-
-      const parts = u.pathname.split("/").filter(Boolean);
-      if (parts.length){
-        const last = parts[parts.length - 1];
-        if (/^[0-9a-fA-F]+$/.test(last)) return last;
-      }
-      return null;
-    }
-
-    // ===== TOTP core =====
-    function hexToBytes(s){
-      s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
-      if (!s) throw new Error("ERR_EMPTY_KEY");
-      if (s.length % 2) throw new Error("ERR_INVALID_KEY");
-      return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
-    }
-    function counterBytes(c){
-      const b = new Uint8Array(8); let x = BigInt(c);
-      for (let i = 7; i >= 0; i--){
-        b[i] = Number(x & 0xffn);
-        x >>= 8n;
-      }
-      return b;
-    }
-    async function hmacSha1(key,msg){
-      const k = await crypto.subtle.importKey(
-        "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
-      );
-      return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
-    }
-    function truncate(mac){
-      const o = mac[mac.length - 1] & 0x0f;
-      return (((mac[o]   & 0x7f) << 24) |
-              ((mac[o+1] & 0xff) << 16) |
-              ((mac[o+2] & 0xff) << 8)  |
-              ( mac[o+3] & 0xff)) >>> 0;
-    }
-    function fmt(n){
-      const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
-      return raw.slice(0,4) + " " + raw.slice(4);
-    }
-
-    async function gen(){
-      const statusEl = $("status");
-      try{
-        const key = hexToBytes($("secret").value);
-        const ctr = Math.floor(Date.now()/1000 / PERIOD);
-        const mac = await hmacSha1(key, counterBytes(ctr));
-        $("code").textContent = fmt(truncate(mac));
-        if (statusEl){
-          statusEl.textContent = "";
-          statusEl.classList.remove("err","ok");
-        }
-      }catch(e){
-        $("code").textContent = "--------";
-        if (!statusEl) return;
-        let msg;
-        if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
-        else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
-        else msg = e.message;
-        statusEl.textContent = msg;
-        statusEl.classList.add("err");
-        statusEl.classList.remove("ok");
-      }
-    }
-
-    function tick(){
-      const s   = Math.floor(Date.now()/1000);
-      const rem = PERIOD - (s % PERIOD);
-      $("remain").textContent = `${rem}s`;
-      $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
-    }
-
-    let last = -1;
-    setInterval(() => {
-      tick();
-      const s = Math.floor(Date.now()/1000);
-      if (s !== last){
-        last = s;
-        gen();
-      }
-    }, 150);
-
-    $("secret").addEventListener("input", gen);
-
-    $("copy").addEventListener("click", async () => {
-      const v = $("code").textContent;
-      const statusEl = $("status");
-      if (v.includes("-")) return;
-      try{
-        await navigator.clipboard.writeText(v.replace(/\s/g,""));
-        if (statusEl){
-          statusEl.textContent = t("copied");
-          statusEl.classList.remove("err");
-          statusEl.classList.add("ok");
-        }
-      }catch{
-        if (statusEl){
-          statusEl.textContent = t("copyBlocked");
-          statusEl.classList.remove("ok");
-          statusEl.classList.add("err");
-        }
-      }
-    });
-
-    $("clear").addEventListener("click", () => {
-      $("secret").value = "";
-      $("code").textContent = "--------";
-      const statusEl = $("status");
-      if (statusEl){
-        statusEl.textContent = "";
-        statusEl.classList.remove("err","ok");
-      }
-    });
-
-    const urlKey = getKeyFromURL();
-    if (urlKey) $("secret").value = urlKey;
-
-    tick();
-    gen();
   </script>
 </body>
 </html>
