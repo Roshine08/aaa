@@ -1,383 +1,348 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Roshine — Overwatch Account Store</title>
-  <link rel="icon" href="/assets/logo.png" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Battle.net Authenticator</title>
+<link rel="icon" href="logo.png" />
 
-  <style>
-    :root{
-      --bg-dark:#05060b;
-      --card-dark:#0b1018;
-      --border-dark:#202736;
-      --text-dark:#e6f0ff;
-      --muted-dark:#7c8aaa;
-      --accent-dark:#29b6ff;
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 
-      --bg-light:#171920;
-      --card-light:#1f222b;
-      --border-light:#2c3140;
-      --text-light:#e4e7f5;
-      --muted-light:#8b94aa;
-      --accent-light:#3aa3ff;
+<style>
+:root{
+  --bg-dark:#05060b;
+  --card-dark:#0b1018;
+  --border-dark:#202736;
+  --text-dark:#e6f0ff;
+  --muted-dark:#7c8aaa;
+  --accent-dark:#29b6ff;
 
-      --bg:var(--bg-dark);
-      --card:var(--card-dark);
-      --border:var(--border-dark);
-      --text:var(--text-dark);
-      --muted:var(--muted-dark);
-      --accent:var(--accent-dark);
-    }
+  --bg-light:#171920;
+  --card-light:#1f222b;
+  --border-light:#2c3140;
+  --text-light:#e4e7f5;
+  --muted-light:#8b94aa;
+  --accent-light:#3aa3ff;
 
-    html[data-theme="dark"]{
-      --bg:var(--bg-dark);
-      --card:var(--card-dark);
-      --border:var(--border-dark);
-      --text:var(--text-dark);
-      --muted:var(--muted-dark);
-      --accent:var(--accent-dark);
-    }
-    html[data-theme="light"]{
-      --bg:var(--bg-light);
-      --card:var(--card-light);
-      --border:var(--border-light);
-      --text:var(--text-light);
-      --muted:var(--muted-light);
-      --accent:var(--accent-light);
-    }
+  --bg:var(--bg-dark);
+  --card:var(--card-dark);
+  --border:var(--border-dark);
+  --text:var(--text-dark);
+  --muted:var(--muted-dark);
+  --accent:var(--accent-dark);
+}
 
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
-      background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
-    }
-    html[data-theme="light"] body{
-      background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
-    }
+html[data-theme="dark"]{
+  --bg:var(--bg-dark);
+  --card:var(--card-dark);
+  --border:var(--border-dark);
+  --text:var(--text-dark);
+  --muted:var(--muted-dark);
+  --accent:var(--accent-dark);
+}
+html[data-theme="light"]{
+  --bg:var(--bg-light);
+  --card:var(--card-light);
+  --border:var(--border-light);
+  --text:var(--text-light);
+  --muted:var(--muted-light);
+  --accent:var(--accent-light);
+}
 
-    /* ===== Cyber / Tech polish ===== */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(800px 400px at 20% 10%, rgba(41,182,255,.10), transparent 60%),
-        radial-gradient(700px 350px at 80% 20%, rgba(58,163,255,.08), transparent 60%),
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size:auto,auto,48px 48px,48px 48px;
-      opacity:.55;
-      mix-blend-mode:screen;
-    }
-    body::after{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,.03),
-          rgba(255,255,255,.03) 1px,
-          transparent 1px,
-          transparent 7px
-        );
-      opacity:.08;
-    }
+html,body{height:100%}
+body{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
 
-    .wrap{
-      width:min(980px, 94vw);
-      margin:0 auto;
-      padding:26px 0 42px;
-      position:relative;
-      z-index:1;
-    }
+html[data-theme="dark"] body{
+  background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
+}
+html[data-theme="light"] body{
+  background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
+}
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:16px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-    .brand img{
-      width:40px;height:40px;border-radius:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,.45);
-    }
-    .brand .name{
-      font-weight:900;
-      letter-spacing:.04em;
-      white-space:nowrap;
-    }
-    .brand .sub{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-      max-width:70ch;
-    }
+.wrap{
+  width:min(640px,96vw);
+}
 
-    .top-controls{display:flex; align-items:center; gap:10px;}
+.card{
+  position:relative;
+  background:var(--card);
+  border-radius:24px;
+  padding:36px 30px 28px;
+  box-shadow:0 22px 52px rgba(0,0,0,.55);
+  overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  background:linear-gradient(135deg,
+    rgba(0,185,255,.8),
+    rgba(0,110,255,.65),
+    rgba(0,40,120,.7));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask-composite:exclude;
+  opacity:.75;
+  pointer-events:none;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 28px 66px rgba(0,0,0,.78);
+}
 
-    .pill{
-      height:34px;
-      padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.22);
-      color:var(--text);
-      font-size:13px;
-      font-weight:800;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 8px 18px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-      text-decoration:none;
-      user-select:none;
-      backdrop-filter: blur(10px);
-    }
-    html[data-theme="light"] .pill{
-      border-color:rgba(0,0,0,.55);
-      background:rgba(0,0,0,.24);
-      box-shadow:0 8px 18px rgba(0,0,0,.55);
-    }
-    .pill:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 22px rgba(0,0,0,.75), 0 0 14px rgba(41,182,255,.25);
-      background:rgba(0,0,0,.32);
-    }
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:26px;
+}
+.top-left{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    .lang-select{
-      appearance:none;
-      -moz-appearance:none;
-      -webkit-appearance:none;
-      border:none;
-      background:transparent;
-      padding:0 18px;
-      text-align:center;
-      cursor:pointer;
-    }
-    .lang-select option{
-      background:#050b16;
-      color:#e8eefc;
-    }
-    html[data-theme="light"] .lang-select option{
-      background:#1a1d26;
-      color:#e4e7f5;
-    }
+.logo-img{
+  width:40px;height:40px;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.logo-img:hover{
+  transform:translateY(-1px);
+  box-shadow:0 0 18px rgba(35,168,255,.9);
+}
 
-    .hero{
-      position:relative;
-      background:var(--card);
-      border-radius:26px;
-      padding:26px 22px 22px;
-      border:1px solid rgba(120,170,255,.14);
-      box-shadow:0 18px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(41,182,255,.08) inset;
-      overflow:hidden;
-      margin-bottom:14px;
-      backdrop-filter: blur(12px);
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:inherit;
-      padding:1px;
-      background:linear-gradient(135deg,
-        rgba(0,185,255,.7),
-        rgba(0,110,255,.55),
-        rgba(0,40,120,.6));
-      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-              mask-composite:exclude;
-      opacity:.55;
-      pointer-events:none;
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      left:-20%;
-      top:-30%;
-      width:140%;
-      height:140%;
-      background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
-      transform:rotate(8deg);
-      animation:sweep 6.5s linear infinite;
-      pointer-events:none;
-      opacity:.55;
-    }
-    @keyframes sweep{
-      0%{ transform:translateX(-35%) rotate(8deg); opacity:.0; }
-      10%{ opacity:.55; }
-      60%{ opacity:.25; }
-      100%{ transform:translateX(35%) rotate(8deg); opacity:0; }
-    }
+.title{
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:.03em;
+  white-space:nowrap;
+}
 
-    .hero h1{
-      margin:0 0 8px;
-      font-size:28px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-weight:900;
-    }
-    .hero p{
-      margin:0 0 16px;
-      color:var(--muted);
-      line-height:1.55;
-      font-size:14px;
-      max-width:72ch;
-    }
+.top-control{
+  min-width:52px;
+  height:32px;
+  padding:0 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.25);
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 18px rgba(0,0,0,.45);
+  cursor:pointer;
+  transition:background .15s ease, box-shadow .15s ease, transform .15s ease, opacity .15s ease;
+  text-decoration:none;
+  user-select:none;
+}
+html[data-theme="light"] .top-control{
+  border-color:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.30);
+  box-shadow:0 8px 18px rgba(0,0,0,.65);
+}
+.top-control:hover{
+  background:rgba(0,0,0,.4);
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(0,0,0,.75);
+}
 
-    .cta-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:6px;
-    }
-    .btn{
-      padding:12px 16px;
-      border-radius:16px;
-      border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.14);
-      color:var(--text);
-      font-weight:900;
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      min-width:220px;
-      justify-content:center;
-      backdrop-filter: blur(12px);
-    }
-    .btn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 0 14px rgba(41,182,255,.25);
-      background:rgba(0,0,0,.20);
-    }
-    .btn.primary{
-      background:var(--accent);
-      border-color:transparent;
-      color:#fff;
-      box-shadow:0 10px 30px rgba(41,182,255,.22), 0 0 0 1px rgba(255,255,255,.08) inset;
-    }
-    .btn.primary:hover{
-      box-shadow:0 0 22px rgba(41,182,255,.55);
-    }
+/* 语言选择：外观跟着 top-control，隐藏原生样式 */
+.lang-select{
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  border:none;
+  background:transparent;
+  padding:0 18px;
+  text-align:center;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(12, 1fr);
-      gap:14px;
-      margin-top:14px;
-    }
-    .card{
-      grid-column:span 6;
-      background:var(--card);
-      border-radius:22px;
-      padding:18px 18px 16px;
-      border:1px solid rgba(120,170,255,.14);
-      box-shadow:0 18px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(41,182,255,.08) inset;
-      position:relative;
-      overflow:hidden;
-      backdrop-filter: blur(12px);
-    }
-    .card h3{
-      margin:0 0 6px;
-      font-size:16px;
-      letter-spacing:.04em;
-      position:relative;
-      padding-left:10px;
-    }
-    .card h3::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:50%;
-      transform:translateY(-50%);
-      width:3px;
-      height:16px;
-      border-radius:999px;
-      background:var(--accent);
-      box-shadow:0 0 12px rgba(41,182,255,.65);
-    }
-    .steps{
-      margin-top:10px;
-      padding-left:18px;
-      font-size:13px;
-      line-height:1.7;
-    }
-    .steps li{ margin:7px 0; color:var(--muted); }
+/* 下拉列表项颜色 */
+.lang-select option{
+  background:#050b16;
+  color:#e8eefc;
+}
+html[data-theme="light"] .lang-select option{
+  background:#1a1d26;
+  color:#e4e7f5;
+}
 
-    .mini-actions{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-top:14px;
-    }
-    .mini{
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.14);
-      color:var(--text);
-      font-weight:900;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      flex:1 1 200px;
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-      backdrop-filter: blur(12px);
-    }
-    .mini:hover{
-      transform:translateY(-1px);
-      box-shadow:0 0 14px rgba(41,182,255,.25);
-      background:rgba(0,0,0,.20);
-    }
+/* 主题按钮：只控制图标大小，其余由 top-control 保证 */
+.theme-toggle{
+  border:none;
+  background:transparent;
+  padding:0;
+  min-width:auto;
+  font-size:18px;
+}
 
-    .footer{
-      margin-top:18px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      opacity:.85;
-      user-select:none;
-    }
+.code{
+  text-align:center;
+  font-family:ui-monospace,monospace;
+  font-size:76px;
+  font-weight:900;
+  letter-spacing:7px;
+  margin:32px 0 16px;
+}
 
-    @media (max-width:760px){
-      .card{ grid-column:span 12; }
-      .btn{ min-width:0; width:100%; }
-      .topbar{ flex-direction:column; align-items:flex-start; }
-      .top-controls{ width:100%; }
-    }
-  </style>
+.hint{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:18px;
+}
+#remain{
+  color:rgba(110,125,150,.9);
+}
+
+.barwrap{
+  height:12px;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  overflow:hidden;
+}
+html[data-theme="light"] .barwrap{
+  background:rgba(0,0,0,.35);
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:var(--accent);
+  background-image:linear-gradient(90deg,
+    rgba(255,255,255,.4),
+    rgba(255,255,255,.9),
+    rgba(255,255,255,.4));
+  background-size:200% 100%;
+  animation:stripe 1.3s linear infinite;
+  transition:width .15s linear;
+}
+@keyframes stripe{
+  0%{background-position:0% 0}
+  100%{background-position:200% 0}
+}
+
+.field-label{
+  margin-top:30px;
+  font-size:14px;
+  color:rgba(200,210,235,.96);
+  font-weight:600;
+}
+input{
+  width:100%;
+  box-sizing:border-box;
+  margin-top:10px;
+  padding:13px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.1);
+  color:var(--text);
+  font-family:ui-monospace,monospace;
+}
+html[data-theme="light"] input{
+  background:rgba(255,255,255,.04);
+}
+input::placeholder{
+  color:rgba(159,176,200,.7);
+}
+html[data-theme="light"] input::placeholder{
+  color:rgba(180,190,210,.7);
+}
+
+.row{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  margin-top:26px;
+}
+button{
+  padding:11px 18px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.08);
+  color:var(--text);
+  cursor:pointer;
+  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
+  min-width:120px;
+}
+button.primary{
+  background:var(--accent);
+  border-color:transparent;
+  color:#fff;
+}
+button.primary:hover{
+  box-shadow:0 0 16px rgba(35,168,255,.9);
+  transform:translateY(-1px);
+}
+button:not(.primary):hover{
+  box-shadow:0 0 10px rgba(35,168,255,.6);
+  transform:translateY(-1px);
+}
+
+.status{
+  margin-top:12px;
+  text-align:center;
+  font-size:12px;
+  min-height:18px;
+}
+.status.ok{color:#4cd18c;}
+.status.err{color:#ff6b6b;}
+
+.footer{
+  margin-top:20px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  user-select:none;
+  opacity:.8;
+}
+
+@media (max-width:480px){
+  .wrap{ width:92vw; }
+  .card{ padding:20px 14px 16px; border-radius:20px; }
+  .title{ font-size:15px }
+  .code{ font-size:clamp(36px,11vw,48px); letter-spacing:4px; }
+  .row{ flex-direction:column; }
+  button{ width:100%; min-width:0; }
+  .logo-img{ width:32px;height:32px; border-radius:12px; }
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <img src="/assets/logo.png" alt="Roshine Logo" />
-        <div>
-          <div class="name">Roshine.love</div>
-          <div class="sub" id="subText">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
-        </div>
+<div class="wrap">
+  <div class="card">
+    <div class="top">
+      <div class="top-left">
+        <img src="logo.png" class="logo-img" alt="Logo">
+        <div class="title" id="titleText">Battle.net Authenticator</div>
       </div>
 
-      <div class="top-controls">
-        <select id="langSelect" class="pill lang-select" title="Language">
+      <div class="top-right">
+        <a class="top-control" href="/" id="storeLink">Store</a>
+
+        <select id="langSelect" class="lang-select top-control" aria-label="Language">
           <option value="en">EN</option>
           <option value="zh">中文</option>
           <option value="fr">FR</option>
@@ -387,323 +352,388 @@
           <option value="ar">العربية</option>
         </select>
 
-        <button class="pill" id="themeToggle" title="Theme">☀️</button>
-        <a class="pill" href="/auth/" id="authLink" title="Authenticator">🔐 Authenticator</a>
+        <button class="theme-toggle top-control" id="themeToggle" aria-label="Theme">☀️</button>
       </div>
     </div>
 
-    <div class="hero">
-      <h1 id="heroTitle">Pick → DM → Delivered</h1>
-      <p id="heroIntro">Browse live listings in Google Sheet, then DM the account ID on Discord to buy.</p>
+    <div class="code" id="code">--------</div>
+    <div class="hint" id="remain"></div>
+    <div class="barwrap"><div class="bar" id="bar"></div></div>
 
-      <div class="cta-row">
-        <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
-           href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
-          📄 <span id="sheetBtnText">View Listings</span>
-        </a>
-        <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
-          💬 <span id="discordBtnText">Order on Discord</span>
-        </a>
-      </div>
+    <div class="field-label" id="secretLabel">Please enter your Private Key!</div>
+    <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+
+    <div class="row">
+      <button class="primary" id="copy">Copy Code</button>
+      <button id="clear">Clear Key</button>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <h3 id="flowTitle">How to Buy</h3>
-        <ol class="steps" id="flowSteps">
-          <li>Open the listings (Google Sheet).</li>
-          <li>DM the account ID on Discord.</li>
-          <li>Pay → receive login info.</li>
-        </ol>
-      </div>
-
-      <div class="card">
-        <h3 id="faqTitle">FAQ</h3>
-        <ol class="steps" id="faqSteps">
-          <li>"How often updated?" — The Sheet is the source of truth.</li>
-          <li>"Payment methods?" — Card, PayPal, crypto, and some gift cards. Confirm on Discord.</li>
-          <li>"Authenticator?" — Paste Private Key and copy the code.</li>
-        </ol>
-
-        <div class="mini-actions">
-          <a class="mini" id="miniAuth" href="/auth/">🔐 <span id="miniAuthText">Open Authenticator</span></a>
-          <a class="mini" id="miniOrder" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">🧾 <span id="miniOrderText">Order Now</span></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer" id="footer"></div>
+    <div class="status" id="status"></div>
   </div>
+</div>
 
-  <script>
-    // ===== i18n (language) =====
-    const LANG_KEY = "locale-choice";
+<div class="footer" id="footer"></div>
 
-    const i18n = {
-      en: {
-        sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
-        auth: "🔐 Authenticator",
-        heroTitle: "Pick → DM → Delivered",
-        heroIntro: "Browse live listings in Google Sheet, then DM the account ID on Discord to buy.",
-        sheetBtn: "View Listings",
-        discordBtn: "Order on Discord",
-        flowTitle: "How to Buy",
-        flow1: "Open the listings (Google Sheet).",
-        flow2: "DM the account ID on Discord.",
-        flow3: "Pay → receive login info.",
-        faqTitle: "FAQ",
-        faq1: "\"How often updated?\" — The Sheet is the source of truth.",
-        faq2: "\"Payment methods?\" — Card, PayPal, crypto, and some gift cards. Confirm on Discord.",
-        faq3: "\"Authenticator?\" — Paste Private Key and copy the code.",
-        miniAuth: "Open Authenticator",
-        miniOrder: "Order Now",
-        footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
-      },
+<script>
+const DIGITS = 8;
+const PERIOD = 30;
 
-      zh: {
-        sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
-        auth: "🔐 安全令",
-        heroTitle: "选账号 → 私聊 → 交付",
-        heroIntro: "打开 Google Sheet 挑选账号，然后在 Discord 私聊发送账号编号即可下单。",
-        sheetBtn: "打开账号列表",
-        discordBtn: "去 Discord 下单",
-        flowTitle: "购买流程",
-        flow1: "打开 Google Sheet 列表筛选账号。",
-        flow2: "Discord 私聊发送账号编号/截图。",
-        flow3: "确认后付款 → 交付登录信息。",
-        faqTitle: "常见问题",
-        faq1: "“列表多久更新？”—— 以 Sheet 为准。",
-        faq2: "“支持什么支付方式？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；具体与手续费请 Discord 确认。",
-        faq3: "“怎么用安全令？”—— 粘贴 Private Key 后复制验证码。",
-        miniAuth: "打开安全令",
-        miniOrder: "立即下单",
-        footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
-      },
+const THEME_KEY = "theme-choice";       // 实际 data-theme
+const THEME_MODE_KEY = "theme-mode";    // system / light / dark
+const LANG_KEY  = "locale-choice";      // 与主页一致（同一个 key）
 
-      fr: {
-        sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
-        auth: "🔐 Jeton",
-        heroTitle: "Choisir → DM → Livraison",
-        heroIntro: "Consultez la liste Google Sheet, puis envoyez l'ID du compte sur Discord pour acheter.",
-        sheetBtn: "Voir la liste",
-        discordBtn: "Commander via Discord",
-        flowTitle: "Procédure",
-        flow1: "Ouvrez la liste (Google Sheet).",
-        flow2: "Envoyez l'ID en DM sur Discord.",
-        flow3: "Paiement → infos de connexion.",
-        faqTitle: "FAQ",
-        faq1: "Mises à jour ? Le Sheet fait foi.",
-        faq2: "Paiement ? Carte, PayPal, crypto et certaines cartes cadeaux. Confirmez sur Discord.",
-        faq3: "Jeton ? Collez la clé privée et copiez le code.",
-        miniAuth: "Ouvrir le Jeton",
-        miniOrder: "Commander",
-        footer: "© {year} Roshine.love — Boutique Overwatch."
-      },
+const $ = id => document.getElementById(id);
 
-      de: {
-        sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
-        auth: "🔐 Token",
-        heroTitle: "Wählen → DM → Lieferung",
-        heroIntro: "Liste im Google Sheet ansehen, dann Account-ID per Discord-DM senden und kaufen.",
-        sheetBtn: "Liste ansehen",
-        discordBtn: "Über Discord bestellen",
-        flowTitle: "Ablauf",
-        flow1: "Liste öffnen (Google Sheet).",
-        flow2: "Account-ID per Discord-DM senden.",
-        flow3: "Zahlen → Login-Daten erhalten.",
-        faqTitle: "FAQ",
-        faq1: "Updates? Sheet ist maßgeblich.",
-        faq2: "Zahlung? Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Bitte über Discord bestätigen.",
-        faq3: "Token? Private Key einfügen und Code kopieren.",
-        miniAuth: "Token öffnen",
-        miniOrder: "Jetzt bestellen",
-        footer: "© {year} Roshine.love — Overwatch-Shop."
-      },
+/* 多语言文案（与主页一致的语言集合） */
+const i18n = {
+  en: {
+    store: "Store",
+    title: "Battle.net Authenticator",
+    secretLabel: "Please enter your Private Key!",
+    placeholder: "Private Key",
+    copy: "Copy Code",
+    clear: "Clear Key",
+    copied: "Copied",
+    copyBlocked: "Copy blocked",
+    enterKeyError: "Enter Your Private Key",
+    invalidKey: "Invalid Private Key",
+    footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
+  },
+  zh: {
+    store: "返回商店",
+    title: "战网安全令",
+    secretLabel: "请输入你的安全令秘钥！",
+    placeholder: "安全令秘钥",
+    copy: "复制验证码",
+    clear: "清空秘钥",
+    copied: "已复制验证码",
+    copyBlocked: "浏览器禁止复制",
+    enterKeyError: "请输入安全令秘钥",
+    invalidKey: "无效的安全令秘钥",
+    footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
+  },
+  fr: {
+    store: "Boutique",
+    title: "Jeton de sécurité Battle.net",
+    secretLabel: "Veuillez entrer votre clé secrète !",
+    placeholder: "Clé secrète",
+    copy: "Copier le code",
+    clear: "Effacer la clé",
+    copied: "Code copié",
+    copyBlocked: "Copie bloquée par le navigateur",
+    enterKeyError: "Veuillez entrer votre clé secrète",
+    invalidKey: "Clé secrète invalide",
+    footer: "© {year} Roshine.love — Boutique Overwatch."
+  },
+  de: {
+    store: "Shop",
+    title: "Battle.net-Sicherheitstoken",
+    secretLabel: "Bitte gib deinen Sicherheitsschlüssel ein!",
+    placeholder: "Sicherheitsschlüssel",
+    copy: "Code kopieren",
+    clear: "Schlüssel löschen",
+    copied: "Code kopiert",
+    copyBlocked: "Kopieren vom Browser blockiert",
+    enterKeyError: "Bitte gib deinen Sicherheitsschlüssel ein",
+    invalidKey: "Ungültiger Sicherheitsschlüssel",
+    footer: "© {year} Roshine.love — Overwatch-Shop."
+  },
+  ru: {
+    store: "Магазин",
+    title: "Токен безопасности Battle.net",
+    secretLabel: "Введите ключ токена безопасности!",
+    placeholder: "Ключ токена",
+    copy: "Скопировать код",
+    clear: "Очистить ключ",
+    copied: "Код скопирован",
+    copyBlocked: "Браузер запретил копирование",
+    enterKeyError: "Введите ключ токена безопасности",
+    invalidKey: "Недействительный ключ токена",
+    footer: "© {year} Roshine.love — магазин Overwatch."
+  },
+  it: {
+    store: "Negozio",
+    title: "Token di sicurezza Battle.net",
+    secretLabel: "Inserisci la chiave del token!",
+    placeholder: "Chiave token",
+    copy: "Copia codice",
+    clear: "Cancella chiave",
+    copied: "Codice copiato",
+    copyBlocked: "Copia bloccata dal browser",
+    enterKeyError: "Inserisci la chiave del token",
+    invalidKey: "Chiave token non valida",
+    footer: "© {year} Roshine.love — Negozio Overwatch."
+  },
+  ar: {
+    store: "المتجر",
+    title: "رمز أمان Battle.net",
+    secretLabel: "يرجى إدخال المفتاح الخاص بك!",
+    placeholder: "المفتاح الخاص",
+    copy: "نسخ الرمز",
+    clear: "مسح المفتاح",
+    copied: "تم النسخ",
+    copyBlocked: "النسخ محظور",
+    enterKeyError: "أدخل المفتاح الخاص",
+    invalidKey: "مفتاح غير صالح",
+    footer: "© {year} Roshine.love — متجر أوفرواتش."
+  }
+};
 
-      ru: {
-        sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
-        auth: "🔐 Токен",
-        heroTitle: "Выбрать → DM → Доставка",
-        heroIntro: "Откройте список в Google Sheet, затем отправьте ID аккаунта в Discord (DM), чтобы купить.",
-        sheetBtn: "Открыть список",
-        discordBtn: "Купить в Discord",
-        flowTitle: "Как купить",
-        flow1: "Откройте список (Google Sheet).",
-        flow2: "Отправьте ID в Discord (DM).",
-        flow3: "Оплата → данные для входа.",
-        faqTitle: "FAQ",
-        faq1: "Обновления? Sheet — основной источник.",
-        faq2: "Оплата? Карта, PayPal, крипто и некоторые подарочные карты. Подтвердите в Discord.",
-        faq3: "Токен? Вставьте Private Key и скопируйте код.",
-        miniAuth: "Открыть токен",
-        miniOrder: "Заказать",
-        footer: "© {year} Roshine.love — магазин Overwatch."
-      },
+let currentLang = "en";
+const t = key => {
+  const dict = i18n[currentLang] || i18n.en;
+  return dict[key] || i18n.en[key] || key;
+};
 
-      it: {
-        sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
-        auth: "🔐 Token",
-        heroTitle: "Scegli → DM → Consegna",
-        heroIntro: "Apri la lista su Google Sheet, poi invia l'ID account in DM su Discord per acquistare.",
-        sheetBtn: "Apri lista",
-        discordBtn: "Ordina su Discord",
-        flowTitle: "Come comprare",
-        flow1: "Apri la lista (Google Sheet).",
-        flow2: "Invia l'ID in DM su Discord.",
-        flow3: "Pagamento → dati di accesso.",
-        faqTitle: "FAQ",
-        faq1: "Aggiornamenti? Il Sheet è la fonte.",
-        faq2: "Pagamenti? Carta, PayPal, crypto e alcune gift card. Conferma su Discord.",
-        faq3: "Token? Incolla Private Key e copia il codice.",
-        miniAuth: "Apri Token",
-        miniOrder: "Ordina ora",
-        footer: "© {year} Roshine.love — Negozio Overwatch."
-      },
+// 默认语言：优先用户选择（localStorage），否则跟随浏览器
+function detectLang(){
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved && i18n[saved]) return saved;
 
-      ar: {
-        sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
-        auth: "🔐 المُصدِّق",
-        heroTitle: "اختر → DM → تسليم",
-        heroIntro: "اعرض القائمة في Google Sheet ثم أرسل رقم الحساب عبر Discord (DM) للشراء.",
-        sheetBtn: "عرض القائمة",
-        discordBtn: "اطلب عبر Discord",
-        flowTitle: "طريقة الشراء",
-        flow1: "افتح القائمة (Google Sheet).",
-        flow2: "أرسل رقم الحساب في DM عبر Discord.",
-        flow3: "ادفع ← واستلم بيانات الدخول.",
-        faqTitle: "الأسئلة الشائعة",
-        faq1: "التحديثات؟ Google Sheet هو المرجع.",
-        faq2: "طرق الدفع؟ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. أكد عبر Discord.",
-        faq3: "المُصدِّق؟ الصق Private Key ثم انسخ الرمز.",
-        miniAuth: "فتح المُصدِّق",
-        miniOrder: "اطلب الآن",
-        footer: "© {year} Roshine.love — متجر أوفرواتش."
-      }
-    };
+  const nav = (navigator.language || "en").toLowerCase();
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("fr")) return "fr";
+  if (nav.startsWith("de")) return "de";
+  if (nav.startsWith("ru")) return "ru";
+  if (nav.startsWith("it")) return "it";
+  if (nav.startsWith("ar")) return "ar";
+  return "en";
+}
 
-    function detectLang(){
-      const saved = localStorage.getItem(LANG_KEY);
-      if (saved && i18n[saved]) return saved;
+function applyLang(lang){
+  if (!i18n[lang]) lang = "en";
+  currentLang = lang;
 
-      const nav = (navigator.language || "en").toLowerCase();
-      if (nav.startsWith("zh")) return "zh";
-      if (nav.startsWith("fr")) return "fr";
-      if (nav.startsWith("de")) return "de";
-      if (nav.startsWith("ru")) return "ru";
-      if (nav.startsWith("it")) return "it";
-      if (nav.startsWith("ar")) return "ar";
-      return "en";
-    }
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
 
-    function applyLang(lang){
-      if (!i18n[lang]) lang = "en";
-      document.documentElement.lang = lang;
-      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+  const sel = $("langSelect");
+  if (sel) sel.value = lang;
 
-      const t = i18n[lang];
-      const sel = document.getElementById("langSelect");
-      if (sel) sel.value = lang;
+  $("storeLink").textContent    = t("store");
+  $("titleText").textContent    = t("title");
+  $("secretLabel").textContent  = t("secretLabel");
+  $("secret").placeholder       = t("placeholder");
+  $("copy").textContent         = t("copy");
+  $("clear").textContent        = t("clear");
 
-      document.getElementById("subText").textContent = t.sub;
+  const year = new Date().getFullYear();
+  $("footer").textContent = t("footer").replace("{year}", year);
 
-      const authLink = document.getElementById("authLink");
-      authLink.textContent = t.auth;
-      authLink.setAttribute("title", t.auth.replace("🔐 ",""));
+  // 切换语言后立即刷新一次状态文案（避免残留上一个语言）
+  const statusEl = $("status");
+  if (statusEl) {
+    statusEl.textContent = "";
+    statusEl.classList.remove("err","ok");
+  }
+}
 
-      document.getElementById("heroTitle").textContent = t.heroTitle;
-      document.getElementById("heroIntro").textContent = t.heroIntro;
+(function initLang(){
+  applyLang(detectLang());
+})();
 
-      document.getElementById("sheetBtnText").textContent = t.sheetBtn;
-      document.getElementById("discordBtnText").textContent = t.discordBtn;
+$("langSelect").addEventListener("change", e => {
+  const lang = e.target.value;
+  applyLang(lang);
+  localStorage.setItem(LANG_KEY, lang); // 与主页一致
+});
 
-      document.getElementById("flowTitle").textContent = t.flowTitle;
-      const flowLis = document.querySelectorAll("#flowSteps li");
-      flowLis[0].textContent = t.flow1;
-      flowLis[1].textContent = t.flow2;
-      flowLis[2].textContent = t.flow3;
+/* 主题切换：按钮显示“将切换到的主题”图标 */
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme);
+  const btn = $("themeToggle");
+  if (!btn) return;
+  btn.textContent = theme === "dark" ? "☀️" : "🌙";
+}
+function getSystemTheme(){
+  const prefersDark = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return prefersDark ? "dark" : "light";
+}
+(function initTheme(){
+  let mode  = localStorage.getItem(THEME_MODE_KEY);
+  let theme = localStorage.getItem(THEME_KEY);
 
-      document.getElementById("faqTitle").textContent = t.faqTitle;
-      const faqLis = document.querySelectorAll("#faqSteps li");
-      faqLis[0].textContent = t.faq1;
-      faqLis[1].textContent = t.faq2;
-      faqLis[2].textContent = t.faq3;
-
-      document.getElementById("miniAuthText").textContent = t.miniAuth;
-      document.getElementById("miniOrderText").textContent = t.miniOrder;
-
-      document.getElementById("footer").textContent =
-        t.footer.replace("{year}", new Date().getFullYear());
-    }
-
-    (function initLang(){
-      applyLang(detectLang());
-    })();
-
-    document.getElementById("langSelect").addEventListener("change", e => {
-      const lang = e.target.value;
-      applyLang(lang);
-      localStorage.setItem(LANG_KEY, lang);
-    });
-
-    // ===== theme (system -> dark -> light -> system) =====
-    const THEME_MODE_KEY = "theme-mode";
-    const THEME_KEY = "theme-choice";
-
-    function getSystemTheme(){
-      const prefersDark = window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return prefersDark ? "dark" : "light";
-    }
-    function applyTheme(theme){
-      document.documentElement.setAttribute("data-theme", theme);
-      const btn = document.getElementById("themeToggle");
-      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
-    }
-
-    (function initTheme(){
-      let mode  = localStorage.getItem(THEME_MODE_KEY);
-      let theme = localStorage.getItem(THEME_KEY);
-
-      if (!mode){
-        mode = "system";
-        theme = getSystemTheme();
-        localStorage.setItem(THEME_MODE_KEY, mode);
-        localStorage.setItem(THEME_KEY, theme);
-      }else{
-        if (mode === "system"){
-          theme = getSystemTheme();
-          localStorage.setItem(THEME_KEY, theme);
-        }else if (!theme){
-          theme = mode === "dark" ? "dark" : "light";
-          localStorage.setItem(THEME_KEY, theme);
-        }
-      }
-      applyTheme(theme);
-
-      if (window.matchMedia){
-        const mq = window.matchMedia("(prefers-color-scheme: dark)");
-        mq.addEventListener("change", e => {
-          const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
-          if (currentMode !== "system") return;
-          const nextTheme = e.matches ? "dark" : "light";
-          localStorage.setItem(THEME_KEY, nextTheme);
-          applyTheme(nextTheme);
-        });
-      }
-    })();
-
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
-      let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
-
-      if (mode === "system"){ mode = "dark"; theme = "dark"; }
-      else if (mode === "dark"){ mode = "light"; theme = "light"; }
-      else { mode = "system"; theme = getSystemTheme(); }
-
-      localStorage.setItem(THEME_MODE_KEY, mode);
+  if (!mode){
+    mode = "system";
+    theme = getSystemTheme();
+    localStorage.setItem(THEME_MODE_KEY, mode);
+    localStorage.setItem(THEME_KEY, theme);
+  }else{
+    if (mode === "system"){
+      theme = getSystemTheme();
       localStorage.setItem(THEME_KEY, theme);
-      applyTheme(theme);
+    }else if (!theme){
+      theme = mode === "dark" ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, theme);
+    }
+  }
+
+  applyTheme(theme);
+
+  if (window.matchMedia){
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", e => {
+      const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
+      if (currentMode !== "system") return;
+      const nextTheme = e.matches ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
     });
-  </script>
+  }
+})();
+
+// 三态切换：system -> dark -> light -> system
+$("themeToggle").addEventListener("click", () => {
+  let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
+  let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
+
+  if (mode === "system"){
+    mode  = "dark";
+    theme = "dark";
+  }else if (mode === "dark"){
+    mode  = "light";
+    theme = "light";
+  }else{
+    mode  = "system";
+    theme = getSystemTheme();
+  }
+
+  localStorage.setItem(THEME_MODE_KEY, mode);
+  localStorage.setItem(THEME_KEY, theme);
+  applyTheme(theme);
+});
+
+/* 支持 ?key= 和 /hex 两种方式 */
+function getKeyFromURL(){
+  const u = new URL(location.href);
+  const paramKey = u.searchParams.get("key");
+  if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+
+  const parts = u.pathname.split("/").filter(Boolean);
+  if (parts.length){
+    const last = parts[parts.length - 1];
+    if (/^[0-9a-fA-F]+$/.test(last)) return last;
+  }
+  return null;
+}
+
+/* TOTP 逻辑 */
+function hexToBytes(s){
+  s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
+  if (!s) throw new Error("ERR_EMPTY_KEY");
+  if (s.length % 2) throw new Error("ERR_INVALID_KEY");
+  return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
+}
+function counterBytes(c){
+  const b = new Uint8Array(8); let x = BigInt(c);
+  for (let i = 7; i >= 0; i--){
+    b[i] = Number(x & 0xffn);
+    x >>= 8n;
+  }
+  return b;
+}
+async function hmacSha1(key,msg){
+  const k = await crypto.subtle.importKey(
+    "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
+  );
+  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
+}
+function truncate(mac){
+  const o = mac[mac.length - 1] & 0x0f;
+  return (((mac[o]   & 0x7f) << 24) |
+          ((mac[o+1] & 0xff) << 16) |
+          ((mac[o+2] & 0xff) << 8)  |
+          ( mac[o+3] & 0xff)) >>> 0;
+}
+function fmt(n){
+  const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
+  return raw.slice(0,4) + " " + raw.slice(4);
+}
+
+async function gen(){
+  const statusEl = $("status");
+  try{
+    const key = hexToBytes($("secret").value);
+    const ctr = Math.floor(Date.now()/1000 / PERIOD);
+    const mac = await hmacSha1(key, counterBytes(ctr));
+    $("code").textContent = fmt(truncate(mac));
+    if (statusEl){
+      statusEl.textContent = "";
+      statusEl.classList.remove("err","ok");
+    }
+  }catch(e){
+    $("code").textContent = "--------";
+    if (!statusEl) return;
+    let msg;
+    if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
+    else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
+    else msg = e.message;
+    statusEl.textContent = msg;
+    statusEl.classList.add("err");
+    statusEl.classList.remove("ok");
+  }
+}
+
+/* 进度条 & 剩余时间 */
+function tick(){
+  const s   = Math.floor(Date.now()/1000);
+  const rem = PERIOD - (s % PERIOD);
+  $("remain").textContent = `${rem}s`;
+  $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
+}
+
+let last = -1;
+setInterval(() => {
+  tick();
+  const s = Math.floor(Date.now()/1000);
+  if (s !== last){
+    last = s;
+    gen();
+  }
+}, 150);
+
+/* 输入 & 按钮事件 */
+$("secret").addEventListener("input", gen);
+
+$("copy").addEventListener("click", async () => {
+  const v = $("code").textContent;
+  const statusEl = $("status");
+  if (v.includes("-")) return;
+  try{
+    await navigator.clipboard.writeText(v.replace(/\s/g,""));
+    if (statusEl){
+      statusEl.textContent = t("copied");
+      statusEl.classList.remove("err");
+      statusEl.classList.add("ok");
+    }
+  }catch{
+    if (statusEl){
+      statusEl.textContent = t("copyBlocked");
+      statusEl.classList.remove("ok");
+      statusEl.classList.add("err");
+    }
+  }
+});
+
+$("clear").addEventListener("click", () => {
+  $("secret").value = "";
+  $("code").textContent = "--------";
+  const statusEl = $("status");
+  if (statusEl){
+    statusEl.textContent = "";
+    statusEl.classList.remove("err","ok");
+  }
+});
+
+/* 初始化：URL 中有 key 就预填（支持 ?key= 与 /hex） */
+const urlKey = getKeyFromURL();
+if (urlKey){
+  $("secret").value = urlKey;
+}
+
+tick();
+gen();
+</script>
 </body>
 </html>
