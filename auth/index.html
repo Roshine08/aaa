@@ -1,33 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Battle.net Authenticator</title>
 <link rel="icon" href="logo.png" />
 
-<!-- 科技感字体 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 
 <style>
 :root{
-  /* 深色主题：偏 Warframe / Battle.net 科幻蓝 */
-  --bg-dark:#05060b;          /* 整体背景：接近纯黑 */
-  --card-dark:#0b1018;        /* 卡片背景：深蓝黑 */
-  --border-dark:#202736;      /* 边框：冷灰蓝 */
-  --text-dark:#e6f0ff;        /* 主文字：偏冷的白 */
-  --muted-dark:#7c8aaa;       /* 次要文字：灰蓝 */
-  --accent-dark:#29b6ff;      /* 高亮蓝：战网感 */
+  --bg-dark:#05060b;
+  --card-dark:#0b1018;
+  --border-dark:#202736;
+  --text-dark:#e6f0ff;
+  --muted-dark:#7c8aaa;
+  --accent-dark:#29b6ff;
 
-  /* 亮色主题：暗灰系亮色，不晃眼 */
-  --bg-light:#171920;         /* 页面背景：深一点的灰蓝 */
-  --card-light:#1f222b;       /* 卡片：比背景稍亮 */
-  --border-light:#2c3140;     /* 边框：中灰蓝 */
-  --text-light:#e4e7f5;       /* 文字：浅灰白 */
-  --muted-light:#8b94aa;      /* 次要文字：灰蓝 */
-  --accent-light:#3aa3ff;     /* 高亮蓝：柔一点 */
+  --bg-light:#171920;
+  --card-light:#1f222b;
+  --border-light:#2c3140;
+  --text-light:#e4e7f5;
+  --muted-light:#8b94aa;
+  --accent-light:#3aa3ff;
 
-  /* 当前实际使用（由 data-theme 决定） */
   --bg:var(--bg-dark);
   --card:var(--card-dark);
   --border:var(--border-dark);
@@ -65,19 +61,13 @@ body{
   font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
 }
 
-/* 暗色：黑 / 深蓝灰渐变 */
 html[data-theme="dark"] body{
-  background:
-    radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
+  background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
 }
-
-/* 亮色：暗灰背景，中心稍亮 */
 html[data-theme="light"] body{
-  background:
-    radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
+  background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
 }
 
-/* 卡片整体更大 */
 .wrap{
   width:min(640px,96vw);
 }
@@ -147,7 +137,6 @@ html[data-theme="light"] body{
   white-space:nowrap;
 }
 
-/* 顶部控制统一风格：EN / 🌙 / 菜单 */
 .top-control{
   min-width:52px;
   height:32px;
@@ -163,18 +152,15 @@ html[data-theme="light"] body{
   justify-content:center;
   box-shadow:0 8px 18px rgba(0,0,0,.45);
   cursor:pointer;
-  transition:
-    background .15s ease,
-    box-shadow .15s ease,
-    transform .15s ease,
-    opacity .15s ease;
+  transition:background .15s ease, box-shadow .15s ease, transform .15s ease, opacity .15s ease;
+  text-decoration:none;
+  user-select:none;
 }
 html[data-theme="light"] .top-control{
   border-color:rgba(0,0,0,.55);
   background:rgba(0,0,0,.30);
   box-shadow:0 8px 18px rgba(0,0,0,.65);
 }
-
 .top-control:hover{
   background:rgba(0,0,0,.4);
   transform:translateY(-1px);
@@ -211,16 +197,6 @@ html[data-theme="light"] .lang-select option{
   font-size:18px;
 }
 
-/* （预留）菜单按钮：同样风格 */
-.menu-toggle{
-  border:none;
-  background:transparent;
-  padding:0;
-  min-width:auto;
-  font-size:16px;
-}
-
-/* 验证码更大一些 */
 .code{
   text-align:center;
   font-family:ui-monospace,monospace;
@@ -240,7 +216,6 @@ html[data-theme="light"] .lang-select option{
   color:rgba(110,125,150,.9);
 }
 
-/* 进度条 */
 .barwrap{
   height:12px;
   background:rgba(255,255,255,.08);
@@ -267,7 +242,6 @@ html[data-theme="light"] .barwrap{
   100%{background-position:200% 0}
 }
 
-/* 输入提示文案 */
 .field-label{
   margin-top:30px;
   font-size:14px;
@@ -295,7 +269,6 @@ html[data-theme="light"] input::placeholder{
   color:rgba(180,190,210,.7);
 }
 
-/* 按钮行整体更宽松 */
 .row{
   display:flex;
   gap:14px;
@@ -327,7 +300,6 @@ button:not(.primary):hover{
   transform:translateY(-1px);
 }
 
-/* 状态文案 */
 .status{
   margin-top:12px;
   text-align:center;
@@ -337,7 +309,6 @@ button:not(.primary):hover{
 .status.ok{color:#4cd18c;}
 .status.err{color:#ff6b6b;}
 
-/* 底部版权 */
 .footer{
   margin-top:20px;
   font-size:12px;
@@ -347,31 +318,14 @@ button:not(.primary):hover{
   opacity:.8;
 }
 
-/* 手机适配 */
 @media (max-width:480px){
-  .wrap{
-    width:92vw;
-  }
-  .card{
-    padding:20px 14px 16px;
-    border-radius:20px;
-  }
-  .title{font-size:15px}
-  .code{
-    font-size:clamp(36px,11vw,48px);
-    letter-spacing:4px;
-  }
-  .row{
-    flex-direction:column;
-  }
-  button{
-    width:100%;
-    min-width:0;
-  }
-  .logo-img{
-    width:32px;height:32px;
-    border-radius:12px;
-  }
+  .wrap{ width:92vw; }
+  .card{ padding:20px 14px 16px; border-radius:20px; }
+  .title{ font-size:15px }
+  .code{ font-size:clamp(36px,11vw,48px); letter-spacing:4px; }
+  .row{ flex-direction:column; }
+  button{ width:100%; min-width:0; }
+  .logo-img{ width:32px;height:32px; border-radius:12px; }
 }
 </style>
 </head>
@@ -381,11 +335,14 @@ button:not(.primary):hover{
   <div class="card">
     <div class="top">
       <div class="top-left">
-        <img src="logo.png" class="logo-img" alt="Battle.net Logo">
+        <img src="logo.png" class="logo-img" alt="Logo">
         <div class="title" id="titleText">Battle.net Authenticator</div>
       </div>
+
       <div class="top-right">
-        <select id="langSelect" class="lang-select top-control">
+        <a class="top-control" href="/" id="storeLink">Store</a>
+
+        <select id="langSelect" class="lang-select top-control" aria-label="Language">
           <option value="en">EN</option>
           <option value="zh">中文</option>
           <option value="fr">FR</option>
@@ -395,11 +352,7 @@ button:not(.primary):hover{
           <option value="ar">العربية</option>
         </select>
 
-        <button class="theme-toggle top-control" id="themeToggle">☀️</button>
-
-        <!-- 预留菜单按钮示例（如果将来要用，解开注释）
-        <button class="menu-toggle top-control" id="menuToggle">☰</button>
-        -->
+        <button class="theme-toggle top-control" id="themeToggle" aria-label="Theme">☀️</button>
       </div>
     </div>
 
@@ -424,14 +377,17 @@ button:not(.primary):hover{
 <script>
 const DIGITS = 8;
 const PERIOD = 30;
+
 const THEME_KEY = "theme-choice";       // 实际 data-theme
 const THEME_MODE_KEY = "theme-mode";    // system / light / dark
-const LANG_KEY  = "locale-choice";
+const LANG_KEY  = "locale-choice";      // 与主页一致（同一个 key）
+
 const $ = id => document.getElementById(id);
 
-/* 多语言文案 */
+/* 多语言文案（与主页一致的语言集合） */
 const i18n = {
   en: {
+    store: "Store",
     title: "Battle.net Authenticator",
     secretLabel: "Please enter your Private Key!",
     placeholder: "Private Key",
@@ -441,9 +397,10 @@ const i18n = {
     copyBlocked: "Copy blocked",
     enterKeyError: "Enter Your Private Key",
     invalidKey: "Invalid Private Key",
-    footer: "© {year} Roshine — Overwatch Store. All rights reserved."
+    footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
   },
   zh: {
+    store: "返回商店",
     title: "战网安全令",
     secretLabel: "请输入你的安全令秘钥！",
     placeholder: "安全令秘钥",
@@ -453,21 +410,23 @@ const i18n = {
     copyBlocked: "浏览器禁止复制",
     enterKeyError: "请输入安全令秘钥",
     invalidKey: "无效的安全令秘钥",
-    footer: "© {year} Roshine — Overwatch 商店。保留所有权利。"
+    footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
   },
   fr: {
+    store: "Boutique",
     title: "Jeton de sécurité Battle.net",
-    secretLabel: "Veuillez entrer votre clé secrète de sécurité !",
-    placeholder: "Clé secrète de sécurité",
+    secretLabel: "Veuillez entrer votre clé secrète !",
+    placeholder: "Clé secrète",
     copy: "Copier le code",
     clear: "Effacer la clé",
     copied: "Code copié",
     copyBlocked: "Copie bloquée par le navigateur",
-    enterKeyError: "Veuillez entrer votre clé secrète de sécurité",
-    invalidKey: "Clé secrète de sécurité invalide",
-    footer: "© {year} Roshine — Boutique Overwatch. Tous droits réservés."
+    enterKeyError: "Veuillez entrer votre clé secrète",
+    invalidKey: "Clé secrète invalide",
+    footer: "© {year} Roshine.love — Boutique Overwatch."
   },
   de: {
+    store: "Shop",
     title: "Battle.net-Sicherheitstoken",
     secretLabel: "Bitte gib deinen Sicherheitsschlüssel ein!",
     placeholder: "Sicherheitsschlüssel",
@@ -477,43 +436,46 @@ const i18n = {
     copyBlocked: "Kopieren vom Browser blockiert",
     enterKeyError: "Bitte gib deinen Sicherheitsschlüssel ein",
     invalidKey: "Ungültiger Sicherheitsschlüssel",
-    footer: "© {year} Roshine — Overwatch-Shop. Alle Rechte vorbehalten."
+    footer: "© {year} Roshine.love — Overwatch-Shop."
   },
   ru: {
+    store: "Магазин",
     title: "Токен безопасности Battle.net",
     secretLabel: "Введите ключ токена безопасности!",
-    placeholder: "Ключ токена безопасности",
+    placeholder: "Ключ токена",
     copy: "Скопировать код",
     clear: "Очистить ключ",
     copied: "Код скопирован",
     copyBlocked: "Браузер запретил копирование",
     enterKeyError: "Введите ключ токена безопасности",
-    invalidKey: "Недействительный ключ токена безопасности",
-    footer: "© {year} Roshine — магазин Overwatch. Все права защищены."
+    invalidKey: "Недействительный ключ токена",
+    footer: "© {year} Roshine.love — магазин Overwatch."
   },
   it: {
+    store: "Negozio",
     title: "Token di sicurezza Battle.net",
-    secretLabel: "Inserisci la chiave del tuo token di sicurezza!",
-    placeholder: "Chiave token di sicurezza",
+    secretLabel: "Inserisci la chiave del token!",
+    placeholder: "Chiave token",
     copy: "Copia codice",
     clear: "Cancella chiave",
     copied: "Codice copiato",
     copyBlocked: "Copia bloccata dal browser",
-    enterKeyError: "Inserisci la chiave del tuo token di sicurezza",
-    invalidKey: "Chiave del token di sicurezza non valida",
-    footer: "© {year} Roshine — Negozio Overwatch. Tutti i diritti riservati."
+    enterKeyError: "Inserisci la chiave del token",
+    invalidKey: "Chiave token non valida",
+    footer: "© {year} Roshine.love — Negozio Overwatch."
   },
   ar: {
+    store: "المتجر",
     title: "رمز أمان Battle.net",
-    secretLabel: "يرجى إدخال مفتاح رمز الأمان الخاص بك!",
-    placeholder: "مفتاح رمز الأمان",
+    secretLabel: "يرجى إدخال المفتاح الخاص بك!",
+    placeholder: "المفتاح الخاص",
     copy: "نسخ الرمز",
     clear: "مسح المفتاح",
-    copied: "تم نسخ الرمز",
-    copyBlocked: "لم يتم السماح بالنسخ",
-    enterKeyError: "أدخل مفتاح رمز الأمان",
-    invalidKey: "مفتاح رمز الأمان غير صالح",
-    footer: "© {year} Roshine — متجر أوفرووتش. جميع الحقوق محفوظة."
+    copied: "تم النسخ",
+    copyBlocked: "النسخ محظور",
+    enterKeyError: "أدخل المفتاح الخاص",
+    invalidKey: "مفتاح غير صالح",
+    footer: "© {year} Roshine.love — متجر أوفرواتش."
   }
 };
 
@@ -523,21 +485,21 @@ const t = key => {
   return dict[key] || i18n.en[key] || key;
 };
 
-/* 支持 ?key= 和 /hex 两种方式 */
-function getKeyFromURL(){
-  const u = new URL(location.href);
-  const paramKey = u.searchParams.get("key");
-  if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+// 默认语言：优先用户选择（localStorage），否则跟随浏览器
+function detectLang(){
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved && i18n[saved]) return saved;
 
-  const parts = u.pathname.split("/").filter(Boolean);
-  if (parts.length){
-    const last = parts[parts.length - 1];
-    if (/^[0-9a-fA-F]+$/.test(last)) return last;
-  }
-  return null;
+  const nav = (navigator.language || "en").toLowerCase();
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("fr")) return "fr";
+  if (nav.startsWith("de")) return "de";
+  if (nav.startsWith("ru")) return "ru";
+  if (nav.startsWith("it")) return "it";
+  if (nav.startsWith("ar")) return "ar";
+  return "en";
 }
 
-/* 语言初始化与应用 */
 function applyLang(lang){
   if (!i18n[lang]) lang = "en";
   currentLang = lang;
@@ -548,36 +510,32 @@ function applyLang(lang){
   const sel = $("langSelect");
   if (sel) sel.value = lang;
 
-  $("titleText").textContent   = t("title");
-  $("secretLabel").textContent = t("secretLabel");
-  $("secret").placeholder      = t("placeholder");
-  $("copy").textContent        = t("copy");
-  $("clear").textContent       = t("clear");
+  $("storeLink").textContent    = t("store");
+  $("titleText").textContent    = t("title");
+  $("secretLabel").textContent  = t("secretLabel");
+  $("secret").placeholder       = t("placeholder");
+  $("copy").textContent         = t("copy");
+  $("clear").textContent        = t("clear");
 
   const year = new Date().getFullYear();
   $("footer").textContent = t("footer").replace("{year}", year);
+
+  // 切换语言后立即刷新一次状态文案（避免残留上一个语言）
+  const statusEl = $("status");
+  if (statusEl) {
+    statusEl.textContent = "";
+    statusEl.classList.remove("err","ok");
+  }
 }
 
 (function initLang(){
-  const saved = localStorage.getItem(LANG_KEY);
-  let lang = saved;
-  if (!lang){
-    const nav = (navigator.language || navigator.userLanguage || "en").toLowerCase();
-    if (nav.startsWith("zh")) lang = "zh";
-    else if (nav.startsWith("fr")) lang = "fr";
-    else if (nav.startsWith("de")) lang = "de";
-    else if (nav.startsWith("ru")) lang = "ru";
-    else if (nav.startsWith("it")) lang = "it";
-    else if (nav.startsWith("ar")) lang = "ar";
-    else lang = "en";
-  }
-  applyLang(lang);
+  applyLang(detectLang());
 })();
 
 $("langSelect").addEventListener("change", e => {
   const lang = e.target.value;
   applyLang(lang);
-  localStorage.setItem(LANG_KEY, lang);
+  localStorage.setItem(LANG_KEY, lang); // 与主页一致
 });
 
 /* 主题切换：按钮显示“将切换到的主题”图标 */
@@ -587,32 +545,25 @@ function applyTheme(theme){
   if (!btn) return;
   btn.textContent = theme === "dark" ? "☀️" : "🌙";
 }
-
-// 根据系统偏好返回 "light" 或 "dark"
 function getSystemTheme(){
   const prefersDark = window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
   return prefersDark ? "dark" : "light";
 }
-
-// 初始化主题 & 监听系统变化（支持 system / light / dark 三种模式）
 (function initTheme(){
-  let mode  = localStorage.getItem(THEME_MODE_KEY);  // system / light / dark
-  let theme = localStorage.getItem(THEME_KEY);       // 实际 data-theme
+  let mode  = localStorage.getItem(THEME_MODE_KEY);
+  let theme = localStorage.getItem(THEME_KEY);
 
   if (!mode){
-    // 第一次访问：默认跟随系统
     mode = "system";
     theme = getSystemTheme();
     localStorage.setItem(THEME_MODE_KEY, mode);
     localStorage.setItem(THEME_KEY, theme);
   }else{
-    // 已经存过：如果是 system 就再取一下当前系统主题
     if (mode === "system"){
       theme = getSystemTheme();
       localStorage.setItem(THEME_KEY, theme);
     }else if (!theme){
-      // 容错：mode 有但 theme 没有
       theme = mode === "dark" ? "dark" : "light";
       localStorage.setItem(THEME_KEY, theme);
     }
@@ -620,7 +571,6 @@ function getSystemTheme(){
 
   applyTheme(theme);
 
-  // 监听系统主题变化：只有在 mode === system 时才自动切
   if (window.matchMedia){
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     mq.addEventListener("change", e => {
@@ -644,7 +594,7 @@ $("themeToggle").addEventListener("click", () => {
   }else if (mode === "dark"){
     mode  = "light";
     theme = "light";
-  }else{ // mode === "light"
+  }else{
     mode  = "system";
     theme = getSystemTheme();
   }
@@ -653,6 +603,20 @@ $("themeToggle").addEventListener("click", () => {
   localStorage.setItem(THEME_KEY, theme);
   applyTheme(theme);
 });
+
+/* 支持 ?key= 和 /hex 两种方式 */
+function getKeyFromURL(){
+  const u = new URL(location.href);
+  const paramKey = u.searchParams.get("key");
+  if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+
+  const parts = u.pathname.split("/").filter(Boolean);
+  if (parts.length){
+    const last = parts[parts.length - 1];
+    if (/^[0-9a-fA-F]+$/.test(last)) return last;
+  }
+  return null;
+}
 
 /* TOTP 逻辑 */
 function hexToBytes(s){
