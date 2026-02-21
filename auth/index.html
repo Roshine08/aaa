@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Roshine Account Store</title>
+  <title>Authenticator — Roshine Account Store</title>
   <link rel="icon" href="/assets/logo.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 你原来的字体链接保留；实际生效字体已强制为 Helvetica -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800;900&display=swap">
 
   <style>
@@ -15,15 +17,9 @@
       --text:#e7efff;
       --muted:#9aa8c6;
 
-      /* esports neon */
       --neon:#29b6ff;
       --neon2:#b77cff;
       --neon3:#33ffcc;
-
-      --glass: rgba(12, 16, 28, .42);
-      --glass2: rgba(10, 14, 22, .30);
-
-      --line2: rgba(255,255,255,.06);
 
       --shadow: 0 26px 72px rgba(0,0,0,.62);
       --shadow2: 0 10px 26px rgba(0,0,0,.42);
@@ -32,7 +28,6 @@
       --r2: 999px;
       --w: min(1100px, 92vw);
 
-      /* button tokens */
       --btn-bg: rgba(255,255,255,.03);
       --btn-border: rgba(255,255,255,.10);
       --btn-hover-bg: rgba(255,255,255,.060);
@@ -48,7 +43,7 @@
       overflow-x:hidden;
     }
 
-    /* ===== Dynamic esports background (CSS only) ===== */
+    /* ===== Dynamic esports background (synced with Page A) ===== */
     .bgfx{
       position:fixed; inset:0;
       pointer-events:none;
@@ -63,7 +58,6 @@
         radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
         radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
         radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
-      filter: blur(0px);
       animation: fogmove 10.5s ease-in-out infinite alternate;
       opacity:.98;
       will-change: transform;
@@ -74,7 +68,7 @@
       100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
     }
 
-    /* animated grid drift */
+    /* animated grid drift + glow layers */
     .bgfx::after{
       content:"";
       position:absolute; inset:0;
@@ -112,9 +106,63 @@
     }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 72px; position:relative; z-index:1; }
+    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 70px; position:relative; z-index:1; }
 
-    /* ===== Top nav ===== */
+    /* ===== Neon gradient border hover (core) ===== */
+    .neon-border{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--btn-border);
+      background: var(--btn-bg);
+      box-shadow:
+        0 18px 48px rgba(0,0,0,.42),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .neon-border::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      padding:1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .neon-border::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
+        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
+        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .neon-border:hover{
+      transform: translateY(-1px);
+      background: var(--btn-hover-bg);
+      border-color: rgba(255,255,255,.14);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 22px 56px rgba(0,0,0,.60),
+        0 0 38px rgba(41,182,255,.16),
+        0 0 30px rgba(183,124,255,.11);
+    }
+    .neon-border:hover::after{ opacity:1; }
+    .neon-border:hover::before{ opacity:1; }
+
+    /* ===== Top nav (synced) ===== */
     .top{
       position:sticky;
       top:14px;
@@ -123,7 +171,6 @@
       justify-content:center;
       padding:0 0 14px;
     }
-
     .topbar{
       width:var(--w);
       display:flex;
@@ -190,7 +237,6 @@
       position:relative;
       z-index:1;
     }
-
     .nav a{
       font-weight:700;
       font-size:11px;
@@ -220,62 +266,6 @@
       position:relative;
       z-index:1;
     }
-
-    /* ===== Neon gradient border hover (core) ===== */
-    .neon-border{
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--btn-border);
-      background: var(--btn-bg);
-      box-shadow:
-        0 18px 48px rgba(0,0,0,.42),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    .neon-border::after{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      padding:1px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-    .neon-border::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
-        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
-        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-
-    .neon-border:hover{
-      transform: translateY(-1px);
-      background: var(--btn-hover-bg);
-      border-color: rgba(255,255,255,.14);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.05) inset,
-        0 22px 56px rgba(0,0,0,.60),
-        0 0 38px rgba(41,182,255,.16),
-        0 0 30px rgba(183,124,255,.11);
-    }
-    .neon-border:hover::after{ opacity:1; }
-    .neon-border:hover::before{ opacity:1; }
-
     .pill{
       height:38px;
       padding:0 14px;
@@ -303,236 +293,18 @@
       color:#e7efff;
     }
 
-    .auth-pill{
-      padding:0 16px;
-      gap:8px;
-    }
-
-    /* ===== Hero ===== */
-    .hero{
+    /* ===== Page ===== */
+    .page{
       min-height: calc(100svh - 130px);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 40px 0 30px;
-    }
-    .hero-inner{ width:100%; text-align:center; }
-
-    .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      color:rgba(231,239,255,.70);
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-      margin-bottom:16px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      padding: 34px 0 0;
     }
 
-    .title{
-      margin:0;
-      font-size: clamp(40px, 6.2vw, 78px);
-      font-weight:900;
-      letter-spacing:.09em;
-      text-transform:uppercase;
-      color:rgba(231,239,255,.92);
-      text-shadow:
-        0 30px 90px rgba(0,0,0,.78),
-        0 0 28px rgba(41,182,255,.12),
-        0 0 26px rgba(183,124,255,.10);
-    }
-
-    .hero-subbrand{
-      margin: 10px auto 0;
-      font-size: 12px;
-      letter-spacing: .26em;
-      text-transform: uppercase;
-      color: rgba(231,239,255,.62);
-      font-weight: 700;
-      line-height: 1.2;
-      text-shadow:
-        0 20px 60px rgba(0,0,0,.55),
-        0 0 18px rgba(41,182,255,.10);
-
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      padding: 0 10px;
-    }
-    .hero-subbrand::before,
-    .hero-subbrand::after{
-      content:"";
-      height:1px;
-      width:48px;
-      background: linear-gradient(90deg, transparent, rgba(231,239,255,.55), transparent);
-      opacity:.85;
-      transform: translateY(.5px);
-    }
-
-    .subline{
-      margin:14px auto 0;
-      max-width: 74ch;
-      color: rgba(154,168,198,.92);
-      font-size: 15px;
-      line-height:1.75;
-    }
-
-    .cta{
-      margin-top:22px;
-      display:flex;
-      justify-content:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      min-width: 220px;
-      height: 48px;
-      padding:0 18px;
-      border-radius:16px;
-      color:rgba(231,239,255,.92);
-      font-weight:700;
-      letter-spacing:.08em;
-      font-size:12px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .btn.primary{
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.22),
-          rgba(183,124,255,.16),
-          rgba(51,255,204,.12),
-          rgba(41,182,255,.22)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
-      background-blend-mode: screen, normal;
-
-      border:1px solid rgba(41,182,255,.34);
-      color: rgba(231,239,255,.95);
-      box-shadow:
-        0 18px 52px rgba(0,0,0,.44),
-        0 0 40px rgba(41,182,255,.20),
-        0 0 28px rgba(183,124,255,.12),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position:relative;
-      overflow:hidden;
-      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
-    }
-    .btn.primary:hover{
-      transform: translateY(-1px);
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.30),
-          rgba(183,124,255,.22),
-          rgba(51,255,204,.16),
-          rgba(41,182,255,.30)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
-      background-blend-mode: screen, normal;
-
-      border-color: rgba(41,182,255,.50);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.06) inset,
-        0 26px 64px rgba(0,0,0,.62),
-        0 0 52px rgba(41,182,255,.28),
-        0 0 38px rgba(183,124,255,.16);
-    }
-
-    .btn.primary.neon-border::after{
-      opacity:.35;
-      background: linear-gradient(120deg,
-        rgba(41,182,255,.0),
-        rgba(41,182,255,.85),
-        rgba(183,124,255,.85),
-        rgba(51,255,204,.60),
-        rgba(41,182,255,.0)
-      );
-    }
-    .btn.primary.neon-border:hover::after{ opacity:1; }
-
-    .scrollhint{
-      margin:26px auto 0;
-      width:34px; height:34px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.07);
-      background:rgba(255,255,255,.02);
-      display:flex; align-items:center; justify-content:center;
-      color:rgba(231,239,255,.55);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      animation: bob 2.4s ease-in-out infinite;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-    }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(6px); }
-    }
-
-    section{ padding: 84px 0 0; }
-
-    .section-head{
-      text-align:center;
-      margin:0 auto 20px;
-      width:min(900px, 92vw);
-    }
-
-    .section-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      color:rgba(231,239,255,.70);
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-    }
-
-    .section-title{
-      margin:14px 0 0;
-      font-size: clamp(30px, 4.0vw, 52px);
-      font-weight:900;
-      letter-spacing:.02em;
-      color:rgba(231,239,255,.86);
-      text-shadow: 0 0 18px rgba(41,182,255,.08);
-    }
-
-    .section-desc{
-      margin:10px auto 0;
-      max-width: 78ch;
-      color: rgba(154,168,198,.90);
-      font-size: 14px;
-      line-height:1.75;
-    }
-
-    .glass-block{
-      width: min(980px, 92vw);
-      margin: 26px auto 0;
-      padding: 22px 20px;
+    .panel{
+      width:min(720px, 92vw);
+      padding: 26px 20px;
       border-radius: var(--r);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
       border: 1px solid rgba(255,255,255,.06);
@@ -545,8 +317,9 @@
       -webkit-backdrop-filter: blur(18px);
       position:relative;
       overflow:hidden;
+      z-index:1;
     }
-    .glass-block::before{
+    .panel::before{
       content:"";
       position:absolute; inset:-2px;
       background:
@@ -555,63 +328,236 @@
       opacity:.55;
       pointer-events:none;
     }
-
-    .list{
-      margin:0;
-      padding:0 0 0 18px;
-      text-align:left;
-      color: rgba(154,168,198,.92);
-      font-size: 14px;
-      line-height:1.8;
-      position:relative;
-      z-index:1;
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(41,182,255,.14), transparent);
+      transform:rotate(12deg);
+      animation:sweep 7.2s linear infinite;
+      opacity:.26;
+      pointer-events:none;
     }
-    .list li{ margin:10px 0; }
+    @keyframes sweep{
+      0%{ transform:translateX(-35%) rotate(12deg); opacity:0; }
+      12%{ opacity:.26; }
+      70%{ opacity:.14; }
+      100%{ transform:translateX(35%) rotate(12deg); opacity:0; }
+    }
 
-    .section-actions{
+    .panel-top{
       display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:18px;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+      position:relative;
+      z-index:1;
+    }
+    .panel-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:rgba(231,239,255,.82);
+    }
+
+    .code{
+      text-align:center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(42px, 7.6vw, 78px);
+      font-weight:900;
+      letter-spacing:.18em;
+      margin: 18px 0 10px;
+      color:rgba(231,239,255,.92);
+      text-shadow:
+        0 0 24px rgba(41,182,255,.10),
+        0 0 20px rgba(183,124,255,.08);
       position:relative;
       z-index:1;
     }
 
-    .footer{
-      margin-top: 86px;
-      padding-top: 26px;
-      border-top: 1px solid rgba(255,255,255,.06);
+    .hint{
       text-align:center;
-      color: rgba(154,168,198,.78);
+      color: rgba(154,168,198,.82);
+      font-size: 13px;
+      margin-bottom:14px;
+      position:relative;
+      z-index:1;
     }
-    .footer .line1{
+
+    .barwrap{
+      height:12px;
+      background: rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      position:relative;
+      z-index:1;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(41,182,255,.45), rgba(41,182,255,.95), rgba(183,124,255,.55));
+      background-size:200% 100%;
+      animation: stripe 1.3s linear infinite;
+      transition:width .15s linear;
+    }
+    @keyframes stripe{
+      0%{ background-position:0% 0; }
+      100%{ background-position:200% 0; }
+    }
+
+    .field-label{
+      margin-top:20px;
+      font-size:13px;
+      color: rgba(231,239,255,.78);
+      font-weight:700;
+      letter-spacing:.04em;
+      position:relative;
+      z-index:1;
+    }
+    input{
+      width:100%;
+      margin-top:10px;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(231,239,255,.92);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      outline:none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.03),
+        0 0 0 1px rgba(41,182,255,.10);
+      transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+      position:relative;
+      z-index:1;
+    }
+    input::placeholder{ color: rgba(154,168,198,.65); }
+    input:focus{
+      border-color: rgba(41,182,255,.38);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.04),
+        0 0 0 2px rgba(41,182,255,.24),
+        0 0 34px rgba(41,182,255,.12);
+      background: rgba(255,255,255,.045);
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    button{
+      flex:1 1 180px;
+      height:44px;
+      border-radius:16px;
+      color: rgba(231,239,255,.92);
       font-weight:700;
       letter-spacing:.08em;
-      color: rgba(231,239,255,.72);
-      margin-bottom:8px;
       font-size:12px;
-      text-transform: uppercase;
-    }
-    .footer .line2{
-      font-size:12px;
-      line-height:1.6;
-      color: rgba(154,168,198,.72);
+      cursor:pointer;
+      background: transparent;
+      border:1px solid rgba(255,255,255,.10);
     }
 
-    .neon-border:focus-visible, .nav a:focus-visible{
+    /* ===== Primary button synced with Page A ===== */
+    button.primary{
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.22),
+          rgba(183,124,255,.16),
+          rgba(51,255,204,.12),
+          rgba(41,182,255,.22)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
+      background-blend-mode: screen, normal;
+      border:1px solid rgba(41,182,255,.34);
+      box-shadow:
+        0 18px 52px rgba(0,0,0,.44),
+        0 0 40px rgba(41,182,255,.20),
+        0 0 28px rgba(183,124,255,.12),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position:relative;
+      overflow:hidden;
+      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    }
+    button.primary:hover{
+      transform: translateY(-1px);
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.30),
+          rgba(183,124,255,.22),
+          rgba(51,255,204,.16),
+          rgba(41,182,255,.30)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
+      background-blend-mode: screen, normal;
+      border-color: rgba(41,182,255,.50);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 26px 64px rgba(0,0,0,.62),
+        0 0 52px rgba(41,182,255,.28),
+        0 0 38px rgba(183,124,255,.16);
+    }
+
+    /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
+    button.primary.neon-border::after{
+      opacity:.35;
+      background: linear-gradient(120deg,
+        rgba(41,182,255,.0),
+        rgba(41,182,255,.85),
+        rgba(183,124,255,.85),
+        rgba(51,255,204,.60),
+        rgba(41,182,255,.0)
+      );
+    }
+    button.primary.neon-border:hover::after{ opacity:1; }
+
+    .status{
+      margin-top:10px;
+      text-align:center;
+      font-size:12px;
+      min-height:18px;
+      position:relative;
+      z-index:1;
+    }
+    .status.ok{ color:#4cd18c; }
+    .status.err{ color:#ff6b6b; }
+
+    .foot{
+      margin-top:18px;
+      text-align:center;
+      color: rgba(154,168,198,.70);
+      font-size: 12px;
+      line-height:1.6;
+      position:relative;
+      z-index:1;
+    }
+
+    .neon-border:focus-visible, .nav a:focus-visible, input:focus-visible, button:focus-visible{
       outline:none;
       box-shadow:
         0 0 0 2px rgba(41,182,255,.42),
         0 0 0 6px rgba(41,182,255,.16);
     }
 
-    @media (max-width: 900px){
-      .nav{ gap:10px; }
-      .nav a{ padding:10px 8px; }
-    }
-    @media (max-width: 760px){
-      .bgfx::after{ opacity:.12; }
+    /* ===== Mobile (synced) ===== */
+    @media (max-width:760px){
+      .bgfx::after{ opacity:.12; } /* ✅ A 的移动端掉帧保护 */
 
       .top{ top:10px; }
       .topbar{
@@ -636,31 +582,16 @@
       }
       .right{ order:2; margin-left:auto; }
       .pill{ height:36px; }
-      .btn{ width:100%; min-width:0; }
-      section{ padding-top: 68px; }
-      .glass-block{ padding:18px 16px; }
-
-      .hero-subbrand::before,
-      .hero-subbrand::after{
-        width:34px;
-        opacity:.75;
-      }
-    }
-    @media (max-width: 380px){
-      .brand .name{ font-size:10px; }
-      .pill{ padding:0 12px; }
+      .panel{ padding:20px 16px; }
+      .row{ gap:10px; }
+      button{ flex:1 1 100%; }
     }
 
+    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
     @media (prefers-reduced-motion: reduce){
       .bgfx::before, .bgfx::after{ animation:none !important; }
-      .scrollhint{ animation:none !important; }
-      body::before{ opacity:.03; }
-    }
-
-    body, button, input, select, textarea,
-    .brand .name, .nav a, .pill, .kicker, .title,
-    .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+      .panel::after{ animation:none !important; opacity:.10 !important; }
+      body::before{ opacity:.03 !important; }
     }
   </style>
 </head>
@@ -668,20 +599,19 @@
 <body>
   <div class="bgfx" aria-hidden="true"></div>
 
-  <!-- Sticky Top -->
-  <div class="top" id="home">
-    <div class="topbar" role="navigation" aria-label="Top navigation">
-      <div class="brand" aria-label="Brand">
+  <div class="top">
+    <div class="topbar">
+      <div class="brand">
         <img src="/assets/logo.png" alt="Logo">
         <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
       </div>
 
       <nav class="nav" aria-label="Primary">
-        <a href="#home" id="navHome">Home</a>
-        <a href="#services" id="navServices">Services</a>
-        <a href="#warranty" id="navWarranty">Warranty</a>
-        <a href="#faq" id="navFaq">FAQ</a>
-        <a href="#contact" id="navContact">Contact</a>
+        <a href="/#home" id="navHome">Home</a>
+        <a href="/#services" id="navServices">Services</a>
+        <a href="/#warranty" id="navWarranty">Warranty</a>
+        <a href="/#faq" id="navFaq">FAQ</a>
+        <a href="/#contact" id="navContact">Contact</a>
       </nav>
 
       <div class="right">
@@ -693,407 +623,123 @@
           <option value="zh">中文</option>
         </select>
 
-        <a class="pill neon-border auth-pill" href="/auth/" id="authBtn" aria-label="Authenticator">
-          <span id="authBtnText">Authenticator</span>
+        <!-- Synced with Page A right-side action -->
+        <a class="pill neon-border" href="/" id="backBtn" aria-label="Back">
+          <span id="backBtnText">Back</span>
         </a>
       </div>
     </div>
   </div>
 
   <main class="wrap">
-    <!-- Fullscreen Hero -->
-    <div class="hero">
-      <div class="hero-inner">
-        <div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
-        <h1 class="title" id="heroTitle">ROSHINE</h1>
-        <div class="hero-subbrand" id="heroSubbrand">Overwatch Account Store</div>
-
-        <p class="subline" id="heroIntro">
-          Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
-          Five years in operation, built for consistency, clarity, and buyer confidence.
-        </p>
-
-        <div class="cta" id="heroCta">
-          <a class="btn primary neon-border" href="#services" id="ctaExplore">View listings & order</a>
-
-          <a class="btn neon-border" href="/auth/" id="ctaAuth">
-            <span id="ctaAuthText">Authenticator</span>
-          </a>
+    <div class="page">
+      <div class="panel" role="region" aria-label="Authenticator panel">
+        <div class="panel-top">
+          <div class="panel-title">
+            <span id="panelTitleText">Authenticator</span>
+          </div>
         </div>
 
-        <div class="scrollhint" aria-hidden="true">⌄</div>
+        <div class="code" id="code">--------</div>
+        <div class="hint" id="remain"></div>
+        <div class="barwrap"><div class="bar" id="bar"></div></div>
+
+        <div class="field-label" id="secretLabel">Please enter your Private Key</div>
+        <input id="secret" class="neon-border" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+
+        <div class="row">
+          <button class="primary neon-border" id="copy">Copy Code</button>
+          <button class="neon-border" id="clear">Clear Key</button>
+        </div>
+
+        <div class="status" id="status"></div>
+        <div class="foot" id="footer"></div>
       </div>
     </div>
-
-    <!-- Services -->
-    <section id="services">
-      <div class="section-head">
-        <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
-        <h2 class="section-title" id="servicesTitle">Listings & Ordering</h2>
-        <p class="section-desc" id="servicesDesc">
-          Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
-        </p>
-      </div>
-
-      <div class="glass-block">
-        <ol class="list" id="servicesList">
-          <li>📄 Open the listings and filter by price, rank, or skins.</li>
-          <li>🧾 Copy the account ID (or screenshot the row you want).</li>
-          <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
-          <li>✅ After payment, receive login info and the security handover package.</li>
-        </ol>
-
-        <div class="section-actions">
-          <a class="btn primary neon-border" target="_blank" rel="noopener"
-             href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
-             id="btnListings">
-            View listings (Google Sheet)
-          </a>
-          <a class="btn neon-border" target="_blank" rel="noopener"
-             href="https://discord.gg/35GGuJwjVu"
-             id="btnDiscord">
-            Contact on Discord
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Warranty -->
-    <section id="warranty">
-      <div class="section-head">
-        <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
-        <h2 class="section-title" id="warrantyTitle">Warranty & Security</h2>
-        <p class="section-desc" id="warrantyDesc">
-          Designed to reduce long-term risk and keep your purchase protected.
-        </p>
-      </div>
-
-      <div class="glass-block">
-        <ul class="list" id="warrantyList">
-          <li>🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.</li>
-          <li>📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net & Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="section-head">
-        <div class="section-kicker" id="faqKicker">❓ FAQ</div>
-        <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
-        <p class="section-desc" id="faqDesc">
-          Quick answers to the questions that most buyers ask before ordering.
-        </p>
-      </div>
-
-      <div class="glass-block">
-        <ol class="list" id="faqList">
-          <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
-          <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
-          <li id="faq3">
-            Authenticator? — A private tool for Battle.net Authenticator. Use the
-            <a style="font-weight:800; color:rgba(231,239,255,.92); border-bottom:1px solid rgba(41,182,255,.28); padding-bottom:1px;"
-               href="/auth/" id="faqAuthLink">Authenticator</a>,
-            paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify.
-          </li>
-        </ol>
-
-        <div class="section-actions">
-          <a class="btn neon-border" target="_blank" rel="noopener"
-             href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
-             id="btnStock">
-            View stock
-          </a>
-
-          <a class="btn primary neon-border" target="_blank" rel="noopener"
-             href="https://discord.gg/35GGuJwjVu"
-             id="btnOrder">
-            Order via Discord
-          </a>
-
-          <a class="btn neon-border" href="/auth/" id="btnAuthRight">
-            <span id="btnAuthRightText">Authenticator</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-      <div class="section-head">
-        <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
-        <h2 class="section-title" id="contactTitle">Reach us</h2>
-        <p class="section-desc" id="contactDesc">
-          For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
-        </p>
-      </div>
-
-      <div class="section-actions" style="margin-top:16px;">
-        <a class="btn primary neon-border" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="btnContact">
-          Discord
-        </a>
-        <a class="btn neon-border" href="mailto:roshine_store@roshine.love" id="btnEmail">
-          Email
-        </a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" aria-label="Footer">
-      <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
-      <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
-    </footer>
   </main>
 
   <script>
+    const DIGITS = 8;
+    const PERIOD = 30;
     const LANG_KEY = "locale-choice";
-    const LINKS = {
-      sheet: "https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105",
-      discord: "https://discord.gg/35GGuJwjVu",
-      email: "mailto:roshine_store@roshine.love",
-      auth: "/auth/"
-    };
 
     const i18n = {
       en: {
-        nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
-        auth:"Authenticator",
-        heroKicker:"⚡ Trusted since 2021",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"Overwatch Account Store",
-        heroIntro:"Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support. Five years in operation, built for consistency, clarity, and buyer confidence.",
-        ctaExplore:"View listings & order",
-        servicesKicker:"✨ SERVICES",
-        servicesTitle:"Listings & Ordering",
-        servicesDesc:"Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.",
-        servicesList:[
-          "📄 Open the listings and filter by price, rank, or skins.",
-          "🧾 Copy the account ID (or screenshot the row you want).",
-          "💬 Join Discord and send the ID/screenshot to confirm availability and total.",
-          "✅ After payment, receive login info and the security handover package."
-        ],
-        btnListings:"View listings (Google Sheet)",
-        btnDiscord:"Contact on Discord",
-
-        warrantyKicker:"🛡️ WARRANTY",
-        warrantyTitle:"Warranty & Security",
-        warrantyDesc:"Designed to reduce long-term risk and keep your purchase protected.",
-        warrantyList:[
-          "🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.",
-          "📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net & Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more."
-        ],
-
-        faqKicker:"❓ FAQ",
-        faqTitle:"Frequently Asked Questions",
-        faqDesc:"Quick answers to the questions that most buyers ask before ordering.",
-        faq1:"How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.",
-        faq2:"Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.",
-        faq3:"Authenticator? — A private tool for Battle.net Authenticator. Use the Authenticator, paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify.",
-        btnStock:"View stock",
-        btnOrder:"Order via Discord",
-
-        contactKicker:"💬 CONTACT",
-        contactTitle:"Reach us",
-        contactDesc:"For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.",
-        btnContact:"Discord",
-        btnEmail:"Email",
-
-        footer1:"© 2021–2026 Roshine Account Store.",
-        footer2:"All rights reserved — your reliable account supplier."
+        nav:{home:"Home",services:"Services",warranty:"Warranty",faq:"FAQ",contact:"Contact"},
+        back:"Back",
+        panelTitle:"Authenticator",
+        secretLabel:"Please enter your Private Key",
+        placeholder:"Private Key",
+        copy:"Copy Code",
+        clear:"Clear Key",
+        copied:"Copied",
+        copyBlocked:"Copy blocked",
+        enterKeyError:"Enter your Private Key",
+        invalidKey:"Invalid Private Key",
+        footer:"© 2021–2026 Roshine Account Store. All rights reserved — your reliable account supplier."
       },
-
       fr: {
-        nav: { home:"Accueil", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Contact" },
-        auth:"Authenticator",
-        heroKicker:"⚡ Fiable depuis 2021",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"Boutique de comptes Overwatch",
-        heroIntro:"Depuis 2021, Roshine Account Store propose des comptes Overwatch sélectionnés, avec un processus d’achat simple et un support durable. Cinq ans d’activité, axés sur la clarté, la stabilité et la confiance.",
-        ctaExplore:"Voir la liste & commander",
-        servicesKicker:"✨ SERVICES",
-        servicesTitle:"Liste & Commande",
-        servicesDesc:"Consultez l’inventaire en temps réel sur Google Sheet, puis commandez via Discord en envoyant l’ID ou une capture.",
-        servicesList:[
-          "📄 Ouvrez la liste et filtrez (prix, rang, skins).",
-          "🧾 Copiez l’ID du compte (ou capturez la ligne).",
-          "💬 Rejoignez Discord et envoyez l’ID/la capture pour confirmer.",
-          "✅ Après paiement, recevez les accès et le pack de sécurité."
-        ],
-        btnListings:"Voir la liste (Google Sheet)",
-        btnDiscord:"Contacter sur Discord",
-
-        warrantyKicker:"🛡️ GARANTIE",
-        warrantyTitle:"Garantie & Sécurité",
-        warrantyDesc:"Pensé pour limiter le risque et protéger votre achat sur le long terme.",
-        warrantyList:[
-          "🛡️ Garantie à vie pour tout problème de sécurité (piraté / volé / récupéré) : remplacement complet ou remboursement intégral.",
-          "📦 Après paiement : remise d’un pack de sécurité (si applicable) : accès e-mail, Battle.net & Steam, Authenticator, ID du compte, téléphone, reçus, détails de création, adresse, etc."
-        ],
-
-        faqKicker:"❓ FAQ",
-        faqTitle:"Questions fréquentes",
-        faqDesc:"Réponses rapides avant de passer commande.",
-        faq1:"Mise à jour de la liste ? — Google Sheet fait foi, et les comptes vendus sont marqués rapidement.",
-        faq2:"Paiement ? — Carte, PayPal, crypto et certaines cartes cadeaux. Disponibilité/frais à confirmer sur Discord.",
-        faq3:"Authenticator ? — Outil privé pour Battle.net Authenticator. Utilisez la page Authenticator, collez votre Private Key, puis copiez le code dans l’app Battle.net pour valider.",
-        btnStock:"Voir le stock",
-        btnOrder:"Commander via Discord",
-
-        contactKicker:"💬 CONTACT",
-        contactTitle:"Nous contacter",
-        contactDesc:"Le plus rapide : Discord (envoyez l’ID ou une capture). Sinon, vous pouvez aussi nous écrire par e-mail.",
-        btnContact:"Discord",
-        btnEmail:"Email",
-
-        footer1:"© 2021–2026 Roshine Account Store.",
-        footer2:"Tous droits réservés — votre fournisseur fiable."
+        nav:{home:"Accueil",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Contact"},
+        back:"Retour",
+        panelTitle:"Authenticator",
+        secretLabel:"Veuillez entrer votre clé privée",
+        placeholder:"Clé privée",
+        copy:"Copier le code",
+        clear:"Effacer",
+        copied:"Copié",
+        copyBlocked:"Copie bloquée",
+        enterKeyError:"Entrez votre clé privée",
+        invalidKey:"Clé privée invalide",
+        footer:"© 2021–2026 Roshine Account Store. Tous droits réservés — votre fournisseur fiable."
       },
-
       de: {
-        nav: { home:"Home", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Kontakt" },
-        auth:"Authenticator",
-        heroKicker:"⚡ Vertrauenswürdig seit 2021",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"Overwatch Account Store",
-        heroIntro:"Seit 2021 liefert Roshine Account Store kuratierte Overwatch-Accounts mit einem klaren Kaufprozess und langfristigem Support. Fünf Jahre Betrieb – für Beständigkeit, Transparenz und Vertrauen.",
-        ctaExplore:"Listings ansehen & bestellen",
-        servicesKicker:"✨ SERVICES",
-        servicesTitle:"Listings & Bestellung",
-        servicesDesc:"Inventar live im Google Sheet ansehen und dann per Discord bestellen (ID oder Screenshot senden).",
-        servicesList:[
-          "📄 Listings öffnen und nach Preis, Rang oder Skins filtern.",
-          "🧾 Account-ID kopieren (oder Zeile screenshotten).",
-          "💬 Discord beitreten und ID/Screenshot zur Bestätigung senden.",
-          "✅ Nach Zahlung: Login-Daten und Sicherheits-Übergabepaket erhalten."
-        ],
-        btnListings:"Listings öffnen (Google Sheet)",
-        btnDiscord:"Auf Discord kontaktieren",
-
-        warrantyKicker:"🛡️ GARANTIE",
-        warrantyTitle:"Garantie & Sicherheit",
-        warrantyDesc:"Konzipiert, um Risiken zu reduzieren und deinen Kauf zu schützen.",
-        warrantyList:[
-          "🛡️ Lebenslange Garantie bei Sicherheitsproblemen (gehackt / gestohlen / reclaimed): voller Ersatz oder volle Erstattung.",
-          "📦 Nach Zahlung erhältst du ein Sicherheits-Paket (falls zutreffend): E-Mail-Zugriff, Battle.net & Steam, Authenticator, Account-ID, Telefonnummer, Belege, Erstellungsdetails, Adresse u.v.m."
-        ],
-
-        faqKicker:"❓ FAQ",
-        faqTitle:"Häufige Fragen",
-        faqDesc:"Kurzantworten für den schnellen Kaufentscheid.",
-        faq1:"Wie oft wird aktualisiert? — Google Sheet ist maßgeblich, verkaufte Accounts werden schnell markiert.",
-        faq2:"Zahlung? — Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Verfügbarkeit/Gebühren auf Discord bestätigen.",
-        faq3:"Authenticator? — Privates Tool für Battle.net Authenticator. Öffne die Authenticator-Seite, füge den Private Key ein und kopiere den Code in die Battle.net App zur Verifizierung.",
-        btnStock:"Bestand ansehen",
-        btnOrder:"Über Discord bestellen",
-
-        contactKicker:"💬 KONTAKT",
-        contactTitle:"Kontakt",
-        contactDesc:"Am schnellsten über Discord (ID oder Screenshot senden). Alternativ per E-Mail erreichbar.",
-        btnContact:"Discord",
-        btnEmail:"Email",
-
-        footer1:"© 2021–2026 Roshine Account Store.",
-        footer2:"Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
+        nav:{home:"Home",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Kontakt"},
+        back:"Zurück",
+        panelTitle:"Authenticator",
+        secretLabel:"Bitte Private Key eingeben",
+        placeholder:"Private Key",
+        copy:"Code kopieren",
+        clear:"Löschen",
+        copied:"Kopiert",
+        copyBlocked:"Kopieren blockiert",
+        enterKeyError:"Bitte Private Key eingeben",
+        invalidKey:"Ungültiger Private Key",
+        footer:"© 2021–2026 Roshine Account Store. Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
       },
-
       ar: {
-        nav: { home:"الرئيسية", services:"الخدمات", warranty:"الضمان", faq:"الأسئلة", contact:"تواصل" },
-        auth:"Authenticator",
-        heroKicker:"⚡ موثوق منذ 2021",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"متجر حسابات Overwatch",
-        heroIntro:"منذ 2021 يقدّم Roshine Account Store حسابات Overwatch مختارة بعناية مع خطوات شراء واضحة ودعم طويل المدى. خمس سنوات تشغيل مبنية على الثبات والوضوح والثقة.",
-        ctaExplore:"عرض القائمة والطلب",
-        servicesKicker:"✨ الخدمات",
-        servicesTitle:"القائمة والطلب",
-        servicesDesc:"تصفّح المخزون المباشر في Google Sheet ثم اطلب عبر Discord بإرسال ID أو لقطة شاشة.",
-        servicesList:[
-          "📄 افتح القائمة وفلتر حسب السعر/الرتبة/الهيئات.",
-          "🧾 انسخ ID الحساب (أو التقط لقطة للصف).",
-          "💬 انضم إلى Discord وأرسل ID/اللقطة للتأكيد.",
-          "✅ بعد الدفع: استلام بيانات الدخول وحزمة التسليم الأمني."
-        ],
-        btnListings:"عرض القائمة (Google Sheet)",
-        btnDiscord:"تواصل عبر Discord",
-
-        warrantyKicker:"🛡️ الضمان",
-        warrantyTitle:"الضمان والأمان",
-        warrantyDesc:"مصمم لتقليل المخاطر وحماية عملية الشراء على المدى الطويل.",
-        warrantyList:[
-          "🛡️ ضمان مدى الحياة لأي مشكلة أمنية (اختراق / سرقة / reclaimed): استبدال كامل أو تعويض كامل.",
-          "📦 بعد الدفع: تستلم حزمة تسليم أمني (حسب الحساب): وصول البريد، Battle.net وSteam، Authenticator، ID الحساب، رقم الهاتف، الطلبات/الإيصالات، تفاصيل الإنشاء، العنوان والمزيد."
-        ],
-
-        faqKicker:"❓ الأسئلة",
-        faqTitle:"الأسئلة الشائعة",
-        faqDesc:"إجابات سريعة قبل الطلب.",
-        faq1:"كم يتم التحديث؟ — Google Sheet هو المرجع ويتم تمييز الحسابات المباعة بسرعة.",
-        faq2:"طرق الدفع؟ — بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التأكيد على Discord.",
-        faq3:"Authenticator؟ — أداة خاصة لـ Battle.net Authenticator. استخدم صفحة Authenticator، ألصق Private Key ثم انسخ الرمز إلى تطبيق Battle.net للتحقق.",
-        btnStock:"عرض المخزون",
-        btnOrder:"اطلب عبر Discord",
-
-        contactKicker:"💬 تواصل",
-        contactTitle:"تواصل معنا",
-        contactDesc:"للرد الأسرع: Discord (أرسل ID أو لقطة). ويمكنك أيضًا مراسلتنا عبر البريد الإلكتروني.",
-        btnContact:"Discord",
-        btnEmail:"Email",
-
-        footer1:"© 2021–2026 Roshine Account Store.",
-        footer2:"جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
+        nav:{home:"الرئيسية",services:"الخدمات",warranty:"الضمان",faq:"الأسئلة",contact:"تواصل"},
+        back:"رجوع",
+        panelTitle:"Authenticator",
+        secretLabel:"يرجى إدخال Private Key",
+        placeholder:"Private Key",
+        copy:"نسخ الرمز",
+        clear:"مسح",
+        copied:"تم النسخ",
+        copyBlocked:"تم منع النسخ",
+        enterKeyError:"أدخل Private Key",
+        invalidKey:"Private Key غير صالح",
+        footer:"© 2021–2026 Roshine Account Store. جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
       },
-
       zh: {
-        nav: { home:"主页", services:"服务", warranty:"质保", faq:"FAQ", contact:"联系" },
-        auth:"Authenticator",
-        heroKicker:"⚡ 自 2021 年稳定运营",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"守望先锋账号商店",
-        heroIntro:"Roshine Account Store 自 2021 年起持续提供精选 Overwatch 账号，流程清晰、交付稳定、支持长期售后。已稳定运行 5 年，专注于可靠性与买家信心。",
-        ctaExplore:"查看库存并下单",
-        servicesKicker:"✨ 服务",
-        servicesTitle:"库存与下单",
-        servicesDesc:"Google Sheet 实时展示库存；通过 Discord 发送账号 ID 或截图即可确认并购买。",
-        servicesList:[
-          "📄 打开列表，按价格/段位/皮肤筛选。",
-          "🧾 复制账号 ID（或截图对应行）。",
-          "💬 加入 Discord 发送 ID/截图，确认库存与总价。",
-          "✅ 付款后交付登录信息与安全资料包。"
-        ],
-        btnListings:"打开库存（Google Sheet）",
-        btnDiscord:"Discord 联系",
-
-        warrantyKicker:"🛡️ 质保",
-        warrantyTitle:"质保与安全",
-        warrantyDesc:"降低长期风险，让交易更可控。",
-        warrantyList:[
-          "🛡️ 终身安全质保：被盗 / 被黑 / 找回（reclaimed）→ 全额补偿或同等替换。",
-          "📦 付款后交付安全资料包（按账号实际情况）：邮箱权限、Battle.net & Steam、安全令、账号 ID、手机号、订单/收据、创建信息、地址等。"
-        ],
-
-        faqKicker:"❓ FAQ",
-        faqTitle:"常见问题",
-        faqDesc:"下单前最常问的几个点，直接看这里。",
-        faq1:"列表多久更新？— 以 Google Sheet 为准，售出会尽快标记。",
-        faq2:"支持什么支付方式？— 信用卡、PayPal、虚拟货币及部分礼品卡；可用性与手续费请 Discord 确认。",
-        faq3:"Authenticator 是什么？— 这是 Battle.net Authenticator 的私人工具。打开 Authenticator 页面，粘贴你收到的账号信息中的 Private Key，然后把验证码复制到 Battle.net App 完成验证。",
-        btnStock:"查看库存",
-        btnOrder:"Discord 下单",
-
-        contactKicker:"💬 联系",
-        contactTitle:"联系我们",
-        contactDesc:"最快方式：Discord（发送账号 ID 或截图）。也可随时通过邮箱联系我们。",
-        btnContact:"Discord",
-        btnEmail:"Email",
-
-        footer1:"© 2021–2026 Roshine Account Store.",
-        footer2:"All rights reserved — your reliable account supplier."
+        nav:{home:"主页",services:"服务",warranty:"质保",faq:"FAQ",contact:"联系"},
+        back:"返回",
+        panelTitle:"Authenticator",
+        secretLabel:"请输入你的安全令 Private Key",
+        placeholder:"Private Key",
+        copy:"复制验证码",
+        clear:"清空",
+        copied:"已复制",
+        copyBlocked:"浏览器禁止复制",
+        enterKeyError:"请输入 Private Key",
+        invalidKey:"无效的 Private Key",
+        footer:"© 2021–2026 Roshine Account Store. All rights reserved — your reliable account supplier."
       }
     };
 
     function detectLang(){
       const saved = localStorage.getItem(LANG_KEY);
       if (saved && i18n[saved]) return saved;
+
       const nav = (navigator.language || "en").toLowerCase();
       if (nav.startsWith("zh")) return "zh";
       if (nav.startsWith("fr")) return "fr";
@@ -1102,19 +748,14 @@
       return "en";
     }
 
-    function setList(elId, items){
-      const el = document.getElementById(elId);
-      el.innerHTML = "";
-      items.forEach(txt=>{
-        const li = document.createElement("li");
-        li.textContent = txt;
-        el.appendChild(li);
-      });
+    let currentLang = detectLang();
+    function t(key){
+      return (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
     }
 
     function applyLang(lang){
       if (!i18n[lang]) lang = "en";
-      const t = i18n[lang];
+      currentLang = lang;
 
       document.documentElement.lang = lang;
       document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
@@ -1122,90 +763,153 @@
       const sel = document.getElementById("langSelect");
       if (sel) sel.value = lang;
 
-      document.getElementById("navHome").textContent = t.nav.home;
-      document.getElementById("navServices").textContent = t.nav.services;
-      document.getElementById("navWarranty").textContent = t.nav.warranty;
-      document.getElementById("navFaq").textContent = t.nav.faq;
-      document.getElementById("navContact").textContent = t.nav.contact;
+      document.getElementById("navHome").textContent = i18n[lang].nav.home;
+      document.getElementById("navServices").textContent = i18n[lang].nav.services;
+      document.getElementById("navWarranty").textContent = i18n[lang].nav.warranty;
+      document.getElementById("navFaq").textContent = i18n[lang].nav.faq;
+      document.getElementById("navContact").textContent = i18n[lang].nav.contact;
 
-      document.getElementById("authBtnText").textContent = t.auth;
+      document.getElementById("backBtnText").textContent = i18n[lang].back;
 
-      document.getElementById("heroKicker").textContent = t.heroKicker;
-      document.getElementById("heroTitle").textContent = t.heroTitle;
-      document.getElementById("heroSubbrand").textContent = t.heroSubbrand || "Overwatch Account Store";
-      document.getElementById("heroIntro").textContent = t.heroIntro;
-      document.getElementById("ctaExplore").textContent = t.ctaExplore;
-      document.getElementById("ctaAuthText").textContent = t.auth;
-
-      document.getElementById("servicesKicker").textContent = t.servicesKicker;
-      document.getElementById("servicesTitle").textContent = t.servicesTitle;
-      document.getElementById("servicesDesc").textContent = t.servicesDesc;
-      setList("servicesList", t.servicesList);
-      document.getElementById("btnListings").textContent = t.btnListings;
-      document.getElementById("btnDiscord").textContent = t.btnDiscord;
-
-      document.getElementById("warrantyKicker").textContent = t.warrantyKicker;
-      document.getElementById("warrantyTitle").textContent = t.warrantyTitle;
-      document.getElementById("warrantyDesc").textContent = t.warrantyDesc;
-      setList("warrantyList", t.warrantyList);
-
-      document.getElementById("faqKicker").textContent = t.faqKicker;
-      document.getElementById("faqTitle").textContent = t.faqTitle;
-      document.getElementById("faqDesc").textContent = t.faqDesc;
-      document.getElementById("faq1").textContent = t.faq1;
-      document.getElementById("faq2").textContent = t.faq2;
-
-      const faq3 = document.getElementById("faq3");
-      faq3.textContent = "";
-      if (lang === "en"){
-        faq3.appendChild(document.createTextNode("Authenticator? — A private tool for Battle.net Authenticator. Use the "));
-        const a = document.createElement("a");
-        a.href = LINKS.auth;
-        a.id = "faqAuthLink";
-        a.style.fontWeight = "800";
-        a.style.color = "rgba(231,239,255,.92)";
-        a.style.borderBottom = "1px solid rgba(41,182,255,.28)";
-        a.style.paddingBottom = "1px";
-        a.textContent = "Authenticator";
-        faq3.appendChild(a);
-        faq3.appendChild(document.createTextNode(", paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify."));
-      } else {
-        faq3.textContent = t.faq3;
-      }
-
-      document.getElementById("btnStock").textContent = t.btnStock;
-      document.getElementById("btnOrder").textContent = t.btnOrder;
-      document.getElementById("btnAuthRightText").textContent = t.auth;
-
-      document.getElementById("contactKicker").textContent = t.contactKicker;
-      document.getElementById("contactTitle").textContent = t.contactTitle;
-      document.getElementById("contactDesc").textContent = t.contactDesc;
-      document.getElementById("btnContact").textContent = t.btnContact;
-      document.getElementById("btnEmail").textContent = t.btnEmail;
-
-      document.getElementById("footerLine1").textContent = t.footer1;
-      document.getElementById("footerLine2").textContent = t.footer2;
-
-      document.getElementById("btnListings").href = LINKS.sheet;
-      document.getElementById("btnStock").href = LINKS.sheet;
-
-      document.getElementById("btnDiscord").href = LINKS.discord;
-      document.getElementById("btnOrder").href = LINKS.discord;
-      document.getElementById("btnContact").href = LINKS.discord;
-
-      document.getElementById("btnEmail").href = LINKS.email;
-
-      document.getElementById("btnAuthRight").href = LINKS.auth;
-      document.getElementById("ctaAuth").href = LINKS.auth;
-      document.getElementById("authBtn").href = LINKS.auth;
+      document.getElementById("panelTitleText").textContent = i18n[lang].panelTitle;
+      document.getElementById("secretLabel").textContent = i18n[lang].secretLabel;
+      document.getElementById("secret").placeholder = i18n[lang].placeholder;
+      document.getElementById("copy").textContent = i18n[lang].copy;
+      document.getElementById("clear").textContent = i18n[lang].clear;
+      document.getElementById("footer").textContent = i18n[lang].footer;
     }
 
-    applyLang(detectLang());
-    document.getElementById("langSelect").addEventListener("change", (e)=>{
+    applyLang(currentLang);
+    document.getElementById("langSelect").addEventListener("change", e=>{
       const lang = e.target.value;
       applyLang(lang);
       localStorage.setItem(LANG_KEY, lang);
+      gen();
     });
+
+    function getKeyFromURL(){
+      const u = new URL(location.href);
+      const paramKey = u.searchParams.get("key");
+      if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+
+      const parts = u.pathname.split("/").filter(Boolean);
+      if (parts.length){
+        const last = parts[parts.length - 1];
+        if (/^[0-9a-fA-F]+$/.test(last)) return last;
+      }
+      return null;
+    }
+
+    const $ = id => document.getElementById(id);
+
+    function hexToBytes(s){
+      s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
+      if (!s) throw new Error("ERR_EMPTY_KEY");
+      if (s.length % 2) throw new Error("ERR_INVALID_KEY");
+      return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
+    }
+    function counterBytes(c){
+      const b = new Uint8Array(8); let x = BigInt(c);
+      for (let i = 7; i >= 0; i--){
+        b[i] = Number(x & 0xffn);
+        x >>= 8n;
+      }
+      return b;
+    }
+    async function hmacSha1(key,msg){
+      const k = await crypto.subtle.importKey("raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]);
+      return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
+    }
+    function truncate(mac){
+      const o = mac[mac.length - 1] & 0x0f;
+      return (((mac[o]   & 0x7f) << 24) |
+              ((mac[o+1] & 0xff) << 16) |
+              ((mac[o+2] & 0xff) << 8)  |
+              ( mac[o+3] & 0xff)) >>> 0;
+    }
+    function fmt(n){
+      const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
+      return raw.slice(0,4) + " " + raw.slice(4);
+    }
+
+    async function gen(){
+      const statusEl = $("status");
+      try{
+        const key = hexToBytes($("secret").value);
+        const ctr = Math.floor(Date.now()/1000 / PERIOD);
+        const mac = await hmacSha1(key, counterBytes(ctr));
+        $("code").textContent = fmt(truncate(mac));
+        if (statusEl){
+          statusEl.textContent = "";
+          statusEl.classList.remove("err","ok");
+        }
+      }catch(e){
+        $("code").textContent = "--------";
+        if (!statusEl) return;
+        let msg;
+        if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
+        else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
+        else msg = e.message;
+        statusEl.textContent = msg;
+        statusEl.classList.add("err");
+        statusEl.classList.remove("ok");
+      }
+    }
+
+    function tick(){
+      const s   = Math.floor(Date.now()/1000);
+      const rem = PERIOD - (s % PERIOD);
+      $("remain").textContent = `${rem}s`;
+      $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
+    }
+
+    let last = -1;
+    setInterval(() => {
+      tick();
+      const s = Math.floor(Date.now()/1000);
+      if (s !== last){
+        last = s;
+        gen();
+      }
+    }, 150);
+
+    $("secret").addEventListener("input", gen);
+
+    $("copy").addEventListener("click", async () => {
+      const v = $("code").textContent;
+      const statusEl = $("status");
+      if (v.includes("-")) return;
+      try{
+        await navigator.clipboard.writeText(v.replace(/\s/g,""));
+        if (statusEl){
+          statusEl.textContent = t("copied");
+          statusEl.classList.remove("err");
+          statusEl.classList.add("ok");
+        }
+      }catch{
+        if (statusEl){
+          statusEl.textContent = t("copyBlocked");
+          statusEl.classList.remove("ok");
+          statusEl.classList.add("err");
+        }
+      }
+    });
+
+    $("clear").addEventListener("click", () => {
+      $("secret").value = "";
+      $("code").textContent = "--------";
+      const statusEl = $("status");
+      if (statusEl){
+        statusEl.textContent = "";
+        statusEl.classList.remove("err","ok");
+      }
+    });
+
+    const urlKey = getKeyFromURL();
+    if (urlKey) $("secret").value = urlKey;
+
+    tick();
+    gen();
   </script>
 </body>
 </html>
