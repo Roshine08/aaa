@@ -127,8 +127,6 @@ html[data-theme="light"] body{
   display:flex;
   align-items:center;
   gap:12px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
 }
 
 .logo-img{
@@ -149,7 +147,7 @@ html[data-theme="light"] body{
   white-space:nowrap;
 }
 
-/* 顶部控制统一风格：EN / 🌙 / 菜单 / 链接 */
+/* 顶部控制统一风格：EN / 🌙 / 菜单 */
 .top-control{
   min-width:52px;
   height:32px;
@@ -213,12 +211,13 @@ html[data-theme="light"] .lang-select option{
   font-size:18px;
 }
 
-/* 链接按钮：继承 top-control 外观 */
-.shop-link{
-  text-decoration:none;
-}
-.shop-link:active{
-  transform:translateY(0);
+/* （预留）菜单按钮：同样风格 */
+.menu-toggle{
+  border:none;
+  background:transparent;
+  padding:0;
+  min-width:auto;
+  font-size:16px;
 }
 
 /* 验证码更大一些 */
@@ -239,13 +238,6 @@ html[data-theme="light"] .lang-select option{
 }
 #remain{
   color:rgba(110,125,150,.9);
-}
-
-/* 购买引导文案 */
-.buyhint{
-  margin-top:14px;
-  margin-bottom:0;
-  line-height:1.45;
 }
 
 /* 进度条 */
@@ -392,26 +384,7 @@ button:not(.primary):hover{
         <img src="logo.png" class="logo-img" alt="Battle.net Logo">
         <div class="title" id="titleText">Battle.net Authenticator</div>
       </div>
-
       <div class="top-right">
-        <!-- 商店账号列表（Google Sheet） -->
-        <a id="shopLink"
-           class="top-control shop-link"
-           href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
-           target="_blank"
-           rel="noopener noreferrer">
-          Account List
-        </a>
-
-        <!-- Discord 联系入口 -->
-        <a id="discordLink"
-           class="top-control shop-link"
-           href="https://discord.gg/35GGuJwjVu"
-           target="_blank"
-           rel="noopener noreferrer">
-          Discord
-        </a>
-
         <select id="langSelect" class="lang-select top-control">
           <option value="en">EN</option>
           <option value="zh">中文</option>
@@ -442,9 +415,6 @@ button:not(.primary):hover{
       <button id="clear">Clear Key</button>
     </div>
 
-    <!-- 购买引导 + 本地计算声明（多语言） -->
-    <div class="hint buyhint" id="buyHint"></div>
-
     <div class="status" id="status"></div>
   </div>
 </div>
@@ -471,14 +441,7 @@ const i18n = {
     copyBlocked: "Copy blocked",
     enterKeyError: "Enter Your Private Key",
     invalidKey: "Invalid Private Key",
-
-    shop: "Account List",
-    shopHint: "Open the store account list (Google Sheet)",
-    discord: "Discord",
-    discordHint: "Contact via Discord",
-    buyHint: "Buying? Open “Account List” to choose, then contact via Discord. Note: the key is processed locally in your browser and is not uploaded.",
-
-    footer: "© {year} Roshine_OW. All rights reserved."
+    footer: "© {year} Roshine — Overwatch Store. All rights reserved."
   },
   zh: {
     title: "战网安全令",
@@ -490,14 +453,7 @@ const i18n = {
     copyBlocked: "浏览器禁止复制",
     enterKeyError: "请输入安全令秘钥",
     invalidKey: "无效的安全令秘钥",
-
-    shop: "账号列表",
-    shopHint: "打开 Google 表格号单进行挑选",
-    discord: "Discord 联系",
-    discordHint: "通过 Discord 联系购买",
-    buyHint: "想购买？打开「账号列表」挑选后到 Discord 联系。提示：密钥仅在本地浏览器计算，不会上传。",
-
-    footer: "© {year} Roshine_OW。保留所有权利。"
+    footer: "© {year} Roshine — Overwatch 商店。保留所有权利。"
   },
   fr: {
     title: "Jeton de sécurité Battle.net",
@@ -509,14 +465,7 @@ const i18n = {
     copyBlocked: "Copie bloquée par le navigateur",
     enterKeyError: "Veuillez entrer votre clé secrète de sécurité",
     invalidKey: "Clé secrète de sécurité invalide",
-
-    shop: "Liste des comptes",
-    shopHint: "Ouvrir la liste des comptes (Google Sheet)",
-    discord: "Discord",
-    discordHint: "Contacter via Discord",
-    buyHint: "Achat ? Ouvrez « Liste des comptes » pour choisir, puis contactez via Discord. Remarque : la clé est traitée localement dans votre navigateur et n’est pas envoyée.",
-
-    footer: "© {year} Roshine_OW. Tous droits réservés."
+    footer: "© {year} Roshine — Boutique Overwatch. Tous droits réservés."
   },
   de: {
     title: "Battle.net-Sicherheitstoken",
@@ -528,14 +477,7 @@ const i18n = {
     copyBlocked: "Kopieren vom Browser blockiert",
     enterKeyError: "Bitte gib deinen Sicherheitsschlüssel ein",
     invalidKey: "Ungültiger Sicherheitsschlüssel",
-
-    shop: "Kontoliste",
-    shopHint: "Kontoliste öffnen (Google Sheet)",
-    discord: "Discord",
-    discordHint: "Kontakt über Discord",
-    buyHint: "Kaufen? Öffne „Kontoliste“ zum Auswählen und kontaktiere dann über Discord. Hinweis: Der Schlüssel wird lokal im Browser verarbeitet und nicht hochgeladen.",
-
-    footer: "© {year} Roshine_OW. Alle Rechte vorbehalten."
+    footer: "© {year} Roshine — Overwatch-Shop. Alle Rechte vorbehalten."
   },
   ru: {
     title: "Токен безопасности Battle.net",
@@ -547,14 +489,7 @@ const i18n = {
     copyBlocked: "Браузер запретил копирование",
     enterKeyError: "Введите ключ токена безопасности",
     invalidKey: "Недействительный ключ токена безопасности",
-
-    shop: "Список аккаунтов",
-    shopHint: "Открыть список аккаунтов (Google Sheet)",
-    discord: "Discord",
-    discordHint: "Связаться через Discord",
-    buyHint: "Покупка? Откройте «Список аккаунтов», выберите, затем свяжитесь через Discord. Примечание: ключ обрабатывается локально в браузере и не загружается.",
-
-    footer: "© {year} Roshine_OW. Все права защищены."
+    footer: "© {year} Roshine — магазин Overwatch. Все права защищены."
   },
   it: {
     title: "Token di sicurezza Battle.net",
@@ -566,14 +501,7 @@ const i18n = {
     copyBlocked: "Copia bloccata dal browser",
     enterKeyError: "Inserisci la chiave del tuo token di sicurezza",
     invalidKey: "Chiave del token di sicurezza non valida",
-
-    shop: "Elenco account",
-    shopHint: "Apri l’elenco account (Google Sheet)",
-    discord: "Discord",
-    discordHint: "Contatto via Discord",
-    buyHint: "Vuoi acquistare? Apri « Elenco account » per scegliere, poi contatta via Discord. Nota: la chiave viene elaborata localmente nel browser e non viene caricata.",
-
-    footer: "© {year} Roshine_OW. Tutti i diritti riservati."
+    footer: "© {year} Roshine — Negozio Overwatch. Tutti i diritti riservati."
   },
   ar: {
     title: "رمز أمان Battle.net",
@@ -585,14 +513,7 @@ const i18n = {
     copyBlocked: "لم يتم السماح بالنسخ",
     enterKeyError: "أدخل مفتاح رمز الأمان",
     invalidKey: "مفتاح رمز الأمان غير صالح",
-
-    shop: "قائمة الحسابات",
-    shopHint: "فتح قائمة الحسابات (Google Sheet)",
-    discord: "Discord",
-    discordHint: "التواصل عبر Discord",
-    buyHint: "للشراء: افتح «قائمة الحسابات» للاختيار ثم تواصل عبر Discord. ملاحظة: تتم معالجة المفتاح محليًا في المتصفح ولا يتم رفعه.",
-
-    footer: "© {year} Roshine_OW. جميع الحقوق محفوظة."
+    footer: "© {year} Roshine — متجر أوفرووتش. جميع الحقوق محفوظة."
   }
 };
 
@@ -632,24 +553,6 @@ function applyLang(lang){
   $("secret").placeholder      = t("placeholder");
   $("copy").textContent        = t("copy");
   $("clear").textContent       = t("clear");
-
-  // 顶部链接按钮
-  const shop = $("shopLink");
-  if (shop){
-    shop.textContent = t("shop");
-    shop.title = t("shopHint");
-    shop.setAttribute("aria-label", t("shopHint"));
-  }
-  const dc = $("discordLink");
-  if (dc){
-    dc.textContent = t("discord");
-    dc.title = t("discordHint");
-    dc.setAttribute("aria-label", t("discordHint"));
-  }
-
-  // 购买引导
-  const buyHint = $("buyHint");
-  if (buyHint) buyHint.textContent = t("buyHint");
 
   const year = new Date().getFullYear();
   $("footer").textContent = t("footer").replace("{year}", year);
