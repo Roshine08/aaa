@@ -59,7 +59,7 @@
       background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
     }
 
-    /* ===== Cyber / Tech polish ===== */
+    /* 背景：轻网格 + 轻扫描线（克制） */
     body::before{
       content:"";
       position:fixed;
@@ -68,10 +68,10 @@
       background:
         radial-gradient(800px 400px at 20% 10%, rgba(41,182,255,.10), transparent 60%),
         radial-gradient(700px 350px at 80% 20%, rgba(58,163,255,.08), transparent 60%),
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size:auto,auto,48px 48px,48px 48px;
-      opacity:.55;
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:auto,auto,54px 54px,54px 54px;
+      opacity:.45;
       mix-blend-mode:screen;
     }
     body::after{
@@ -85,25 +85,26 @@
           rgba(255,255,255,.03),
           rgba(255,255,255,.03) 1px,
           transparent 1px,
-          transparent 7px
+          transparent 9px
         );
-      opacity:.08;
+      opacity:.06;
     }
 
     .wrap{
       width:min(980px, 94vw);
       margin:0 auto;
-      padding:26px 0 42px;
+      padding:26px 0 56px;
       position:relative;
       z-index:1;
     }
 
+    /* 顶部 */
     .topbar{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
-      gap:14px;
-      margin-bottom:16px;
+      gap:16px;
+      margin-bottom:18px;
     }
     .brand{
       display:flex;
@@ -124,10 +125,11 @@
       font-size:12px;
       color:var(--muted);
       margin-top:2px;
-      max-width:70ch;
+      max-width:72ch;
+      line-height:1.35;
     }
 
-    .top-controls{display:flex; align-items:center; gap:10px;}
+    .top-controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
 
     .pill{
       height:34px;
@@ -148,14 +150,9 @@
       user-select:none;
       backdrop-filter: blur(10px);
     }
-    html[data-theme="light"] .pill{
-      border-color:rgba(0,0,0,.55);
-      background:rgba(0,0,0,.24);
-      box-shadow:0 8px 18px rgba(0,0,0,.55);
-    }
     .pill:hover{
       transform:translateY(-1px);
-      box-shadow:0 10px 22px rgba(0,0,0,.75), 0 0 14px rgba(41,182,255,.25);
+      box-shadow:0 10px 22px rgba(0,0,0,.75), 0 0 14px rgba(41,182,255,.22);
       background:rgba(0,0,0,.32);
     }
 
@@ -169,74 +166,101 @@
       text-align:center;
       cursor:pointer;
     }
-    .lang-select option{
-      background:#050b16;
-      color:#e8eefc;
-    }
-    html[data-theme="light"] .lang-select option{
-      background:#1a1d26;
-      color:#e4e7f5;
+    .lang-select option{ background:#050b16; color:#e8eefc; }
+    html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
+
+    /* 卡片：统一（单列堆叠） */
+    .stack{
+      display:flex;
+      flex-direction:column;
+      gap:18px;              /* 卡片之间更大间隔 */
+      margin-top:8px;
     }
 
-    .hero{
+    .card{
       position:relative;
       background:var(--card);
       border-radius:26px;
-      padding:26px 22px 22px;
+      padding:26px 22px;     /* 更松一点 */
       border:1px solid rgba(120,170,255,.14);
-      box-shadow:0 18px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(41,182,255,.08) inset;
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.55),
+        0 0 0 1px rgba(41,182,255,.08) inset;
       overflow:hidden;
-      margin-bottom:14px;
       backdrop-filter: blur(12px);
     }
-    .hero::before{
+
+    /* 卡片外沿渐变线（克制） */
+    .card::before{
       content:"";
       position:absolute; inset:0;
       border-radius:inherit;
       padding:1px;
       background:linear-gradient(135deg,
-        rgba(0,185,255,.7),
-        rgba(0,110,255,.55),
-        rgba(0,40,120,.6));
+        rgba(0,185,255,.55),
+        rgba(0,110,255,.40),
+        rgba(0,40,120,.50));
       -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
       -webkit-mask-composite:xor;
               mask-composite:exclude;
       opacity:.55;
       pointer-events:none;
     }
+
+    /* Hero 扫描光（更慢、更淡） */
     .hero::after{
       content:"";
       position:absolute;
       left:-20%;
-      top:-30%;
+      top:-35%;
       width:140%;
       height:140%;
       background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
-      transform:rotate(8deg);
-      animation:sweep 6.5s linear infinite;
+      transform:rotate(10deg);
+      animation:sweep 7.2s linear infinite;
       pointer-events:none;
-      opacity:.55;
+      opacity:.45;
     }
     @keyframes sweep{
-      0%{ transform:translateX(-35%) rotate(8deg); opacity:.0; }
-      10%{ opacity:.55; }
-      60%{ opacity:.25; }
-      100%{ transform:translateX(35%) rotate(8deg); opacity:0; }
+      0%{ transform:translateX(-35%) rotate(10deg); opacity:0; }
+      12%{ opacity:.45; }
+      70%{ opacity:.18; }
+      100%{ transform:translateX(35%) rotate(10deg); opacity:0; }
     }
 
-    .hero h1{
+    .card h1{
       margin:0 0 8px;
       font-size:28px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
+      letter-spacing:.04em;
       font-weight:900;
     }
-    .hero p{
+    .card p{
       margin:0 0 16px;
       color:var(--muted);
-      line-height:1.55;
+      line-height:1.6;
       font-size:14px;
-      max-width:72ch;
+      max-width:80ch;
+    }
+
+    .section-title{
+      margin:0 0 10px;
+      font-size:16px;
+      letter-spacing:.04em;
+      font-weight:900;
+      position:relative;
+      padding-left:10px;
+    }
+    .section-title::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:50%;
+      transform:translateY(-50%);
+      width:3px;
+      height:16px;
+      border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 12px rgba(41,182,255,.55);
     }
 
     .cta-row{
@@ -258,76 +282,42 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      min-width:220px;
+      min-width:240px;  /* 更像产品按钮 */
       justify-content:center;
       backdrop-filter: blur(12px);
     }
     .btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 0 14px rgba(41,182,255,.25);
+      box-shadow:0 0 16px rgba(41,182,255,.22);
       background:rgba(0,0,0,.20);
     }
     .btn.primary{
       background:var(--accent);
       border-color:transparent;
       color:#fff;
-      box-shadow:0 10px 30px rgba(41,182,255,.22), 0 0 0 1px rgba(255,255,255,.08) inset;
+      box-shadow:0 10px 30px rgba(41,182,255,.18), 0 0 0 1px rgba(255,255,255,.08) inset;
     }
     .btn.primary:hover{
-      box-shadow:0 0 22px rgba(41,182,255,.55);
+      box-shadow:0 0 22px rgba(41,182,255,.45);
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(12, 1fr);
-      gap:14px;
-      margin-top:14px;
-    }
-    .card{
-      grid-column:span 6;
-      background:var(--card);
-      border-radius:22px;
-      padding:18px 18px 16px;
-      border:1px solid rgba(120,170,255,.14);
-      box-shadow:0 18px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(41,182,255,.08) inset;
-      position:relative;
-      overflow:hidden;
-      backdrop-filter: blur(12px);
-    }
-    .card h3{
-      margin:0 0 6px;
-      font-size:16px;
-      letter-spacing:.04em;
-      position:relative;
-      padding-left:10px;
-    }
-    .card h3::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:50%;
-      transform:translateY(-50%);
-      width:3px;
-      height:16px;
-      border-radius:999px;
-      background:var(--accent);
-      box-shadow:0 0 12px rgba(41,182,255,.65);
-    }
     .steps{
-      margin-top:10px;
+      margin:0;
       padding-left:18px;
       font-size:13px;
-      line-height:1.7;
+      line-height:1.75;
     }
-    .steps li{ margin:7px 0; color:var(--muted); }
+    .steps li{ margin:8px 0; color:var(--muted); }
 
     .mini-actions{
-      display:flex; flex-wrap:wrap; gap:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
       margin-top:14px;
     }
     .mini{
-      padding:10px 12px;
-      border-radius:14px;
+      padding:11px 14px;
+      border-radius:16px;
       border:1px solid rgba(120,170,255,.18);
       background:rgba(0,0,0,.14);
       color:var(--text);
@@ -337,18 +327,18 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      flex:1 1 200px;
+      flex:1 1 220px;
       transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
       backdrop-filter: blur(12px);
     }
     .mini:hover{
       transform:translateY(-1px);
-      box-shadow:0 0 14px rgba(41,182,255,.25);
+      box-shadow:0 0 16px rgba(41,182,255,.22);
       background:rgba(0,0,0,.20);
     }
 
     .footer{
-      margin-top:18px;
+      margin-top:20px;
       text-align:center;
       color:var(--muted);
       font-size:12px;
@@ -357,10 +347,10 @@
     }
 
     @media (max-width:760px){
-      .card{ grid-column:span 12; }
       .btn{ min-width:0; width:100%; }
-      .topbar{ flex-direction:column; align-items:flex-start; }
+      .topbar{ flex-direction:column; }
       .top-controls{ width:100%; }
+      .card{ padding:22px 16px; }
     }
   </style>
 </head>
@@ -392,37 +382,44 @@
       </div>
     </div>
 
-    <div class="hero">
-      <h1 id="heroTitle">Pick → DM → Delivered</h1>
-      <p id="heroIntro">Browse live listings in Google Sheet, then DM the account ID on Discord to buy.</p>
+    <div class="stack">
+      <!-- HERO（单独一张卡） -->
+      <div class="card hero">
+        <h1 id="heroTitle">Pick an account → Join Discord → Order</h1>
+        <p id="heroIntro">
+          All listings are in Google Sheet. Filter by price, rank or skins. Then join Discord and send the account ID or screenshot to confirm and purchase.
+        </p>
 
-      <div class="cta-row">
-        <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
-           href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
-          📄 <span id="sheetBtnText">View Listings</span>
-        </a>
-        <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
-          💬 <span id="discordBtnText">Order on Discord</span>
-        </a>
+        <div class="cta-row">
+          <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
+             href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
+            📄 <span id="sheetBtnText">View Listings</span>
+          </a>
+          <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
+            💬 <span id="discordBtnText">Order on Discord</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div class="grid">
+      <!-- How to Buy（单独一张卡） -->
       <div class="card">
-        <h3 id="flowTitle">How to Buy</h3>
+        <div class="section-title" id="flowTitle">How to Buy</div>
         <ol class="steps" id="flowSteps">
-          <li>Open the listings (Google Sheet).</li>
-          <li>DM the account ID on Discord.</li>
-          <li>Pay → receive login info.</li>
+          <li>Open the Google Sheet listings and filter what you want.</li>
+          <li>Copy the account ID or screenshot the row.</li>
+          <li>Join Discord and send the ID/screenshot to confirm availability.</li>
+          <li>After confirmation, complete purchase and receive login info.</li>
+          <li>Need verification codes? Use the Authenticator page.</li>
         </ol>
       </div>
 
+      <!-- FAQ（单独一张卡） -->
       <div class="card">
-        <h3 id="faqTitle">FAQ</h3>
+        <div class="section-title" id="faqTitle">FAQ</div>
         <ol class="steps" id="faqSteps">
-          <li>"How often updated?" — The Sheet is the source of truth.</li>
-          <li>"Payment methods?" — Card, PayPal, crypto, and some gift cards. Confirm on Discord.</li>
-          <li>"Authenticator?" — Paste Private Key and copy the code.</li>
+          <li>"How often updated?" — The Sheet is the source of truth. Sold accounts are marked quickly.</li>
+          <li>"What payment methods are supported?" — We accept credit cards, PayPal, cryptocurrencies, and selected gift cards. For availability and fees, please contact us on Discord.</li>
+          <li>"How to use Authenticator?" — Open the tool, paste Private Key, copy the code.</li>
         </ol>
 
         <div class="mini-actions">
@@ -430,153 +427,260 @@
           <a class="mini" id="miniOrder" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">🧾 <span id="miniOrderText">Order Now</span></a>
         </div>
       </div>
+
+      <!-- Warranty（单独一张卡，可开关） -->
+      <div class="card">
+        <div class="section-title" id="wTitle">Warranty & Security</div>
+        <ol class="steps" id="wSteps">
+          <li id="w1">✅ Lifetime Warranty (Security Issues): hacked / stolen / reclaimed → full replacement or full compensation.</li>
+          <li id="w2">✅ After payment, you receive a full security handover (Email access, Battle.net/Steam, Authenticator, Account ID, and more — based on the account).</li>
+        </ol>
+      </div>
     </div>
 
     <div class="footer" id="footer"></div>
   </div>
 
   <script>
-    // ===== i18n (language) =====
+    // ===== i18n =====
     const LANG_KEY = "locale-choice";
 
     const i18n = {
       en: {
         sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
         auth: "🔐 Authenticator",
-        heroTitle: "Pick → DM → Delivered",
-        heroIntro: "Browse live listings in Google Sheet, then DM the account ID on Discord to buy.",
+        heroTitle: "Pick an account → Join Discord → Order",
+        heroIntro: "All listings are in Google Sheet. Filter by price, rank or skins. Then join Discord and send the account ID or screenshot to confirm and purchase.",
         sheetBtn: "View Listings",
         discordBtn: "Order on Discord",
+
         flowTitle: "How to Buy",
-        flow1: "Open the listings (Google Sheet).",
-        flow2: "DM the account ID on Discord.",
-        flow3: "Pay → receive login info.",
+        flow: [
+          "Open the Google Sheet listings and filter what you want.",
+          "Copy the account ID or screenshot the row.",
+          "Join Discord and send the ID/screenshot to confirm availability.",
+          "After confirmation, complete purchase and receive login info.",
+          "Need verification codes? Use the Authenticator page."
+        ],
+
         faqTitle: "FAQ",
-        faq1: "\"How often updated?\" — The Sheet is the source of truth.",
-        faq2: "\"Payment methods?\" — Card, PayPal, crypto, and some gift cards. Confirm on Discord.",
-        faq3: "\"Authenticator?\" — Paste Private Key and copy the code.",
+        faq: [
+          "\"How often updated?\" — The Sheet is the source of truth. Sold accounts are marked quickly.",
+          "\"Payment methods?\" — Card, PayPal, crypto, and some gift cards. Confirm on Discord.",
+          "\"Authenticator?\" — Open the tool, paste Private Key, copy the code."
+        ],
+
         miniAuth: "Open Authenticator",
         miniOrder: "Order Now",
+
+        wTitle: "Warranty & Security",
+        w1: "✅ Lifetime Warranty (Security Issues): hacked / stolen / reclaimed → full replacement or full compensation.",
+        w2: "✅ After payment, you receive a full security handover (Email access, Battle.net/Steam, Authenticator, Account ID, and more — based on the account).",
+
         footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
       },
 
       zh: {
         sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
         auth: "🔐 安全令",
-        heroTitle: "选账号 → 私聊 → 交付",
-        heroIntro: "打开 Google Sheet 挑选账号，然后在 Discord 私聊发送账号编号即可下单。",
+        heroTitle: "挑账号 → 加 Discord → 下单",
+        heroIntro: "账号都在 Google Sheet。先按价格/段位/皮肤筛选，进 Discord 发送账号编号或截图即可确认并购买。",
         sheetBtn: "打开账号列表",
         discordBtn: "去 Discord 下单",
+
         flowTitle: "购买流程",
-        flow1: "打开 Google Sheet 列表筛选账号。",
-        flow2: "Discord 私聊发送账号编号/截图。",
-        flow3: "确认后付款 → 交付登录信息。",
+        flow: [
+          "打开 Google Sheet 列表，筛选你想要的账号。",
+          "记录账号编号（或截图对应行）。",
+          "加入 Discord，把编号/截图发我确认库存与价格。",
+          "确认后完成付款并交付登录信息。",
+          "需要验证码：使用右上角安全令工具。"
+        ],
+
         faqTitle: "常见问题",
-        faq1: "“列表多久更新？”—— 以 Sheet 为准。",
-        faq2: "“支持什么支付方式？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；具体与手续费请 Discord 确认。",
-        faq3: "“怎么用安全令？”—— 粘贴 Private Key 后复制验证码。",
+        faq: [
+          "“列表多久更新？”—— 以 Sheet 为准，售出会尽快标记。",
+          "“支持什么支付方式？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；具体与手续费请 Discord 确认。",
+          "“怎么用安全令？”—— 打开工具页，粘贴 Private Key，复制验证码。"
+        ],
+
         miniAuth: "打开安全令",
         miniOrder: "立即下单",
+
+        wTitle: "质保与安全",
+        w1: "✅ 终身安全质保：如出现被盗 / 被黑 / 找回（reclaimed），提供全额补偿或同等账号替换，终身有效。",
+        w2: "✅ 付款后交付完整安全资料包：按账号实际情况提供邮箱权限、Battle.net/Steam（如适用）、安全令信息、账号 ID 等关键资料。",
+
         footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
       },
 
       fr: {
         sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
         auth: "🔐 Jeton",
-        heroTitle: "Choisir → DM → Livraison",
-        heroIntro: "Consultez la liste Google Sheet, puis envoyez l'ID du compte sur Discord pour acheter.",
+        heroTitle: "Choisir → Discord → Commander",
+        heroIntro: "Tous les comptes sont dans Google Sheet. Filtrez, puis envoyez l’ID ou une capture sur Discord pour confirmer et acheter.",
         sheetBtn: "Voir la liste",
         discordBtn: "Commander via Discord",
+
         flowTitle: "Procédure",
-        flow1: "Ouvrez la liste (Google Sheet).",
-        flow2: "Envoyez l'ID en DM sur Discord.",
-        flow3: "Paiement → infos de connexion.",
+        flow: [
+          "Ouvrez la liste Google Sheet et filtrez.",
+          "Copiez l’ID du compte (ou capturez la ligne).",
+          "Envoyez l’ID/la capture sur Discord pour confirmer.",
+          "Après confirmation, paiement puis livraison des infos de connexion.",
+          "Besoin de codes ? Utilisez la page Jeton."
+        ],
+
         faqTitle: "FAQ",
-        faq1: "Mises à jour ? Le Sheet fait foi.",
-        faq2: "Paiement ? Carte, PayPal, crypto et certaines cartes cadeaux. Confirmez sur Discord.",
-        faq3: "Jeton ? Collez la clé privée et copiez le code.",
+        faq: [
+          "Mises à jour ? Le Sheet fait foi. Les comptes vendus sont marqués rapidement.",
+          "Paiement ? Carte, PayPal, crypto et certaines cartes cadeaux. Confirmez sur Discord.",
+          "Jeton ? Ouvrez l’outil, collez la clé privée, copiez le code."
+        ],
+
         miniAuth: "Ouvrir le Jeton",
         miniOrder: "Commander",
+
+        wTitle: "Garantie & Sécurité",
+        w1: "✅ Garantie à vie (sécurité) : piraté / volé / récupéré → remplacement complet ou remboursement.",
+        w2: "✅ Après paiement : remise complète des infos de sécurité (selon le compte).",
+
         footer: "© {year} Roshine.love — Boutique Overwatch."
       },
 
       de: {
         sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
         auth: "🔐 Token",
-        heroTitle: "Wählen → DM → Lieferung",
-        heroIntro: "Liste im Google Sheet ansehen, dann Account-ID per Discord-DM senden und kaufen.",
+        heroTitle: "Wählen → Discord → Bestellen",
+        heroIntro: "Alle Accounts stehen im Google Sheet. Filtern, dann ID/Screenshot per Discord senden und kaufen.",
         sheetBtn: "Liste ansehen",
         discordBtn: "Über Discord bestellen",
+
         flowTitle: "Ablauf",
-        flow1: "Liste öffnen (Google Sheet).",
-        flow2: "Account-ID per Discord-DM senden.",
-        flow3: "Zahlen → Login-Daten erhalten.",
+        flow: [
+          "Google Sheet öffnen und filtern.",
+          "Account-ID kopieren (oder Screenshot).",
+          "ID/Screenshot über Discord senden, um zu bestätigen.",
+          "Nach Bestätigung zahlen und Login-Daten erhalten.",
+          "Codes nötig? Token-Seite nutzen."
+        ],
+
         faqTitle: "FAQ",
-        faq1: "Updates? Sheet ist maßgeblich.",
-        faq2: "Zahlung? Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Bitte über Discord bestätigen.",
-        faq3: "Token? Private Key einfügen und Code kopieren.",
+        faq: [
+          "Updates? Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
+          "Zahlung? Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Bitte über Discord bestätigen.",
+          "Token? Tool öffnen, Private Key einfügen, Code kopieren."
+        ],
+
         miniAuth: "Token öffnen",
         miniOrder: "Jetzt bestellen",
+
+        wTitle: "Garantie & Sicherheit",
+        w1: "✅ Lebenslange Garantie (Sicherheit): gehackt / gestohlen / reclaimed → Ersatz oder volle Erstattung.",
+        w2: "✅ Nach Zahlung: vollständige Sicherheitsübergabe (je nach Account).",
+
         footer: "© {year} Roshine.love — Overwatch-Shop."
       },
 
       ru: {
         sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
         auth: "🔐 Токен",
-        heroTitle: "Выбрать → DM → Доставка",
-        heroIntro: "Откройте список в Google Sheet, затем отправьте ID аккаунта в Discord (DM), чтобы купить.",
+        heroTitle: "Выбрать → Discord → Купить",
+        heroIntro: "Все аккаунты в Google Sheet. Отфильтруйте и отправьте ID/скрин в Discord для подтверждения и покупки.",
         sheetBtn: "Открыть список",
         discordBtn: "Купить в Discord",
+
         flowTitle: "Как купить",
-        flow1: "Откройте список (Google Sheet).",
-        flow2: "Отправьте ID в Discord (DM).",
-        flow3: "Оплата → данные для входа.",
+        flow: [
+          "Откройте список (Google Sheet) и отфильтруйте.",
+          "Скопируйте ID (или сделайте скрин строки).",
+          "Отправьте ID/скрин в Discord для подтверждения.",
+          "После подтверждения — оплата и выдача данных для входа.",
+          "Нужны коды? Используйте страницу Токен."
+        ],
+
         faqTitle: "FAQ",
-        faq1: "Обновления? Sheet — основной источник.",
-        faq2: "Оплата? Карта, PayPal, крипто и некоторые подарочные карты. Подтвердите в Discord.",
-        faq3: "Токен? Вставьте Private Key и скопируйте код.",
+        faq: [
+          "Обновления? Sheet — источник истины. Проданное отмечается быстро.",
+          "Оплата? Карта, PayPal, крипто и некоторые подарочные карты. Уточняйте в Discord.",
+          "Токен? Откройте инструмент, вставьте Private Key, скопируйте код."
+        ],
+
         miniAuth: "Открыть токен",
         miniOrder: "Заказать",
+
+        wTitle: "Гарантия и безопасность",
+        w1: "✅ Пожизненная гарантия (безопасность): взлом/кража/reclaimed → замена или полный возврат.",
+        w2: "✅ После оплаты: полный пакет безопасности (в зависимости от аккаунта).",
+
         footer: "© {year} Roshine.love — магазин Overwatch."
       },
 
       it: {
         sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
         auth: "🔐 Token",
-        heroTitle: "Scegli → DM → Consegna",
-        heroIntro: "Apri la lista su Google Sheet, poi invia l'ID account in DM su Discord per acquistare.",
+        heroTitle: "Scegli → Discord → Acquista",
+        heroIntro: "Tutti gli account sono su Google Sheet. Filtra e invia ID/screenshot su Discord per confermare e acquistare.",
         sheetBtn: "Apri lista",
         discordBtn: "Ordina su Discord",
+
         flowTitle: "Come comprare",
-        flow1: "Apri la lista (Google Sheet).",
-        flow2: "Invia l'ID in DM su Discord.",
-        flow3: "Pagamento → dati di accesso.",
+        flow: [
+          "Apri la lista (Google Sheet) e filtra.",
+          "Copia l’ID (o screenshot della riga).",
+          "Invia ID/screenshot su Discord per conferma.",
+          "Dopo conferma: pagamento e consegna dati accesso.",
+          "Codici? Usa la pagina Token."
+        ],
+
         faqTitle: "FAQ",
-        faq1: "Aggiornamenti? Il Sheet è la fonte.",
-        faq2: "Pagamenti? Carta, PayPal, crypto e alcune gift card. Conferma su Discord.",
-        faq3: "Token? Incolla Private Key e copia il codice.",
+        faq: [
+          "Aggiornamenti? Il Sheet è la fonte. Venduti segnati rapidamente.",
+          "Pagamenti? Carta, PayPal, crypto e alcune gift card. Conferma su Discord.",
+          "Token? Apri lo strumento, incolla Private Key, copia il codice."
+        ],
+
         miniAuth: "Apri Token",
         miniOrder: "Ordina ora",
+
+        wTitle: "Garanzia e Sicurezza",
+        w1: "✅ Garanzia a vita (sicurezza): hack/furto/reclaimed → sostituzione o rimborso completo.",
+        w2: "✅ Dopo pagamento: consegna completa dati sicurezza (in base all’account).",
+
         footer: "© {year} Roshine.love — Negozio Overwatch."
       },
 
       ar: {
         sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
         auth: "🔐 المُصدِّق",
-        heroTitle: "اختر → DM → تسليم",
-        heroIntro: "اعرض القائمة في Google Sheet ثم أرسل رقم الحساب عبر Discord (DM) للشراء.",
+        heroTitle: "اختر → Discord → شراء",
+        heroIntro: "جميع الحسابات في Google Sheet. قم بالتصفية ثم أرسل ID/لقطة عبر Discord للتأكيد والشراء.",
         sheetBtn: "عرض القائمة",
         discordBtn: "اطلب عبر Discord",
+
         flowTitle: "طريقة الشراء",
-        flow1: "افتح القائمة (Google Sheet).",
-        flow2: "أرسل رقم الحساب في DM عبر Discord.",
-        flow3: "ادفع ← واستلم بيانات الدخول.",
+        flow: [
+          "افتح القائمة (Google Sheet) وقم بالتصفية.",
+          "انسخ ID (أو التقط لقطة للصف).",
+          "أرسل ID/اللقطة عبر Discord للتأكيد.",
+          "بعد التأكيد: ادفع واستلم بيانات الدخول.",
+          "تحتاج رمزاً؟ استخدم صفحة المُصدِّق."
+        ],
+
         faqTitle: "الأسئلة الشائعة",
-        faq1: "التحديثات؟ Google Sheet هو المرجع.",
-        faq2: "طرق الدفع؟ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. أكد عبر Discord.",
-        faq3: "المُصدِّق؟ الصق Private Key ثم انسخ الرمز.",
+        faq: [
+          "التحديثات؟ Google Sheet هو المرجع. يتم وضع علامة على المباع بسرعة.",
+          "طرق الدفع؟ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. أكد عبر Discord.",
+          "المُصدِّق؟ افتح الأداة والصق Private Key ثم انسخ الرمز."
+        ],
+
         miniAuth: "فتح المُصدِّق",
         miniOrder: "اطلب الآن",
+
+        wTitle: "الضمان والأمان",
+        w1: "✅ ضمان مدى الحياة (الأمان): اختراق/سرقة/reclaimed → استبدال أو تعويض كامل.",
+        w2: "✅ بعد الدفع: تسليم كامل معلومات الأمان (حسب الحساب).",
+
         footer: "© {year} Roshine.love — متجر أوفرواتش."
       }
     };
@@ -593,6 +697,16 @@
       if (nav.startsWith("it")) return "it";
       if (nav.startsWith("ar")) return "ar";
       return "en";
+    }
+
+    function fillList(listId, items){
+      const el = document.getElementById(listId);
+      el.innerHTML = "";
+      items.forEach(x => {
+        const li = document.createElement("li");
+        li.textContent = x;
+        el.appendChild(li);
+      });
     }
 
     function applyLang(lang){
@@ -617,19 +731,17 @@
       document.getElementById("discordBtnText").textContent = t.discordBtn;
 
       document.getElementById("flowTitle").textContent = t.flowTitle;
-      const flowLis = document.querySelectorAll("#flowSteps li");
-      flowLis[0].textContent = t.flow1;
-      flowLis[1].textContent = t.flow2;
-      flowLis[2].textContent = t.flow3;
+      fillList("flowSteps", t.flow);
 
       document.getElementById("faqTitle").textContent = t.faqTitle;
-      const faqLis = document.querySelectorAll("#faqSteps li");
-      faqLis[0].textContent = t.faq1;
-      faqLis[1].textContent = t.faq2;
-      faqLis[2].textContent = t.faq3;
+      fillList("faqSteps", t.faq);
 
       document.getElementById("miniAuthText").textContent = t.miniAuth;
       document.getElementById("miniOrderText").textContent = t.miniOrder;
+
+      document.getElementById("wTitle").textContent = t.wTitle;
+      document.getElementById("w1").textContent = t.w1;
+      document.getElementById("w2").textContent = t.w2;
 
       document.getElementById("footer").textContent =
         t.footer.replace("{year}", new Date().getFullYear());
