@@ -53,25 +53,25 @@
       margin:0;
       font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--text);
-      background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
+      background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000 100%);
     }
     html[data-theme="light"] body{
       background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
     }
 
-    /* 背景：轻网格 + 轻扫描线（克制） */
+    /* 更克制的科技背景：弱光晕 + 弱网格 + 弱扫描线 */
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
       background:
-        radial-gradient(800px 400px at 20% 10%, rgba(41,182,255,.10), transparent 60%),
-        radial-gradient(700px 350px at 80% 20%, rgba(58,163,255,.08), transparent 60%),
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size:auto,auto,54px 54px,54px 54px;
-      opacity:.45;
+        radial-gradient(900px 460px at 20% 8%, rgba(41,182,255,.10), transparent 60%),
+        radial-gradient(760px 420px at 85% 18%, rgba(58,163,255,.08), transparent 62%),
+        linear-gradient(rgba(255,255,255,.030) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.030) 1px, transparent 1px);
+      background-size:auto,auto,60px 60px,60px 60px;
+      opacity:.26;
       mix-blend-mode:screen;
     }
     body::after{
@@ -82,29 +82,29 @@
       background-image:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,.03),
-          rgba(255,255,255,.03) 1px,
+          rgba(255,255,255,.028),
+          rgba(255,255,255,.028) 1px,
           transparent 1px,
-          transparent 9px
+          transparent 12px
         );
-      opacity:.06;
+      opacity:.04;
     }
 
     .wrap{
       width:min(980px, 94vw);
       margin:0 auto;
-      padding:26px 0 56px;
+      padding:34px 0 72px;
       position:relative;
       z-index:1;
     }
 
-    /* 顶部 */
+    /* 顶部：更像产品站（简洁） */
     .topbar{
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
       gap:16px;
-      margin-bottom:18px;
+      margin-bottom:22px;
     }
     .brand{
       display:flex;
@@ -113,30 +113,38 @@
       min-width:0;
     }
     .brand img{
-      width:40px;height:40px;border-radius:16px;
+      width:42px;height:42px;border-radius:14px;
       box-shadow:0 10px 30px rgba(0,0,0,.45);
     }
     .brand .name{
       font-weight:900;
-      letter-spacing:.04em;
+      letter-spacing:.08em;
       white-space:nowrap;
+      font-size:15px;
     }
     .brand .sub{
       font-size:12px;
       color:var(--muted);
       margin-top:2px;
-      max-width:72ch;
+      max-width:70ch;
       line-height:1.35;
+      opacity:.95;
     }
 
-    .top-controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .top-controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
     .pill{
       height:34px;
       padding:0 14px;
       border-radius:999px;
       border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.22);
+      background:rgba(0,0,0,.20);
       color:var(--text);
       font-size:13px;
       font-weight:800;
@@ -144,7 +152,7 @@
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      box-shadow:0 8px 18px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
+      box-shadow:0 8px 18px rgba(0,0,0,.42), 0 0 0 1px rgba(255,255,255,.06) inset;
       transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
       text-decoration:none;
       user-select:none;
@@ -152,8 +160,8 @@
     }
     .pill:hover{
       transform:translateY(-1px);
-      box-shadow:0 10px 22px rgba(0,0,0,.75), 0 0 14px rgba(41,182,255,.22);
-      background:rgba(0,0,0,.32);
+      box-shadow:0 10px 22px rgba(0,0,0,.70), 0 0 14px rgba(41,182,255,.20);
+      background:rgba(0,0,0,.28);
     }
 
     .lang-select{
@@ -169,84 +177,113 @@
     .lang-select option{ background:#050b16; color:#e8eefc; }
     html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
 
-    /* 卡片：统一（单列堆叠） */
+    /* 单列堆叠：更大留白 */
     .stack{
       display:flex;
       flex-direction:column;
-      gap:18px;              /* 卡片之间更大间隔 */
-      margin-top:8px;
+      gap:24px;
+      margin-top:10px;
     }
 
+    /* 卡片：更像 deadcell（玻璃 + 细描边 + 克制光） */
     .card{
       position:relative;
-      background:var(--card);
-      border-radius:26px;
-      padding:26px 22px;     /* 更松一点 */
+      border-radius:28px;
+      padding:32px 28px;
       border:1px solid rgba(120,170,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.012));
       box-shadow:
-        0 18px 50px rgba(0,0,0,.55),
-        0 0 0 1px rgba(41,182,255,.08) inset;
+        0 24px 70px rgba(0,0,0,.58),
+        0 0 0 1px rgba(255,255,255,.06) inset;
       overflow:hidden;
       backdrop-filter: blur(12px);
     }
-
-    /* 卡片外沿渐变线（克制） */
     .card::before{
       content:"";
       position:absolute; inset:0;
       border-radius:inherit;
       padding:1px;
       background:linear-gradient(135deg,
-        rgba(0,185,255,.55),
-        rgba(0,110,255,.40),
-        rgba(0,40,120,.50));
+        rgba(0,185,255,.46),
+        rgba(0,110,255,.26),
+        rgba(0,40,120,.34));
       -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
       -webkit-mask-composite:xor;
               mask-composite:exclude;
-      opacity:.55;
+      opacity:.40;
       pointer-events:none;
     }
 
-    /* Hero 扫描光（更慢、更淡） */
+    /* Hero 扫描光：更慢更淡 */
     .hero::after{
       content:"";
       position:absolute;
-      left:-20%;
-      top:-35%;
-      width:140%;
-      height:140%;
+      left:-25%;
+      top:-40%;
+      width:150%;
+      height:150%;
       background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
       transform:rotate(10deg);
-      animation:sweep 7.2s linear infinite;
+      animation:sweep 8.4s linear infinite;
       pointer-events:none;
-      opacity:.45;
+      opacity:.35;
     }
     @keyframes sweep{
-      0%{ transform:translateX(-35%) rotate(10deg); opacity:0; }
-      12%{ opacity:.45; }
-      70%{ opacity:.18; }
-      100%{ transform:translateX(35%) rotate(10deg); opacity:0; }
+      0%{ transform:translateX(-38%) rotate(10deg); opacity:0; }
+      14%{ opacity:.35; }
+      76%{ opacity:.14; }
+      100%{ transform:translateX(38%) rotate(10deg); opacity:0; }
     }
 
-    .card h1{
-      margin:0 0 8px;
-      font-size:28px;
-      letter-spacing:.04em;
-      font-weight:900;
-    }
-    .card p{
-      margin:0 0 16px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
-      max-width:80ch;
-    }
-
-    .section-title{
+    /* Hero 文案：更大更“产品站” */
+    .hero h1{
       margin:0 0 10px;
-      font-size:16px;
-      letter-spacing:.04em;
+      font-size:40px;
+      line-height:1.06;
+      letter-spacing:.02em;
       font-weight:900;
+    }
+    .hero p{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:15px;
+      max-width:76ch;
+    }
+
+    /* Trust Bar（像 deadcell 的 tag 行） */
+    .trust{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:10px 0 0;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(120,170,255,.16);
+      background:rgba(0,0,0,.18);
+      color:rgba(230,240,255,.92);
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.02em;
+      box-shadow:0 0 0 1px rgba(255,255,255,.05) inset;
+      backdrop-filter: blur(10px);
+    }
+    .chip b{ color:#fff; }
+
+    /* 标题（模块化）更短更硬 */
+    .section-title{
+      margin:0 0 12px;
+      font-size:13px;
+      letter-spacing:.14em;
+      font-weight:900;
+      text-transform:uppercase;
+      opacity:.95;
       position:relative;
       padding-left:10px;
     }
@@ -257,23 +294,26 @@
       top:50%;
       transform:translateY(-50%);
       width:3px;
-      height:16px;
+      height:14px;
       border-radius:999px;
       background:var(--accent);
-      box-shadow:0 0 12px rgba(41,182,255,.55);
+      box-shadow:0 0 12px rgba(41,182,255,.45);
+      opacity:.95;
     }
 
+    /* CTA：主次更像产品站 */
     .cta-row{
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-top:6px;
+      margin-top:8px;
     }
     .btn{
-      padding:12px 16px;
-      border-radius:16px;
+      height:46px;
+      padding:0 18px;
+      border-radius:18px;
       border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.14);
+      background:rgba(0,0,0,.16);
       color:var(--text);
       font-weight:900;
       cursor:pointer;
@@ -282,30 +322,29 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      min-width:240px;  /* 更像产品按钮 */
+      min-width:260px;
       justify-content:center;
       backdrop-filter: blur(12px);
     }
     .btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 0 16px rgba(41,182,255,.22);
-      background:rgba(0,0,0,.20);
+      box-shadow:0 0 18px rgba(41,182,255,.20);
+      background:rgba(0,0,0,.22);
     }
     .btn.primary{
-      background:var(--accent);
       border-color:transparent;
       color:#fff;
-      box-shadow:0 10px 30px rgba(41,182,255,.18), 0 0 0 1px rgba(255,255,255,.08) inset;
+      background: linear-gradient(180deg, rgba(41,182,255,1), rgba(25,145,240,1));
+      box-shadow:0 18px 40px rgba(41,182,255,.18), 0 0 0 1px rgba(255,255,255,.10) inset;
     }
-    .btn.primary:hover{
-      box-shadow:0 0 22px rgba(41,182,255,.45);
-    }
+    .btn.primary:hover{ box-shadow:0 0 22px rgba(41,182,255,.42); }
 
+    /* 列表更松但不啰嗦 */
     .steps{
       margin:0;
       padding-left:18px;
-      font-size:13px;
-      line-height:1.75;
+      font-size:13.5px;
+      line-height:1.9;
     }
     .steps li{ margin:8px 0; color:var(--muted); }
 
@@ -313,13 +352,14 @@
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-top:14px;
+      margin-top:16px;
     }
     .mini{
-      padding:11px 14px;
-      border-radius:16px;
+      height:46px;
+      padding:0 16px;
+      border-radius:18px;
       border:1px solid rgba(120,170,255,.18);
-      background:rgba(0,0,0,.14);
+      background:rgba(0,0,0,.16);
       color:var(--text);
       font-weight:900;
       text-decoration:none;
@@ -327,18 +367,18 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      flex:1 1 220px;
+      flex:1 1 240px;
       transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
       backdrop-filter: blur(12px);
     }
     .mini:hover{
       transform:translateY(-1px);
-      box-shadow:0 0 16px rgba(41,182,255,.22);
-      background:rgba(0,0,0,.20);
+      box-shadow:0 0 18px rgba(41,182,255,.20);
+      background:rgba(0,0,0,.22);
     }
 
     .footer{
-      margin-top:20px;
+      margin-top:24px;
       text-align:center;
       color:var(--muted);
       font-size:12px;
@@ -347,10 +387,13 @@
     }
 
     @media (max-width:760px){
-      .btn{ min-width:0; width:100%; }
-      .topbar{ flex-direction:column; }
-      .top-controls{ width:100%; }
-      .card{ padding:22px 16px; }
+      .wrap{ padding:26px 0 64px; }
+      .topbar{ flex-direction:column; align-items:flex-start; }
+      .top-controls{ width:100%; justify-content:flex-start; }
+      .card{ padding:26px 18px; }
+      .hero h1{ font-size:30px; }
+      .btn{ width:100%; min-width:0; }
+      .mini{ flex-basis:100%; }
     }
   </style>
 </head>
@@ -361,7 +404,7 @@
       <div class="brand">
         <img src="/assets/logo.png" alt="Roshine Logo" />
         <div>
-          <div class="name">Roshine.love</div>
+          <div class="name">ROSHINE.LOVE</div>
           <div class="sub" id="subText">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
         </div>
       </div>
@@ -383,11 +426,11 @@
     </div>
 
     <div class="stack">
-      <!-- HERO（单独一张卡） -->
+      <!-- HERO -->
       <div class="card hero">
-        <h1 id="heroTitle">Pick an account → Join Discord → Order</h1>
+        <h1 id="heroTitle">Overwatch Accounts. Secure Delivery.</h1>
         <p id="heroIntro">
-          All listings are in Google Sheet. Filter by price, rank or skins. Then join Discord and send the account ID or screenshot to confirm and purchase.
+          Browse listings in Google Sheet. Send the account ID on Discord to confirm availability and place an order.
         </p>
 
         <div class="cta-row">
@@ -399,28 +442,24 @@
             💬 <span id="discordBtnText">Order on Discord</span>
           </a>
         </div>
+
+        <div class="trust" id="trustRow">
+          <div class="chip" id="chip1">✅ <b>Lifetime</b> Warranty</div>
+          <div class="chip" id="chip2">🔒 Secure Handover</div>
+          <div class="chip" id="chip3">⚡ Fast Response</div>
+        </div>
       </div>
 
-      <!-- How to Buy（单独一张卡） -->
+      <!-- How to Buy -->
       <div class="card">
         <div class="section-title" id="flowTitle">How to Buy</div>
-        <ol class="steps" id="flowSteps">
-          <li>Open the Google Sheet listings and filter what you want.</li>
-          <li>Copy the account ID or screenshot the row.</li>
-          <li>Join Discord and send the ID/screenshot to confirm availability.</li>
-          <li>After confirmation, complete purchase and receive login info.</li>
-          <li>Need verification codes? Use the Authenticator page.</li>
-        </ol>
+        <ol class="steps" id="flowSteps"></ol>
       </div>
 
-      <!-- FAQ（单独一张卡） -->
+      <!-- FAQ -->
       <div class="card">
         <div class="section-title" id="faqTitle">FAQ</div>
-        <ol class="steps" id="faqSteps">
-          <li>"How often updated?" — The Sheet is the source of truth. Sold accounts are marked quickly.</li>
-          <li>"What payment methods are supported?" — We accept credit cards, PayPal, cryptocurrencies, and selected gift cards. For availability and fees, please contact us on Discord.</li>
-          <li>"How to use Authenticator?" — Open the tool, paste Private Key, copy the code.</li>
-        </ol>
+        <ol class="steps" id="faqSteps"></ol>
 
         <div class="mini-actions">
           <a class="mini" id="miniAuth" href="/auth/">🔐 <span id="miniAuthText">Open Authenticator</span></a>
@@ -428,12 +467,12 @@
         </div>
       </div>
 
-      <!-- Warranty（单独一张卡，可开关） -->
+      <!-- Warranty -->
       <div class="card">
         <div class="section-title" id="wTitle">Warranty & Security</div>
         <ol class="steps" id="wSteps">
-          <li id="w1">✅ Lifetime Warranty (Security Issues): hacked / stolen / reclaimed → full replacement or full compensation.</li>
-          <li id="w2">✅ After payment, you receive a full security handover (Email access, Battle.net/Steam, Authenticator, Account ID, and more — based on the account).</li>
+          <li id="w1"></li>
+          <li id="w2"></li>
         </ol>
       </div>
     </div>
@@ -449,17 +488,22 @@
       en: {
         sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
         auth: "🔐 Authenticator",
-        heroTitle: "Pick an account → Join Discord → Order",
-        heroIntro: "All listings are in Google Sheet. Filter by price, rank or skins. Then join Discord and send the account ID or screenshot to confirm and purchase.",
+
+        heroTitle: "Overwatch Accounts. Secure Delivery.",
+        heroIntro: "Browse listings in Google Sheet. Send the account ID on Discord to confirm availability and place an order.",
         sheetBtn: "View Listings",
         discordBtn: "Order on Discord",
+
+        chip1: "✅ Lifetime Warranty",
+        chip2: "🔒 Secure Handover",
+        chip3: "⚡ Fast Response",
 
         flowTitle: "How to Buy",
         flow: [
           "Open the Google Sheet listings and filter what you want.",
-          "Copy the account ID or screenshot the row.",
+          "Copy the account ID (or screenshot the row).",
           "Join Discord and send the ID/screenshot to confirm availability.",
-          "After confirmation, complete purchase and receive login info.",
+          "Complete payment after confirmation, then receive login info.",
           "Need verification codes? Use the Authenticator page."
         ],
 
@@ -483,10 +527,15 @@
       zh: {
         sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
         auth: "🔐 安全令",
-        heroTitle: "挑账号 → 加 Discord → 下单",
-        heroIntro: "账号都在 Google Sheet。先按价格/段位/皮肤筛选，进 Discord 发送账号编号或截图即可确认并购买。",
+
+        heroTitle: "守望先锋账号 · 安全交付",
+        heroIntro: "库存在 Google Sheet。选好账号后，在 Discord 发送账号编号即可确认并下单。",
         sheetBtn: "打开账号列表",
         discordBtn: "去 Discord 下单",
+
+        chip1: "✅ 终身质保",
+        chip2: "🔒 安全交付",
+        chip3: "⚡ 快速响应",
 
         flowTitle: "购买流程",
         flow: [
@@ -517,17 +566,22 @@
       fr: {
         sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
         auth: "🔐 Jeton",
-        heroTitle: "Choisir → Discord → Commander",
-        heroIntro: "Tous les comptes sont dans Google Sheet. Filtrez, puis envoyez l’ID ou une capture sur Discord pour confirmer et acheter.",
+
+        heroTitle: "Comptes Overwatch. Livraison sécurisée.",
+        heroIntro: "Consultez Google Sheet, puis envoyez l’ID du compte sur Discord pour confirmer et commander.",
         sheetBtn: "Voir la liste",
         discordBtn: "Commander via Discord",
+
+        chip1: "✅ Garantie à vie",
+        chip2: "🔒 Livraison sécurisée",
+        chip3: "⚡ Réponse rapide",
 
         flowTitle: "Procédure",
         flow: [
           "Ouvrez la liste Google Sheet et filtrez.",
-          "Copiez l’ID du compte (ou capturez la ligne).",
+          "Copiez l’ID (ou capturez la ligne).",
           "Envoyez l’ID/la capture sur Discord pour confirmer.",
-          "Après confirmation, paiement puis livraison des infos de connexion.",
+          "Après confirmation, paiement puis livraison des accès.",
           "Besoin de codes ? Utilisez la page Jeton."
         ],
 
@@ -551,10 +605,15 @@
       de: {
         sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
         auth: "🔐 Token",
-        heroTitle: "Wählen → Discord → Bestellen",
-        heroIntro: "Alle Accounts stehen im Google Sheet. Filtern, dann ID/Screenshot per Discord senden und kaufen.",
+
+        heroTitle: "Overwatch-Accounts. Sicher geliefert.",
+        heroIntro: "Google Sheet öffnen, dann Account-ID per Discord senden, um zu bestätigen und zu bestellen.",
         sheetBtn: "Liste ansehen",
         discordBtn: "Über Discord bestellen",
+
+        chip1: "✅ Lebenslange Garantie",
+        chip2: "🔒 Sichere Übergabe",
+        chip3: "⚡ Schnelle Antwort",
 
         flowTitle: "Ablauf",
         flow: [
@@ -585,10 +644,15 @@
       ru: {
         sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
         auth: "🔐 Токен",
-        heroTitle: "Выбрать → Discord → Купить",
-        heroIntro: "Все аккаунты в Google Sheet. Отфильтруйте и отправьте ID/скрин в Discord для подтверждения и покупки.",
+
+        heroTitle: "Аккаунты Overwatch. Безопасная выдача.",
+        heroIntro: "Откройте Google Sheet и отправьте ID в Discord для подтверждения и покупки.",
         sheetBtn: "Открыть список",
         discordBtn: "Купить в Discord",
+
+        chip1: "✅ Пожизненная гарантия",
+        chip2: "🔒 Безопасная выдача",
+        chip3: "⚡ Быстрый ответ",
 
         flowTitle: "Как купить",
         flow: [
@@ -619,10 +683,15 @@
       it: {
         sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
         auth: "🔐 Token",
-        heroTitle: "Scegli → Discord → Acquista",
-        heroIntro: "Tutti gli account sono su Google Sheet. Filtra e invia ID/screenshot su Discord per confermare e acquistare.",
+
+        heroTitle: "Account Overwatch. Consegna sicura.",
+        heroIntro: "Apri Google Sheet e invia l’ID su Discord per conferma e acquisto.",
         sheetBtn: "Apri lista",
         discordBtn: "Ordina su Discord",
+
+        chip1: "✅ Garanzia a vita",
+        chip2: "🔒 Consegna sicura",
+        chip3: "⚡ Risposta rapida",
 
         flowTitle: "Come comprare",
         flow: [
@@ -653,10 +722,15 @@
       ar: {
         sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
         auth: "🔐 المُصدِّق",
-        heroTitle: "اختر → Discord → شراء",
-        heroIntro: "جميع الحسابات في Google Sheet. قم بالتصفية ثم أرسل ID/لقطة عبر Discord للتأكيد والشراء.",
+
+        heroTitle: "حسابات Overwatch. تسليم آمن.",
+        heroIntro: "افتح Google Sheet وأرسل ID عبر Discord للتأكيد والشراء.",
         sheetBtn: "عرض القائمة",
         discordBtn: "اطلب عبر Discord",
+
+        chip1: "✅ ضمان مدى الحياة",
+        chip2: "🔒 تسليم آمن",
+        chip3: "⚡ رد سريع",
 
         flowTitle: "طريقة الشراء",
         flow: [
@@ -729,6 +803,10 @@
 
       document.getElementById("sheetBtnText").textContent = t.sheetBtn;
       document.getElementById("discordBtnText").textContent = t.discordBtn;
+
+      document.getElementById("chip1").textContent = t.chip1;
+      document.getElementById("chip2").textContent = t.chip2;
+      document.getElementById("chip3").textContent = t.chip3;
 
       document.getElementById("flowTitle").textContent = t.flowTitle;
       fillList("flowSteps", t.flow);
