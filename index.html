@@ -1,775 +1,412 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN" data-theme="dark">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Battle.net Authenticator</title>
-<link rel="icon" href="logo.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roshine — Overwatch Account Store</title>
+  <link rel="icon" href="assets/logo.png" />
 
-<!-- 科技感字体 -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 
-<style>
-:root{
-  /* 深色主题：偏 Warframe / Battle.net 科幻蓝 */
-  --bg-dark:#05060b;          /* 整体背景：接近纯黑 */
-  --card-dark:#0b1018;        /* 卡片背景：深蓝黑 */
-  --border-dark:#202736;      /* 边框：冷灰蓝 */
-  --text-dark:#e6f0ff;        /* 主文字：偏冷的白 */
-  --muted-dark:#7c8aaa;       /* 次要文字：灰蓝 */
-  --accent-dark:#29b6ff;      /* 高亮蓝：战网感 */
+  <style>
+    :root{
+      --bg-dark:#05060b;
+      --card-dark:#0b1018;
+      --border-dark:#202736;
+      --text-dark:#e6f0ff;
+      --muted-dark:#7c8aaa;
+      --accent-dark:#29b6ff;
 
-  /* 亮色主题：暗灰系亮色，不晃眼 */
-  --bg-light:#171920;         /* 页面背景：深一点的灰蓝 */
-  --card-light:#1f222b;       /* 卡片：比背景稍亮 */
-  --border-light:#2c3140;     /* 边框：中灰蓝 */
-  --text-light:#e4e7f5;       /* 文字：浅灰白 */
-  --muted-light:#8b94aa;      /* 次要文字：灰蓝 */
-  --accent-light:#3aa3ff;     /* 高亮蓝：柔一点 */
+      --bg-light:#171920;
+      --card-light:#1f222b;
+      --border-light:#2c3140;
+      --text-light:#e4e7f5;
+      --muted-light:#8b94aa;
+      --accent-light:#3aa3ff;
 
-  /* 当前实际使用（由 data-theme 决定） */
-  --bg:var(--bg-dark);
-  --card:var(--card-dark);
-  --border:var(--border-dark);
-  --text:var(--text-dark);
-  --muted:var(--muted-dark);
-  --accent:var(--accent-dark);
-}
+      --bg:var(--bg-dark);
+      --card:var(--card-dark);
+      --border:var(--border-dark);
+      --text:var(--text-dark);
+      --muted:var(--muted-dark);
+      --accent:var(--accent-dark);
+    }
 
-html[data-theme="dark"]{
-  --bg:var(--bg-dark);
-  --card:var(--card-dark);
-  --border:var(--border-dark);
-  --text:var(--text-dark);
-  --muted:var(--muted-dark);
-  --accent:var(--accent-dark);
-}
-html[data-theme="light"]{
-  --bg:var(--bg-light);
-  --card:var(--card-light);
-  --border:var(--border-light);
-  --text:var(--text-light);
-  --muted:var(--muted-light);
-  --accent:var(--accent-light);
-}
+    html[data-theme="dark"]{
+      --bg:var(--bg-dark);
+      --card:var(--card-dark);
+      --border:var(--border-dark);
+      --text:var(--text-dark);
+      --muted:var(--muted-dark);
+      --accent:var(--accent-dark);
+    }
+    html[data-theme="light"]{
+      --bg:var(--bg-light);
+      --card:var(--card-light);
+      --border:var(--border-light);
+      --text:var(--text-light);
+      --muted:var(--muted-light);
+      --accent:var(--accent-light);
+    }
 
-html,body{height:100%}
-body{
-  margin:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
+    }
+    html[data-theme="light"] body{
+      background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
+    }
 
-/* 暗色：黑 / 深蓝灰渐变 */
-html[data-theme="dark"] body{
-  background:
-    radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
-}
+    .wrap{
+      width:min(980px, 94vw);
+      margin:0 auto;
+      padding:28px 0 40px;
+    }
 
-/* 亮色：暗灰背景，中心稍亮 */
-html[data-theme="light"] body{
-  background:
-    radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
-}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand img{
+      width:40px;height:40px;border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    .brand .name{
+      font-weight:800;
+      letter-spacing:.03em;
+      white-space:nowrap;
+    }
+    .brand .sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
 
-/* 卡片整体更大 */
-.wrap{
-  width:min(640px,96vw);
-}
+    .top-controls{display:flex; align-items:center; gap:10px;}
+    .pill{
+      height:34px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      font-size:13px;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.45);
+      transition:transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+      text-decoration:none;
+      user-select:none;
+    }
+    html[data-theme="light"] .pill{
+      border-color:rgba(0,0,0,.55);
+      background:rgba(0,0,0,.30);
+      box-shadow:0 8px 18px rgba(0,0,0,.65);
+    }
+    .pill:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(0,0,0,.75);
+      background:rgba(0,0,0,.4);
+    }
 
-.card{
-  position:relative;
-  background:var(--card);
-  border-radius:24px;
-  padding:36px 30px 28px;
-  box-shadow:0 22px 52px rgba(0,0,0,.55);
-  overflow:hidden;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  padding:1px;
-  background:linear-gradient(135deg,
-    rgba(0,185,255,.8),
-    rgba(0,110,255,.65),
-    rgba(0,40,120,.7));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-          mask-composite:exclude;
-  opacity:.75;
-  pointer-events:none;
-}
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 28px 66px rgba(0,0,0,.78);
-}
+    .hero{
+      position:relative;
+      background:var(--card);
+      border-radius:26px;
+      padding:26px 22px;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 22px 52px rgba(0,0,0,.55);
+      overflow:hidden;
+      margin-bottom:16px;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background:linear-gradient(135deg,
+        rgba(0,185,255,.8),
+        rgba(0,110,255,.65),
+        rgba(0,40,120,.7));
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+              mask-composite:exclude;
+      opacity:.65;
+      pointer-events:none;
+    }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:26px;
-}
-.top-left{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-.top-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .hero h1{
+      margin:0 0 8px;
+      font-size:26px;
+      letter-spacing:.02em;
+    }
+    .hero p{
+      margin:0 0 16px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+      max-width:70ch;
+    }
 
-.logo-img{
-  width:40px;height:40px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.logo-img:hover{
-  transform:translateY(-1px);
-  box-shadow:0 0 18px rgba(35,168,255,.9);
-}
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:8px;
+    }
+    .btn{
+      padding:12px 16px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.08);
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      min-width:220px;
+      justify-content:center;
+    }
+    .btn:hover{ transform:translateY(-1px); box-shadow:0 0 12px rgba(35,168,255,.55); }
+    .btn.primary{
+      background:var(--accent);
+      border-color:transparent;
+      color:#fff;
+      box-shadow:0 0 18px rgba(35,168,255,.25);
+    }
+    .btn.primary:hover{ box-shadow:0 0 18px rgba(35,168,255,.75); }
 
-.title{
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:.03em;
-  white-space:nowrap;
-}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12, 1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+    .card{
+      grid-column:span 6;
+      background:var(--card);
+      border-radius:22px;
+      padding:18px 18px 16px;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .card h3{ margin:0 0 6px; font-size:16px; letter-spacing:.02em; }
+    .card p{ margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
 
-/* 顶部控制统一风格：EN / 🌙 / 菜单 */
-.top-control{
-  min-width:52px;
-  height:32px;
-  padding:0 14px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.25);
-  color:var(--text);
-  font-size:13px;
-  font-weight:600;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 8px 18px rgba(0,0,0,.45);
-  cursor:pointer;
-  transition:
-    background .15s ease,
-    box-shadow .15s ease,
-    transform .15s ease,
-    opacity .15s ease;
-}
-html[data-theme="light"] .top-control{
-  border-color:rgba(0,0,0,.55);
-  background:rgba(0,0,0,.30);
-  box-shadow:0 8px 18px rgba(0,0,0,.65);
-}
+    .steps{
+      margin-top:12px;
+      padding-left:18px;
+      color:var(--text);
+      font-size:13px;
+      line-height:1.7;
+    }
+    .steps li{ margin:6px 0; color:var(--muted); }
 
-.top-control:hover{
-  background:rgba(0,0,0,.4);
-  transform:translateY(-1px);
-  box-shadow:0 10px 22px rgba(0,0,0,.75);
-}
+    .mini-actions{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top:14px;
+    }
+    .mini{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.08);
+      color:var(--text);
+      font-weight:800;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      flex:1 1 160px;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .mini:hover{ transform:translateY(-1px); box-shadow:0 0 12px rgba(35,168,255,.55); }
 
-/* 语言选择：外观跟着 top-control，隐藏原生样式 */
-.lang-select{
-  appearance:none;
-  -moz-appearance:none;
-  -webkit-appearance:none;
-  border:none;
-  background:transparent;
-  padding:0 18px;
-  text-align:center;
-}
+    .notice{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
 
-/* 下拉列表项颜色 */
-.lang-select option{
-  background:#050b16;
-  color:#e8eefc;
-}
-html[data-theme="light"] .lang-select option{
-  background:#1a1d26;
-  color:#e4e7f5;
-}
+    .footer{
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      opacity:.85;
+      user-select:none;
+    }
 
-/* 主题按钮：只控制图标大小，其余由 top-control 保证 */
-.theme-toggle{
-  border:none;
-  background:transparent;
-  padding:0;
-  min-width:auto;
-  font-size:18px;
-}
-
-/* （预留）菜单按钮：同样风格 */
-.menu-toggle{
-  border:none;
-  background:transparent;
-  padding:0;
-  min-width:auto;
-  font-size:16px;
-}
-
-/* 验证码更大一些 */
-.code{
-  text-align:center;
-  font-family:ui-monospace,monospace;
-  font-size:76px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:32px 0 16px;
-}
-
-.hint{
-  text-align:center;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:18px;
-}
-#remain{
-  color:rgba(110,125,150,.9);
-}
-
-/* 进度条 */
-.barwrap{
-  height:12px;
-  background:rgba(255,255,255,.08);
-  border-radius:999px;
-  overflow:hidden;
-}
-html[data-theme="light"] .barwrap{
-  background:rgba(0,0,0,.35);
-}
-.bar{
-  height:100%;
-  width:0%;
-  background:var(--accent);
-  background-image:linear-gradient(90deg,
-    rgba(255,255,255,.4),
-    rgba(255,255,255,.9),
-    rgba(255,255,255,.4));
-  background-size:200% 100%;
-  animation:stripe 1.3s linear infinite;
-  transition:width .15s linear;
-}
-@keyframes stripe{
-  0%{background-position:0% 0}
-  100%{background-position:200% 0}
-}
-
-/* 输入提示文案 */
-.field-label{
-  margin-top:30px;
-  font-size:14px;
-  color:rgba(200,210,235,.96);
-  font-weight:600;
-}
-input{
-  width:100%;
-  box-sizing:border-box;
-  margin-top:10px;
-  padding:13px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.1);
-  color:var(--text);
-  font-family:ui-monospace,monospace;
-}
-html[data-theme="light"] input{
-  background:rgba(255,255,255,.04);
-}
-input::placeholder{
-  color:rgba(159,176,200,.7);
-}
-html[data-theme="light"] input::placeholder{
-  color:rgba(180,190,210,.7);
-}
-
-/* 按钮行整体更宽松 */
-.row{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  margin-top:26px;
-}
-button{
-  padding:11px 18px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.08);
-  color:var(--text);
-  cursor:pointer;
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
-  min-width:120px;
-}
-button.primary{
-  background:var(--accent);
-  border-color:transparent;
-  color:#fff;
-}
-button.primary:hover{
-  box-shadow:0 0 16px rgba(35,168,255,.9);
-  transform:translateY(-1px);
-}
-button:not(.primary):hover{
-  box-shadow:0 0 10px rgba(35,168,255,.6);
-  transform:translateY(-1px);
-}
-
-/* 状态文案 */
-.status{
-  margin-top:12px;
-  text-align:center;
-  font-size:12px;
-  min-height:18px;
-}
-.status.ok{color:#4cd18c;}
-.status.err{color:#ff6b6b;}
-
-/* 底部版权 */
-.footer{
-  margin-top:20px;
-  font-size:12px;
-  color:var(--muted);
-  text-align:center;
-  user-select:none;
-  opacity:.8;
-}
-
-/* 手机适配 */
-@media (max-width:480px){
-  .wrap{
-    width:92vw;
-  }
-  .card{
-    padding:20px 14px 16px;
-    border-radius:20px;
-  }
-  .title{font-size:15px}
-  .code{
-    font-size:clamp(36px,11vw,48px);
-    letter-spacing:4px;
-  }
-  .row{
-    flex-direction:column;
-  }
-  button{
-    width:100%;
-    min-width:0;
-  }
-  .logo-img{
-    width:32px;height:32px;
-    border-radius:12px;
-  }
-}
-</style>
+    @media (max-width:760px){
+      .card{ grid-column:span 12; }
+      .btn{ min-width:0; width:100%; }
+      .topbar{ flex-direction:column; align-items:flex-start; }
+      .top-controls{ width:100%; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="top">
-      <div class="top-left">
-        <img src="logo.png" class="logo-img" alt="Battle.net Logo">
-        <div class="title" id="titleText">Battle.net Authenticator</div>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Roshine Logo" />
+        <div>
+          <div class="name">Roshine.love</div>
+          <div class="sub">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
+        </div>
       </div>
-      <div class="top-right">
-        <select id="langSelect" class="lang-select top-control">
-          <option value="en">EN</option>
-          <option value="zh">中文</option>
-          <option value="fr">FR</option>
-          <option value="de">DE</option>
-          <option value="ru">RU</option>
-          <option value="it">IT</option>
-          <option value="ar">العربية</option>
-        </select>
 
-        <button class="theme-toggle top-control" id="themeToggle">☀️</button>
-
-        <!-- 预留菜单按钮示例（如果将来要用，解开注释）
-        <button class="menu-toggle top-control" id="menuToggle">☰</button>
-        -->
+      <div class="top-controls">
+        <button class="pill" id="themeToggle" title="Theme">☀️</button>
+        <a class="pill" href="/auth/" title="Authenticator">安全令工具</a>
       </div>
     </div>
 
-    <div class="code" id="code">--------</div>
-    <div class="hint" id="remain"></div>
-    <div class="barwrap"><div class="bar" id="bar"></div></div>
+    <div class="hero">
+      <h1>挑账号 → 私聊下单 → 交付与验号</h1>
+      <p>
+        账号都在 Google Sheet 列表中展示。你先筛选喜欢的账号（段位/皮肤/价格等），
+        然后进 Discord 把“账号编号/截图”发我完成购买。需要安全令验证码的，点右上角“安全令工具”即可。
+      </p>
 
-    <div class="field-label" id="secretLabel">Please enter your Private Key!</div>
-    <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+      <div class="cta-row">
+        <a class="btn primary" target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
+          📄 打开账号列表（Google Sheet）
+        </a>
+        <a class="btn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
+          💬 加入 Discord 联系购买
+        </a>
+      </div>
 
-    <div class="row">
-      <button class="primary" id="copy">Copy Code</button>
-      <button id="clear">Clear Key</button>
+      <div class="notice">
+        提醒：账号交易可能与游戏/平台服务条款存在冲突风险。你需要自行评估并承担相应风险；站点仅提供信息与沟通入口。
+      </div>
     </div>
 
-    <div class="status" id="status"></div>
+    <div class="grid">
+      <div class="card">
+        <h3>购买流程</h3>
+        <p>把路径做得极短：看列表 → 选中 → Discord 私聊 → 付款 → 交付。</p>
+        <ol class="steps">
+          <li>点击上方“账号列表”，按价格/皮肤/段位筛选。</li>
+          <li>记录账号编号（或截图你想要的行）。</li>
+          <li>点击“Discord”，把编号/截图发我，确认库存与价格。</li>
+          <li>完成付款后交付登录信息，并协助检查与设置。</li>
+          <li>如需安全令验证码：用右上角“安全令工具”。</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h3>常见问题</h3>
+        <p>减少来回问答，提高转化。</p>
+        <ol class="steps">
+          <li>“列表多久更新？”：以 Sheet 为准，售出会尽快标记。</li>
+          <li>“能不能先验？”：Discord 里沟通你要看的点（皮肤/历史等）。</li>
+          <li>“安全吗？”：安全令工具不存储你的 key（纯前端本地运算）。</li>
+          <li>“怎么用安全令？”：进入工具页，粘贴 Private Key，复制验证码。</li>
+        </ol>
+
+        <div class="mini-actions">
+          <a class="mini" href="/auth/">🔐 打开安全令工具</a>
+          <a class="mini" target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">📌 查看库存</a>
+          <a class="mini" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">🧾 立即下单</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" id="footer"></div>
   </div>
-</div>
 
-<div class="footer" id="footer"></div>
+  <script>
+    const THEME_MODE_KEY = "theme-mode"; // system / light / dark
+    const THEME_KEY = "theme-choice";    // light / dark
 
-<script>
-const DIGITS = 8;
-const PERIOD = 30;
-const THEME_KEY = "theme-choice";       // 实际 data-theme
-const THEME_MODE_KEY = "theme-mode";    // system / light / dark
-const LANG_KEY  = "locale-choice";
-const $ = id => document.getElementById(id);
-
-/* 多语言文案 */
-const i18n = {
-  en: {
-    title: "Battle.net Authenticator",
-    secretLabel: "Please enter your Private Key!",
-    placeholder: "Private Key",
-    copy: "Copy Code",
-    clear: "Clear Key",
-    copied: "Copied",
-    copyBlocked: "Copy blocked",
-    enterKeyError: "Enter Your Private Key",
-    invalidKey: "Invalid Private Key",
-    footer: "© {year} Roshine — Overwatch Store. All rights reserved."
-  },
-  zh: {
-    title: "战网安全令",
-    secretLabel: "请输入你的安全令秘钥！",
-    placeholder: "安全令秘钥",
-    copy: "复制验证码",
-    clear: "清空秘钥",
-    copied: "已复制验证码",
-    copyBlocked: "浏览器禁止复制",
-    enterKeyError: "请输入安全令秘钥",
-    invalidKey: "无效的安全令秘钥",
-    footer: "© {year} Roshine — Overwatch 商店。保留所有权利。"
-  },
-  fr: {
-    title: "Jeton de sécurité Battle.net",
-    secretLabel: "Veuillez entrer votre clé secrète de sécurité !",
-    placeholder: "Clé secrète de sécurité",
-    copy: "Copier le code",
-    clear: "Effacer la clé",
-    copied: "Code copié",
-    copyBlocked: "Copie bloquée par le navigateur",
-    enterKeyError: "Veuillez entrer votre clé secrète de sécurité",
-    invalidKey: "Clé secrète de sécurité invalide",
-    footer: "© {year} Roshine — Boutique Overwatch. Tous droits réservés."
-  },
-  de: {
-    title: "Battle.net-Sicherheitstoken",
-    secretLabel: "Bitte gib deinen Sicherheitsschlüssel ein!",
-    placeholder: "Sicherheitsschlüssel",
-    copy: "Code kopieren",
-    clear: "Schlüssel löschen",
-    copied: "Code kopiert",
-    copyBlocked: "Kopieren vom Browser blockiert",
-    enterKeyError: "Bitte gib deinen Sicherheitsschlüssel ein",
-    invalidKey: "Ungültiger Sicherheitsschlüssel",
-    footer: "© {year} Roshine — Overwatch-Shop. Alle Rechte vorbehalten."
-  },
-  ru: {
-    title: "Токен безопасности Battle.net",
-    secretLabel: "Введите ключ токена безопасности!",
-    placeholder: "Ключ токена безопасности",
-    copy: "Скопировать код",
-    clear: "Очистить ключ",
-    copied: "Код скопирован",
-    copyBlocked: "Браузер запретил копирование",
-    enterKeyError: "Введите ключ токена безопасности",
-    invalidKey: "Недействительный ключ токена безопасности",
-    footer: "© {year} Roshine — магазин Overwatch. Все права защищены."
-  },
-  it: {
-    title: "Token di sicurezza Battle.net",
-    secretLabel: "Inserisci la chiave del tuo token di sicurezza!",
-    placeholder: "Chiave token di sicurezza",
-    copy: "Copia codice",
-    clear: "Cancella chiave",
-    copied: "Codice copiato",
-    copyBlocked: "Copia bloccata dal browser",
-    enterKeyError: "Inserisci la chiave del tuo token di sicurezza",
-    invalidKey: "Chiave del token di sicurezza non valida",
-    footer: "© {year} Roshine — Negozio Overwatch. Tutti i diritti riservati."
-  },
-  ar: {
-    title: "رمز أمان Battle.net",
-    secretLabel: "يرجى إدخال مفتاح رمز الأمان الخاص بك!",
-    placeholder: "مفتاح رمز الأمان",
-    copy: "نسخ الرمز",
-    clear: "مسح المفتاح",
-    copied: "تم نسخ الرمز",
-    copyBlocked: "لم يتم السماح بالنسخ",
-    enterKeyError: "أدخل مفتاح رمز الأمان",
-    invalidKey: "مفتاح رمز الأمان غير صالح",
-    footer: "© {year} Roshine — متجر أوفرووتش. جميع الحقوق محفوظة."
-  }
-};
-
-let currentLang = "en";
-const t = key => {
-  const dict = i18n[currentLang] || i18n.en;
-  return dict[key] || i18n.en[key] || key;
-};
-
-/* 支持 ?key= 和 /hex 两种方式 */
-function getKeyFromURL(){
-  const u = new URL(location.href);
-  const paramKey = u.searchParams.get("key");
-  if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
-
-  const parts = u.pathname.split("/").filter(Boolean);
-  if (parts.length){
-    const last = parts[parts.length - 1];
-    if (/^[0-9a-fA-F]+$/.test(last)) return last;
-  }
-  return null;
-}
-
-/* 语言初始化与应用 */
-function applyLang(lang){
-  if (!i18n[lang]) lang = "en";
-  currentLang = lang;
-
-  document.documentElement.lang = lang;
-  document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
-
-  const sel = $("langSelect");
-  if (sel) sel.value = lang;
-
-  $("titleText").textContent   = t("title");
-  $("secretLabel").textContent = t("secretLabel");
-  $("secret").placeholder      = t("placeholder");
-  $("copy").textContent        = t("copy");
-  $("clear").textContent       = t("clear");
-
-  const year = new Date().getFullYear();
-  $("footer").textContent = t("footer").replace("{year}", year);
-}
-
-(function initLang(){
-  const saved = localStorage.getItem(LANG_KEY);
-  let lang = saved;
-  if (!lang){
-    const nav = (navigator.language || navigator.userLanguage || "en").toLowerCase();
-    if (nav.startsWith("zh")) lang = "zh";
-    else if (nav.startsWith("fr")) lang = "fr";
-    else if (nav.startsWith("de")) lang = "de";
-    else if (nav.startsWith("ru")) lang = "ru";
-    else if (nav.startsWith("it")) lang = "it";
-    else if (nav.startsWith("ar")) lang = "ar";
-    else lang = "en";
-  }
-  applyLang(lang);
-})();
-
-$("langSelect").addEventListener("change", e => {
-  const lang = e.target.value;
-  applyLang(lang);
-  localStorage.setItem(LANG_KEY, lang);
-});
-
-/* 主题切换：按钮显示“将切换到的主题”图标 */
-function applyTheme(theme){
-  document.documentElement.setAttribute("data-theme", theme);
-  const btn = $("themeToggle");
-  if (!btn) return;
-  btn.textContent = theme === "dark" ? "☀️" : "🌙";
-}
-
-// 根据系统偏好返回 "light" 或 "dark"
-function getSystemTheme(){
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
-}
-
-// 初始化主题 & 监听系统变化（支持 system / light / dark 三种模式）
-(function initTheme(){
-  let mode  = localStorage.getItem(THEME_MODE_KEY);  // system / light / dark
-  let theme = localStorage.getItem(THEME_KEY);       // 实际 data-theme
-
-  if (!mode){
-    // 第一次访问：默认跟随系统
-    mode = "system";
-    theme = getSystemTheme();
-    localStorage.setItem(THEME_MODE_KEY, mode);
-    localStorage.setItem(THEME_KEY, theme);
-  }else{
-    // 已经存过：如果是 system 就再取一下当前系统主题
-    if (mode === "system"){
-      theme = getSystemTheme();
-      localStorage.setItem(THEME_KEY, theme);
-    }else if (!theme){
-      // 容错：mode 有但 theme 没有
-      theme = mode === "dark" ? "dark" : "light";
-      localStorage.setItem(THEME_KEY, theme);
+    function getSystemTheme(){
+      const prefersDark = window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return prefersDark ? "dark" : "light";
     }
-  }
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      const btn = document.getElementById("themeToggle");
+      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
 
-  applyTheme(theme);
+    (function initTheme(){
+      let mode  = localStorage.getItem(THEME_MODE_KEY);
+      let theme = localStorage.getItem(THEME_KEY);
 
-  // 监听系统主题变化：只有在 mode === system 时才自动切
-  if (window.matchMedia){
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    mq.addEventListener("change", e => {
-      const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
-      if (currentMode !== "system") return;
-      const nextTheme = e.matches ? "dark" : "light";
-      localStorage.setItem(THEME_KEY, nextTheme);
-      applyTheme(nextTheme);
+      if (!mode){
+        mode = "system";
+        theme = getSystemTheme();
+        localStorage.setItem(THEME_MODE_KEY, mode);
+        localStorage.setItem(THEME_KEY, theme);
+      }else{
+        if (mode === "system"){
+          theme = getSystemTheme();
+          localStorage.setItem(THEME_KEY, theme);
+        }else if (!theme){
+          theme = mode === "dark" ? "dark" : "light";
+          localStorage.setItem(THEME_KEY, theme);
+        }
+      }
+      applyTheme(theme);
+
+      if (window.matchMedia){
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        mq.addEventListener("change", e => {
+          const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
+          if (currentMode !== "system") return;
+          const nextTheme = e.matches ? "dark" : "light";
+          localStorage.setItem(THEME_KEY, nextTheme);
+          applyTheme(nextTheme);
+        });
+      }
+    })();
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
+      let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
+
+      if (mode === "system"){ mode = "dark"; theme = "dark"; }
+      else if (mode === "dark"){ mode = "light"; theme = "light"; }
+      else { mode = "system"; theme = getSystemTheme(); }
+
+      localStorage.setItem(THEME_MODE_KEY, mode);
+      localStorage.setItem(THEME_KEY, theme);
+      applyTheme(theme);
     });
-  }
-})();
 
-// 三态切换：system -> dark -> light -> system
-$("themeToggle").addEventListener("click", () => {
-  let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
-  let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
-
-  if (mode === "system"){
-    mode  = "dark";
-    theme = "dark";
-  }else if (mode === "dark"){
-    mode  = "light";
-    theme = "light";
-  }else{ // mode === "light"
-    mode  = "system";
-    theme = getSystemTheme();
-  }
-
-  localStorage.setItem(THEME_MODE_KEY, mode);
-  localStorage.setItem(THEME_KEY, theme);
-  applyTheme(theme);
-});
-
-/* TOTP 逻辑 */
-function hexToBytes(s){
-  s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
-  if (!s) throw new Error("ERR_EMPTY_KEY");
-  if (s.length % 2) throw new Error("ERR_INVALID_KEY");
-  return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
-}
-function counterBytes(c){
-  const b = new Uint8Array(8); let x = BigInt(c);
-  for (let i = 7; i >= 0; i--){
-    b[i] = Number(x & 0xffn);
-    x >>= 8n;
-  }
-  return b;
-}
-async function hmacSha1(key,msg){
-  const k = await crypto.subtle.importKey(
-    "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
-  );
-  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
-}
-function truncate(mac){
-  const o = mac[mac.length - 1] & 0x0f;
-  return (((mac[o]   & 0x7f) << 24) |
-          ((mac[o+1] & 0xff) << 16) |
-          ((mac[o+2] & 0xff) << 8)  |
-          ( mac[o+3] & 0xff)) >>> 0;
-}
-function fmt(n){
-  const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
-  return raw.slice(0,4) + " " + raw.slice(4);
-}
-
-async function gen(){
-  const statusEl = $("status");
-  try{
-    const key = hexToBytes($("secret").value);
-    const ctr = Math.floor(Date.now()/1000 / PERIOD);
-    const mac = await hmacSha1(key, counterBytes(ctr));
-    $("code").textContent = fmt(truncate(mac));
-    if (statusEl){
-      statusEl.textContent = "";
-      statusEl.classList.remove("err","ok");
-    }
-  }catch(e){
-    $("code").textContent = "--------";
-    if (!statusEl) return;
-    let msg;
-    if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
-    else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
-    else msg = e.message;
-    statusEl.textContent = msg;
-    statusEl.classList.add("err");
-    statusEl.classList.remove("ok");
-  }
-}
-
-/* 进度条 & 剩余时间 */
-function tick(){
-  const s   = Math.floor(Date.now()/1000);
-  const rem = PERIOD - (s % PERIOD);
-  $("remain").textContent = `${rem}s`;
-  $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
-}
-
-let last = -1;
-setInterval(() => {
-  tick();
-  const s = Math.floor(Date.now()/1000);
-  if (s !== last){
-    last = s;
-    gen();
-  }
-}, 150);
-
-/* 输入 & 按钮事件 */
-$("secret").addEventListener("input", gen);
-
-$("copy").addEventListener("click", async () => {
-  const v = $("code").textContent;
-  const statusEl = $("status");
-  if (v.includes("-")) return;
-  try{
-    await navigator.clipboard.writeText(v.replace(/\s/g,""));
-    if (statusEl){
-      statusEl.textContent = t("copied");
-      statusEl.classList.remove("err");
-      statusEl.classList.add("ok");
-    }
-  }catch{
-    if (statusEl){
-      statusEl.textContent = t("copyBlocked");
-      statusEl.classList.remove("ok");
-      statusEl.classList.add("err");
-    }
-  }
-});
-
-$("clear").addEventListener("click", () => {
-  $("secret").value = "";
-  $("code").textContent = "--------";
-  const statusEl = $("status");
-  if (statusEl){
-    statusEl.textContent = "";
-    statusEl.classList.remove("err","ok");
-  }
-});
-
-/* 初始化：URL 中有 key 就预填（支持 ?key= 与 /hex） */
-const urlKey = getKeyFromURL();
-if (urlKey){
-  $("secret").value = urlKey;
-}
-
-tick();
-gen();
-</script>
+    // footer
+    document.getElementById("footer").textContent =
+      `© ${new Date().getFullYear()} Roshine.love — Overwatch Store. All rights reserved.`;
+  </script>
 </body>
 </html>
