@@ -1,409 +1,471 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Roshine Account Store</title>
   <link rel="icon" href="/assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;800;900&display=swap">
 
   <style>
     :root{
       --bg:#05060b;
-      --text:#e6f0ff;
-      --muted:#7c8aaa;
-      --glass: rgba(12,16,24,.62);
-      --glass2: rgba(12,16,24,.46);
-      --stroke: rgba(120,170,255,.16);
-      --stroke2: rgba(255,255,255,.08);
+      --text:#e7efff;
+      --muted:#9aa8c6;
+      --muted2:#7c8aaa;
       --accent:#29b6ff;
-      --accent2:#7a5cff;
-      --shadow: 0 24px 70px rgba(0,0,0,.62);
-      --radius: 22px;
+
+      --glass: rgba(12, 16, 28, .42);
+      --glass2: rgba(10, 14, 22, .30);
+
+      --line: rgba(120,170,255,.14);
+      --line2: rgba(255,255,255,.06);
+
+      --shadow: 0 26px 72px rgba(0,0,0,.62);
+      --shadow2: 0 10px 26px rgba(0,0,0,.42);
+
+      --r: 22px;
+      --r2: 999px;
+
+      --w: min(1100px, 92vw);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      font-family:"Titillium Web", system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
-      background: #05060b;
+      background:
+        radial-gradient(1200px 800px at 50% -10%, rgba(80,120,190,.22), transparent 62%),
+        radial-gradient(900px 600px at 20% 30%, rgba(41,182,255,.10), transparent 60%),
+        radial-gradient(900px 600px at 80% 35%, rgba(120,70,170,.10), transparent 60%),
+        radial-gradient(900px 700px at 50% 120%, rgba(20,30,60,.25), transparent 60%),
+        #05060b;
       overflow-x:hidden;
     }
 
-    /* Deadcell-ish cinematic background (no external assets) */
+    /* subtle grid + scanline (deadcell-like, restrained) */
     body::before{
       content:"";
-      position:fixed; inset:-20%;
+      position:fixed; inset:0;
+      pointer-events:none;
       background:
-        radial-gradient(1000px 600px at 18% 12%, rgba(41,182,255,.16), transparent 60%),
-        radial-gradient(900px 520px at 78% 18%, rgba(122,92,255,.12), transparent 62%),
-        radial-gradient(900px 600px at 50% 70%, rgba(41,182,255,.08), transparent 60%),
         linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size:auto,auto,auto,56px 56px,56px 56px;
-      filter: blur(0px);
-      opacity:.55;
-      pointer-events:none;
-      z-index:0;
-      transform: translateZ(0);
+      background-size:56px 56px;
+      opacity:.20;
+      mix-blend-mode:screen;
     }
     body::after{
       content:"";
       position:fixed; inset:0;
+      pointer-events:none;
       background:
-        radial-gradient(70% 60% at 50% 40%, rgba(0,0,0,.00), rgba(0,0,0,.72) 65%, rgba(0,0,0,.90) 100%),
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,.03),
-          rgba(255,255,255,.03) 1px,
+          rgba(255,255,255,.05),
+          rgba(255,255,255,.05) 1px,
           transparent 1px,
-          transparent 9px
+          transparent 10px
         );
-      opacity:.08;
-      pointer-events:none;
-      z-index:0;
+      opacity:.05;
     }
 
-    .wrap{
-      width:min(1040px, 92vw);
-      margin:0 auto;
-      padding:18px 0 80px;
-      position:relative;
-      z-index:1;
-    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 72px; position:relative; z-index:1; }
 
-    /* Top floating glass bar */
-    .topbar{
+    /* top nav glass pill */
+    .top{
       position:sticky;
       top:14px;
-      z-index:20;
+      z-index:50;
+      display:flex;
+      justify-content:center;
+      padding:0 0 14px;
+    }
+
+    .topbar{
+      width:var(--w);
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
       padding:10px 12px;
-      border-radius:999px;
-      background: linear-gradient(180deg, rgba(12,16,24,.66), rgba(12,16,24,.40));
-      border:1px solid var(--stroke);
-      box-shadow: 0 14px 42px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05) inset;
+      border-radius:var(--r2);
+      background:linear-gradient(180deg, rgba(18,22,34,.55), rgba(10,12,18,.42));
+      border:1px solid var(--line2);
+      box-shadow: var(--shadow2);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-      padding:6px 10px;
-      border-radius:999px;
+      display:flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
-      background: rgba(0,0,0,.18);
-    }
-    .brand img{
-      width:30px; height:30px;
-      border-radius:12px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.45);
+      min-width:0;
       flex:0 0 auto;
     }
-    .brand .title{
+    .brand img{
+      width:22px; height:22px; border-radius:10px;
+      box-shadow:0 10px 20px rgba(0,0,0,.45);
+      flex:0 0 auto;
+    }
+    .brand .name{
       font-weight:900;
       letter-spacing:.06em;
-      font-size:13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
       text-transform:uppercase;
-      opacity:.95;
+      font-size:12px;
+      white-space:nowrap;
     }
 
-    .controls{
-      display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
+    .nav{
+      flex:1 1 auto;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+      padding:0 10px;
+      min-width:0;
+    }
+    .nav a{
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(231,239,255,.78);
+      padding:10px 10px;
+      border-radius:12px;
+      transition: background .15s ease, color .15s ease, transform .15s ease;
+    }
+    .nav a:hover{
+      background:rgba(255,255,255,.04);
+      color:rgba(231,239,255,.95);
+      transform: translateY(-1px);
+    }
+
+    .right{
+      display:flex; align-items:center; gap:10px;
+      flex:0 0 auto;
     }
 
     .pill{
-      height:36px;
+      height:38px;
       padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
+      border-radius:var(--r2);
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(0,0,0,.18);
+      color:rgba(231,239,255,.90);
+      font-weight:900;
+      letter-spacing:.06em;
+      font-size:12px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      font-weight:900;
-      letter-spacing:.03em;
-      text-decoration:none;
-      user-select:none;
-      cursor:pointer;
-      box-shadow: 0 10px 26px rgba(0,0,0,.45);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.38);
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
     }
     .pill:hover{
-      transform: translateY(-1px);
-      background: rgba(0,0,0,.26);
-      box-shadow: 0 14px 34px rgba(0,0,0,.62), 0 0 18px rgba(41,182,255,.12);
+      transform:translateY(-1px);
+      box-shadow:0 14px 30px rgba(0,0,0,.55);
+      background:rgba(0,0,0,.26);
     }
 
     select.pill{
       appearance:none;
       -webkit-appearance:none;
       -moz-appearance:none;
-      padding:0 18px;
+      padding:0 16px;
+      text-align:center;
     }
     select.pill option{
-      background:#050b16;
-      color:#e8eefc;
+      background:#070a12;
+      color:#e7efff;
     }
 
-    /* Fullscreen hero */
+    .auth-pill{
+      gap:8px;
+      padding:0 16px;
+    }
+    .auth-ico{
+      width:16px; height:16px;
+      display:inline-block;
+      object-fit:contain;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,.55));
+      opacity:.92;
+    }
+
+    /* hero */
     .hero{
-      min-height: calc(100vh - 140px);
+      min-height: calc(100svh - 130px);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:34px 0 24px;
+      padding: 40px 0 30px;
     }
 
     .hero-inner{
       width:100%;
-      border-radius: calc(var(--radius) + 10px);
-      background: linear-gradient(180deg, rgba(12,16,24,.62), rgba(12,16,24,.35));
-      border:1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-      backdrop-filter: blur(16px);
-      padding: clamp(22px, 4vw, 42px);
-    }
-    .hero-inner::before{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:inherit;
-      padding:1px;
-      background: linear-gradient(135deg, rgba(41,182,255,.55), rgba(122,92,255,.30), rgba(41,182,255,.35));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-              mask-composite:exclude;
-      opacity:.65;
-      pointer-events:none;
-    }
-    .hero-inner::after{
-      content:"";
-      position:absolute;
-      left:-25%;
-      top:-40%;
-      width:150%;
-      height:150%;
-      background: linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
-      transform: rotate(8deg);
-      animation: sweep 7.5s linear infinite;
-      opacity:.40;
-      pointer-events:none;
-    }
-    @keyframes sweep{
-      0%{ transform:translateX(-40%) rotate(8deg); opacity:0; }
-      14%{ opacity:.45; }
-      70%{ opacity:.18; }
-      100%{ transform:translateX(40%) rotate(8deg); opacity:0; }
+      text-align:center;
     }
 
     .kicker{
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      padding:7px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-      color: rgba(230,240,255,.92);
+      gap:8px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      color:rgba(231,239,255,.72);
       font-weight:800;
-      letter-spacing:.06em;
+      letter-spacing:.08em;
       text-transform:uppercase;
       font-size:12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      margin-bottom:16px;
     }
-    .hero h1{
-      margin:14px 0 10px;
-      font-size: clamp(30px, 5vw, 54px);
-      line-height:1.02;
-      letter-spacing:.04em;
+
+    .title{
+      margin:0;
+      font-size: clamp(44px, 7vw, 84px);
       font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(231,239,255,.88);
+      text-shadow: 0 30px 90px rgba(0,0,0,.75);
     }
-    .hero p{
-      margin:0 0 18px;
-      max-width: 78ch;
-      color: rgba(124,138,170,.95);
-      line-height:1.65;
-      font-size: 15px;
+    .subline{
+      margin:14px auto 0;
+      max-width: 74ch;
+      color: rgba(154,168,198,.92);
+      font-size: 16px;
+      line-height:1.75;
     }
 
     .cta{
+      margin-top:22px;
       display:flex;
+      justify-content:center;
+      gap:12px;
       flex-wrap:wrap;
-      gap:14px;
-      margin-top:16px;
     }
     .btn{
-      height:48px;
+      min-width: 220px;
+      height: 48px;
       padding:0 18px;
       border-radius:16px;
-      border:1px solid rgba(120,170,255,.18);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.18);
+      color:rgba(231,239,255,.92);
       font-weight:900;
-      letter-spacing:.02em;
-      text-decoration:none;
+      letter-spacing:.04em;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      min-width: 240px;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 18px 48px rgba(0,0,0,.45);
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
     .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(0,0,0,.24);
-      box-shadow: 0 0 22px rgba(41,182,255,.18);
+      transform:translateY(-1px);
+      background:rgba(0,0,0,.26);
+      box-shadow: 0 22px 56px rgba(0,0,0,.62);
     }
     .btn.primary{
-      background: linear-gradient(90deg, rgba(41,182,255,.92), rgba(122,92,255,.72));
-      border-color: transparent;
-      color:#fff;
-      box-shadow: 0 16px 40px rgba(41,182,255,.18);
+      background: linear-gradient(180deg, rgba(41,182,255,.95), rgba(41,182,255,.70));
+      border-color: rgba(255,255,255,.10);
+      color:#001019;
+      box-shadow: 0 22px 60px rgba(41,182,255,.18);
     }
     .btn.primary:hover{
-      box-shadow: 0 0 28px rgba(41,182,255,.32);
+      box-shadow: 0 28px 70px rgba(41,182,255,.28);
     }
 
-    /* Sections (no “card grid” layout, just spaced glass blocks) */
-    .sections{
-      margin-top: 22px;
-      display:flex;
-      flex-direction:column;
-      gap:18px; /* consistent spacing */
-    }
-    .section{
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(12,16,24,.54), rgba(12,16,24,.30));
-      border:1px solid rgba(120,170,255,.14);
-      box-shadow: 0 18px 54px rgba(0,0,0,.52);
-      backdrop-filter: blur(16px);
-      padding: 22px 22px;
-      position:relative;
-      overflow:hidden;
-    }
-    .section::before{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:inherit;
-      padding:1px;
-      background: linear-gradient(135deg, rgba(41,182,255,.34), rgba(255,255,255,.08), rgba(122,92,255,.20));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-              mask-composite:exclude;
-      opacity:.55;
-      pointer-events:none;
-    }
-
-    .h2{
-      margin:0 0 10px;
-      font-size: 18px;
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .h2 .dot{
-      width:8px; height:8px;
+    .scrollhint{
+      margin:26px auto 0;
+      width:34px; height:34px;
       border-radius:999px;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(41,182,255,.55);
-      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.02);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(231,239,255,.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(6px); }
+    }
+
+    /* sections */
+    section{
+      padding: 84px 0 0;
+    }
+    .section-head{
+      text-align:center;
+      margin:0 auto 20px;
+      width:min(900px, 92vw);
+    }
+    .section-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      color:rgba(231,239,255,.70);
+      font-weight:800;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .section-title{
+      margin:14px 0 0;
+      font-size: clamp(32px, 4.2vw, 54px);
+      font-weight:900;
+      letter-spacing:.02em;
+      color:rgba(231,239,255,.86);
+    }
+    .section-desc{
+      margin:10px auto 0;
+      max-width: 78ch;
+      color: rgba(154,168,198,.90);
+      font-size: 15px;
+      line-height:1.75;
+    }
+
+    .glass-block{
+      width: min(980px, 92vw);
+      margin: 26px auto 0;
+      padding: 22px 20px;
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.06);
     }
 
     .list{
       margin:0;
-      padding-left:18px;
-      color: rgba(124,138,170,.98);
+      padding:0 0 0 18px;
+      text-align:left;
+      color: rgba(154,168,198,.92);
+      font-size: 14px;
       line-height:1.8;
-      font-size:14px;
     }
-    .list li{ margin:8px 0; }
+    .list li{ margin:10px 0; }
 
-    .mini{
+    .section-actions{
       display:flex;
-      flex-wrap:wrap;
       gap:12px;
-      margin-top:14px;
-    }
-    .mini a{
-      flex: 1 1 220px;
-      height:44px;
-      border-radius:16px;
-      border:1px solid rgba(120,170,255,.18);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
-      font-weight:900;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
       justify-content:center;
-      gap:10px;
-      backdrop-filter: blur(12px);
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .mini a:hover{
-      transform: translateY(-1px);
-      background: rgba(0,0,0,.24);
-      box-shadow: 0 0 20px rgba(41,182,255,.16);
+      flex-wrap:wrap;
+      margin-top:16px;
     }
 
+    /* contact */
+    .contact-row{
+      display:flex;
+      justify-content:center;
+      margin-top:16px;
+    }
+
+    /* footer */
     .footer{
-      margin-top:20px;
+      margin-top: 86px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.06);
       text-align:center;
-      color: rgba(124,138,170,.86);
+      color: rgba(154,168,198,.78);
+    }
+    .footer .line1{
+      font-weight:800;
+      letter-spacing:.04em;
+      color: rgba(231,239,255,.72);
+      margin-bottom:8px;
+    }
+    .footer .line2{
       font-size:12px;
-      opacity:.9;
-      user-select:none;
+      line-height:1.6;
+      color: rgba(154,168,198,.72);
     }
 
-    /* Mobile */
-    @media (max-width:760px){
-      .wrap{ width:min(980px, 92vw); padding-bottom:64px; }
-      .topbar{ top:10px; padding:10px; gap:10px; }
-      .brand{ padding:6px 8px; }
-      .brand .title{ font-size:12px; }
-      .pill{ height:34px; padding:0 12px; }
-      .hero{ min-height: calc(100vh - 120px); padding:22px 0 14px; }
-      .btn{ min-width:0; width:100%; height:50px; }
-      .section{ padding:18px 16px; }
-      .mini a{ width:100%; flex:1 1 auto; }
+    /* mobile */
+    @media (max-width: 900px){
+      .nav{ gap:10px; }
+      .nav a{ padding:10px 8px; }
     }
-
-    /* RTL niceties */
-    html[dir="rtl"] .brand{ flex-direction: row-reverse; }
-    html[dir="rtl"] .controls{ flex-direction: row-reverse; }
-    html[dir="rtl"] .cta{ justify-content:flex-start; }
-    html[dir="rtl"] .kicker{ direction:rtl; }
+    @media (max-width: 760px){
+      .top{ top:10px; }
+      .topbar{
+        flex-wrap:wrap;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px;
+      }
+      .brand{ flex:1 1 auto; }
+      .nav{
+        order:3;
+        width:100%;
+        justify-content:space-between;
+        gap:6px;
+        padding:0;
+      }
+      .nav a{
+        flex:1 1 auto;
+        text-align:center;
+        font-size:11px;
+        padding:10px 6px;
+      }
+      .right{ order:2; margin-left:auto; }
+      .pill{ height:36px; }
+      .btn{ width:100%; min-width:0; }
+      section{ padding-top: 68px; }
+      .glass-block{ padding:18px 16px; }
+    }
+    @media (max-width: 380px){
+      .brand .name{ font-size:11px; }
+      .pill{ padding:0 12px; }
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand" aria-label="brand">
-        <img src="/assets/logo.png" alt="Roshine Logo" />
-        <div class="title" id="brandTitle">ROSHINE ACCOUNT STORE.</div>
+  <!-- Sticky Top -->
+  <div class="top" id="home">
+    <div class="topbar" role="navigation" aria-label="Top navigation">
+      <div class="brand" aria-label="Brand">
+        <img src="/assets/logo.png" alt="Logo">
+        <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
       </div>
 
-      <div class="controls">
-        <!-- LANG: EN / FR / DE / AR / 中文(最后) -->
-        <select id="langSelect" class="pill" title="Language">
+      <nav class="nav" aria-label="Primary">
+        <a href="#home" id="navHome">Home</a>
+        <a href="#services" id="navServices">Services</a>
+        <a href="#warranty" id="navWarranty">Warranty</a>
+        <a href="#faq" id="navFaq">FAQ</a>
+        <a href="#contact" id="navContact">Contact</a>
+      </nav>
+
+      <div class="right">
+        <select class="pill" id="langSelect" title="Language" aria-label="Language">
           <option value="en">EN</option>
           <option value="fr">FR</option>
           <option value="de">DE</option>
@@ -411,233 +473,402 @@
           <option value="zh">中文</option>
         </select>
 
-        <a class="pill" id="authPill" href="/auth/" title="Authenticator">🔒</a>
+        <a class="pill auth-pill" href="/auth/" id="authBtn" aria-label="Authenticator">
+          <img class="auth-ico" src="/assets/auth.png" alt="Authenticator icon">
+          <span id="authBtnText">Authenticator</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- Fullscreen Hero -->
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
+        <h1 class="title" id="heroTitle">ROSHINE</h1>
+        <p class="subline" id="heroIntro">
+          Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
+          Five years in operation, built for consistency, clarity, and buyer confidence.
+        </p>
+
+        <div class="cta" id="heroCta">
+          <a class="btn primary" href="#services" id="ctaExplore">View listings & order</a>
+          <a class="btn" href="/auth/" id="ctaAuth">
+            <img class="auth-ico" src="/assets/auth.png" alt="Authenticator icon">
+            <span id="ctaAuthText">Authenticator</span>
+          </a>
+        </div>
+
+        <div class="scrollhint" aria-hidden="true">⌄</div>
       </div>
     </div>
 
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="kicker" id="kickerText">Listings on Google Sheet • Order via Discord</div>
-
-        <h1 id="heroTitle">Pick an account → Join Discord → Order</h1>
-        <p id="heroDesc">
-          Browse the live inventory, filter what you want, then message us on Discord with the account ID (or a screenshot) to confirm and purchase.
+    <!-- Services -->
+    <section id="services">
+      <div class="section-head">
+        <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
+        <h2 class="section-title" id="servicesTitle">Listings & Ordering</h2>
+        <p class="section-desc" id="servicesDesc">
+          Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
         </p>
+      </div>
 
-        <div class="cta">
-          <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
-            href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
-            📄 <span id="sheetBtnText">View Listings</span>
+      <div class="glass-block">
+        <ol class="list" id="servicesList">
+          <li>📄 Open the listings and filter by price, rank, or skins.</li>
+          <li>🧾 Copy the account ID (or screenshot the row you want).</li>
+          <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
+          <li>✅ After payment, receive login info and the security handover package.</li>
+        </ol>
+
+        <div class="section-actions">
+          <a class="btn primary" target="_blank" rel="noopener"
+             href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
+             id="btnListings">
+            View listings (Google Sheet)
           </a>
-
-          <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
-            💬 <span id="discordBtnText">Order on Discord</span>
+          <a class="btn" target="_blank" rel="noopener"
+             href="https://discord.gg/35GGuJwjVu"
+             id="btnDiscord">
+            Contact on Discord
           </a>
         </div>
-
-        <div class="sections">
-          <div class="section" id="howSection">
-            <div class="h2"><span class="dot"></span><span id="howTitle">How it works</span></div>
-            <ol class="list" id="howList"></ol>
-          </div>
-
-          <div class="section" id="warrantySection">
-            <div class="h2"><span class="dot"></span><span id="wTitle">Warranty & Security</span></div>
-            <ol class="list" id="wList"></ol>
-          </div>
-
-          <div class="section" id="faqSection">
-            <div class="h2"><span class="dot"></span><span id="faqTitle">FAQ</span></div>
-            <ol class="list" id="faqList"></ol>
-
-            <div class="mini">
-              <a href="/auth/" id="miniAuth">🔒 <span id="miniAuthText">Authenticator</span></a>
-              <a target="_blank" rel="noopener"
-                href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
-                id="miniStock">📌 <span id="miniStockText">View stock</span></a>
-              <a target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="miniOrder">🧾 <span id="miniOrderText">Order now</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer" id="footer"></div>
       </div>
     </section>
-  </div>
+
+    <!-- Warranty -->
+    <section id="warranty">
+      <div class="section-head">
+        <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
+        <h2 class="section-title" id="warrantyTitle">Warranty & Security</h2>
+        <p class="section-desc" id="warrantyDesc">
+          Designed to reduce long-term risk and keep your purchase protected.
+        </p>
+      </div>
+
+      <div class="glass-block">
+        <ul class="list" id="warrantyList">
+          <li>🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.</li>
+          <li>📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net & Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="section-head">
+        <div class="section-kicker" id="faqKicker">❓ FAQ</div>
+        <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
+        <p class="section-desc" id="faqDesc">
+          Quick answers to the questions that most buyers ask before ordering.
+        </p>
+      </div>
+
+      <div class="glass-block">
+        <ol class="list" id="faqList">
+          <li id="faq1">“How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.</li>
+          <li id="faq2">“Payment methods?” — $ Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
+          <li id="faq3">
+            “Authenticator?” — Use the
+            <span style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:rgba(231,239,255,.85);">
+              <img class="auth-ico" src="/assets/auth.png" alt="Authenticator icon">
+              <span>Authenticator</span>
+            </span>
+            page: paste Private Key and copy the code.
+          </li>
+        </ol>
+
+        <!-- Auth button moved to the right (only keep two actions here) -->
+        <div class="section-actions" style="justify-content:space-between; gap:12px;">
+          <a class="btn" target="_blank" rel="noopener"
+             href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
+             id="btnStock">
+            View stock
+          </a>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+            <a class="btn" target="_blank" rel="noopener"
+               href="https://discord.gg/35GGuJwjVu"
+               id="btnOrder">
+              Order via Discord
+            </a>
+            <a class="btn" href="/auth/" id="btnAuthRight">
+              <img class="auth-ico" src="/assets/auth.png" alt="Authenticator icon">
+              <span id="btnAuthRightText">Authenticator</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="section-head">
+        <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
+        <h2 class="section-title" id="contactTitle">Reach us on Discord</h2>
+        <p class="section-desc" id="contactDesc">
+          Send the account ID or a screenshot and we’ll confirm availability and next steps.
+        </p>
+      </div>
+
+      <div class="contact-row">
+        <a class="btn primary" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="btnContact">
+          Contact on Discord
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" aria-label="Footer">
+      <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
+      <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
+    </footer>
+  </main>
 
   <script>
-    // ===== i18n =====
+    // ====== i18n (EN/FR/DE/AR/ZH) ======
     const LANG_KEY = "locale-choice";
+
+    const LINKS = {
+      sheet: "https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105",
+      discord: "https://discord.gg/35GGuJwjVu"
+    };
 
     const i18n = {
       en: {
-        kicker: "Listings on Google Sheet • Order via Discord",
-        heroTitle: "Pick an account → Join Discord → Order",
-        heroDesc: "Browse the live inventory, filter what you want, then message us on Discord with the account ID (or a screenshot) to confirm and purchase.",
-        sheetBtn: "View Listings",
-        discordBtn: "Order on Discord",
+        nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Trusted since 2021",
+        heroTitle:"ROSHINE",
+        heroIntro:"Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support. Five years in operation, built for consistency, clarity, and buyer confidence.",
+        ctaExplore:"View listings & order",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Listings & Ordering",
+        servicesDesc:"Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.",
+        servicesList:[
+          "📄 Open the listings and filter by price, rank, or skins.",
+          "🧾 Copy the account ID (or screenshot the row you want).",
+          "💬 Join Discord and send the ID/screenshot to confirm availability and total.",
+          "✅ After payment, receive login info and the security handover package."
+        ],
+        btnListings:"View listings (Google Sheet)",
+        btnDiscord:"Contact on Discord",
 
-        howTitle: "How it works",
-        how: [
-          "📄 Open the listings and filter by price / rank / skins.",
-          "🆔 Copy the account ID (or screenshot the row).",
-          "💬 Join Discord and send the ID/screenshot to confirm availability.",
-          "✅ After confirmation, pay and receive the login package."
+        warrantyKicker:"🛡️ WARRANTY",
+        warrantyTitle:"Warranty & Security",
+        warrantyDesc:"Designed to reduce long-term risk and keep your purchase protected.",
+        warrantyList:[
+          "🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.",
+          "📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net & Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more."
         ],
 
-        wTitle: "Warranty & Security",
-        w: [
-          "🛡️ ✅ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.",
-          "📦 After payment, you receive a complete security handover (Email access, Battle.net & Steam (if applicable), Authenticator, Account ID, and more — based on the account)."
-        ],
+        faqKicker:"❓ FAQ",
+        faqTitle:"Frequently Asked Questions",
+        faqDesc:"Quick answers to the questions that most buyers ask before ordering.",
+        faq1:"“How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.",
+        faq2:"“Payment methods?” — $ Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.",
+        faq3_prefix:"“Authenticator?” — Use the",
+        faq3_suffix:"page: paste Private Key and copy the code.",
 
-        faqTitle: "FAQ",
-        faq: [
-          "⏱️ “How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.",
-          "💳🅿️₿🎁 “Payment methods?” — Credit card, PayPal, crypto, and selected gift cards. Details & fees: please confirm on Discord.",
-          "🔒 “Authenticator?” — Open the tool, paste Private Key, then copy the code."
-        ],
+        btnStock:"View stock",
+        btnOrder:"Order via Discord",
 
-        miniAuth: "Authenticator",
-        miniStock: "View stock",
-        miniOrder: "Order now",
-        footer: "© {year} Roshine Account Store. All rights reserved."
+        contactKicker:"💬 CONTACT",
+        contactTitle:"Reach us on Discord",
+        contactDesc:"Send the account ID or a screenshot and we’ll confirm availability and next steps.",
+        btnContact:"Contact on Discord",
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"All rights reserved — your reliable account supplier."
       },
 
       fr: {
-        kicker: "Liste sur Google Sheet • Commande via Discord",
-        heroTitle: "Choisir un compte → Discord → Commander",
-        heroDesc: "Consultez l’inventaire en temps réel, filtrez, puis envoyez l’ID (ou une capture) sur Discord pour confirmer et acheter.",
-        sheetBtn: "Voir la liste",
-        discordBtn: "Commander sur Discord",
+        nav: { home:"Accueil", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Contact" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Fiable depuis 2021",
+        heroTitle:"ROSHINE",
+        heroIntro:"Depuis 2021, Roshine Account Store propose des comptes Overwatch sélectionnés, avec un processus d’achat simple et un support durable. Cinq ans d’activité, axés sur la clarté, la stabilité et la confiance.",
+        ctaExplore:"Voir la liste & commander",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Liste & Commande",
+        servicesDesc:"Consultez l’inventaire en temps réel sur Google Sheet, puis commandez via Discord en envoyant l’ID ou une capture.",
+        servicesList:[
+          "📄 Ouvrez la liste et filtrez (prix, rang, skins).",
+          "🧾 Copiez l’ID du compte (ou capturez la ligne).",
+          "💬 Rejoignez Discord et envoyez l’ID/la capture pour confirmer.",
+          "✅ Après paiement, recevez les accès et le pack de sécurité."
+        ],
+        btnListings:"Voir la liste (Google Sheet)",
+        btnDiscord:"Contacter sur Discord",
 
-        howTitle: "Comment ça marche",
-        how: [
-          "📄 Ouvrez la liste et filtrez (prix / rang / skins).",
-          "🆔 Copiez l’ID (ou capturez la ligne).",
-          "💬 Rejoignez Discord et envoyez ID/capture pour confirmer.",
-          "✅ Après confirmation : paiement puis remise du pack de connexion."
+        warrantyKicker:"🛡️ GARANTIE",
+        warrantyTitle:"Garantie & Sécurité",
+        warrantyDesc:"Pensé pour limiter le risque et protéger votre achat sur le long terme.",
+        warrantyList:[
+          "🛡️ Garantie à vie pour tout problème de sécurité (piraté / volé / récupéré) : remplacement complet ou remboursement intégral.",
+          "📦 Après paiement : remise d’un pack de sécurité (si applicable) : accès e-mail, Battle.net & Steam, Authenticator, ID du compte, téléphone, reçus, détails de création, adresse, etc."
         ],
 
-        wTitle: "Garantie & Sécurité",
-        w: [
-          "🛡️ ✅ Garantie à vie (sécurité) : piraté / volé / récupéré → remplacement complet ou remboursement total.",
-          "📦 Après paiement : remise complète des infos de sécurité (selon le compte)."
-        ],
+        faqKicker:"❓ FAQ",
+        faqTitle:"Questions fréquentes",
+        faqDesc:"Réponses rapides avant de passer commande.",
+        faq1:"« Mise à jour ? » — Le Google Sheet fait foi. Les comptes vendus sont marqués rapidement.",
+        faq2:"« Paiement ? » — $ Carte, PayPal, crypto et certaines cartes cadeaux. Disponibilité/frais à confirmer sur Discord.",
+        faq3_prefix:"« Authenticator ? » — Utilisez la page",
+        faq3_suffix:": collez la clé privée et copiez le code.",
 
-        faqTitle: "FAQ",
-        faq: [
-          "⏱️ “Mises à jour ?” — Le Google Sheet fait foi. Les comptes vendus sont marqués rapidement.",
-          "💳🅿️₿🎁 “Paiements ?” — Carte, PayPal, crypto et certaines cartes cadeaux. Détails & frais : confirmez sur Discord.",
-          "🔒 “Authenticator ?” — Ouvrez l’outil, collez la clé privée, copiez le code."
-        ],
+        btnStock:"Voir le stock",
+        btnOrder:"Commander via Discord",
 
-        miniAuth: "Authenticator",
-        miniStock: "Voir stock",
-        miniOrder: "Commander",
-        footer: "© {year} Roshine Account Store. Tous droits réservés."
+        contactKicker:"💬 CONTACT",
+        contactTitle:"Contactez-nous sur Discord",
+        contactDesc:"Envoyez l’ID du compte ou une capture et nous confirmons la disponibilité.",
+        btnContact:"Contacter sur Discord",
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"Tous droits réservés — votre fournisseur fiable."
       },
 
       de: {
-        kicker: "Listings in Google Sheet • Bestellung über Discord",
-        heroTitle: "Account wählen → Discord → Bestellen",
-        heroDesc: "Sieh dir das Live-Inventar an, filtere, dann sende die Account-ID (oder Screenshot) auf Discord zur Bestätigung und zum Kauf.",
-        sheetBtn: "Liste öffnen",
-        discordBtn: "Über Discord bestellen",
-
-        howTitle: "So funktioniert’s",
-        how: [
-          "📄 Liste öffnen und nach Preis / Rang / Skins filtern.",
-          "🆔 Account-ID kopieren (oder Zeile screenshotten).",
+        nav: { home:"Home", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Kontakt" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Vertrauenswürdig seit 2021",
+        heroTitle:"ROSHINE",
+        heroIntro:"Seit 2021 liefert Roshine Account Store kuratierte Overwatch-Accounts mit einem klaren Kaufprozess und langfristigem Support. Fünf Jahre Betrieb – für Beständigkeit, Transparenz und Vertrauen.",
+        ctaExplore:"Listings ansehen & bestellen",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Listings & Bestellung",
+        servicesDesc:"Inventar live im Google Sheet ansehen und dann per Discord bestellen (ID oder Screenshot senden).",
+        servicesList:[
+          "📄 Listings öffnen und nach Preis, Rang oder Skins filtern.",
+          "🧾 Account-ID kopieren (oder Zeile screenshotten).",
           "💬 Discord beitreten und ID/Screenshot zur Bestätigung senden.",
-          "✅ Nach Bestätigung bezahlen und Login-Paket erhalten."
+          "✅ Nach Zahlung: Login-Daten und Sicherheits-Übergabepaket erhalten."
+        ],
+        btnListings:"Listings öffnen (Google Sheet)",
+        btnDiscord:"Auf Discord kontaktieren",
+
+        warrantyKicker:"🛡️ GARANTIE",
+        warrantyTitle:"Garantie & Sicherheit",
+        warrantyDesc:"Konzipiert, um Risiken zu reduzieren und deinen Kauf zu schützen.",
+        warrantyList:[
+          "🛡️ Lebenslange Garantie bei Sicherheitsproblemen (gehackt / gestohlen / reclaimed): voller Ersatz oder volle Erstattung.",
+          "📦 Nach Zahlung erhältst du ein Sicherheits-Paket (falls zutreffend): E-Mail-Zugriff, Battle.net & Steam, Authenticator, Account-ID, Telefonnummer, Belege, Erstellungsdetails, Adresse u.v.m."
         ],
 
-        wTitle: "Garantie & Sicherheit",
-        w: [
-          "🛡️ ✅ Lebenslange Garantie bei Sicherheitsproblemen (gehackt / gestohlen / reclaimed): Ersatz oder volle Erstattung.",
-          "📦 Nach Zahlung: vollständige Sicherheitsübergabe (je nach Account)."
-        ],
+        faqKicker:"❓ FAQ",
+        faqTitle:"Häufige Fragen",
+        faqDesc:"Kurzantworten für den schnellen Kaufentscheid.",
+        faq1:"„Wie oft aktualisiert?“ — Google Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
+        faq2:"„Zahlung?“ — $ Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Verfügbarkeit/Gebühren auf Discord bestätigen.",
+        faq3_prefix:"„Authenticator?“ — Nutze die",
+        faq3_suffix:"Seite: Private Key einfügen und Code kopieren.",
 
-        faqTitle: "FAQ",
-        faq: [
-          "⏱️ „Wie oft aktualisiert?“ — Google Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
-          "💳🅿️₿🎁 „Zahlung?“ — Kreditkarte, PayPal, Krypto und ausgewählte Geschenkkarten. Details & Gebühren: bitte auf Discord bestätigen.",
-          "🔒 „Authenticator?“ — Tool öffnen, Private Key einfügen, Code kopieren."
-        ],
+        btnStock:"Bestand ansehen",
+        btnOrder:"Über Discord bestellen",
 
-        miniAuth: "Authenticator",
-        miniStock: "Bestand",
-        miniOrder: "Jetzt bestellen",
-        footer: "© {year} Roshine Account Store. Alle Rechte vorbehalten."
+        contactKicker:"💬 KONTAKT",
+        contactTitle:"Kontakt über Discord",
+        contactDesc:"Sende Account-ID oder Screenshot – wir bestätigen Verfügbarkeit und nächste Schritte.",
+        btnContact:"Auf Discord kontaktieren",
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
       },
 
       ar: {
-        kicker: "القائمة عبر Google Sheet • الطلب عبر Discord",
-        heroTitle: "اختر حسابًا → Discord → شراء",
-        heroDesc: "تصفّح المخزون المباشر وفلتر ما تريد، ثم أرسل معرف الحساب (أو لقطة) عبر Discord للتأكيد والشراء.",
-        sheetBtn: "عرض القائمة",
-        discordBtn: "اطلب عبر Discord",
+        nav: { home:"الرئيسية", services:"الخدمات", warranty:"الضمان", faq:"الأسئلة", contact:"تواصل" },
+        auth:"Authenticator",
+        heroKicker:"⚡ موثوق منذ 2021",
+        heroTitle:"ROSHINE",
+        heroIntro:"منذ 2021 يقدّم Roshine Account Store حسابات Overwatch مختارة بعناية مع خطوات شراء واضحة ودعم طويل المدى. خمس سنوات تشغيل مبنية على الثبات والوضوح والثقة.",
+        ctaExplore:"عرض القائمة والطلب",
+        servicesKicker:"✨ الخدمات",
+        servicesTitle:"القائمة والطلب",
+        servicesDesc:"تصفّح المخزون المباشر في Google Sheet ثم اطلب عبر Discord بإرسال ID أو لقطة شاشة.",
+        servicesList:[
+          "📄 افتح القائمة وفلتر حسب السعر/الرتبة/الهيئات.",
+          "🧾 انسخ ID الحساب (أو التقط لقطة للصف).",
+          "💬 انضم إلى Discord وأرسل ID/اللقطة للتأكيد.",
+          "✅ بعد الدفع: استلام بيانات الدخول وحزمة التسليم الأمني."
+        ],
+        btnListings:"عرض القائمة (Google Sheet)",
+        btnDiscord:"تواصل عبر Discord",
 
-        howTitle: "كيف تعمل",
-        how: [
-          "📄 افتح القائمة وفلتر حسب السعر / الرتبة / السكنات.",
-          "🆔 انسخ معرف الحساب (أو التقط لقطة للصف).",
-          "💬 انضم إلى Discord وأرسل المعرف/اللقطة للتأكيد.",
-          "✅ بعد التأكيد: ادفع واستلم حزمة تسجيل الدخول."
+        warrantyKicker:"🛡️ الضمان",
+        warrantyTitle:"الضمان والأمان",
+        warrantyDesc:"مصمم لتقليل المخاطر وحماية عملية الشراء على المدى الطويل.",
+        warrantyList:[
+          "🛡️ ضمان مدى الحياة لأي مشكلة أمنية (اختراق / سرقة / reclaimed): استبدال كامل أو تعويض كامل.",
+          "📦 بعد الدفع: تستلم حزمة تسليم أمني (حسب الحساب): وصول البريد، Battle.net وSteam، Authenticator، ID الحساب، رقم الهاتف، الطلبات/الإيصالات، تفاصيل الإنشاء، العنوان والمزيد."
         ],
 
-        wTitle: "الضمان والأمان",
-        w: [
-          "🛡️ ✅ ضمان مدى الحياة لأي مشكلة أمنية (اختراق / سرقة / استرجاع): استبدال كامل أو تعويض كامل.",
-          "📦 بعد الدفع: تسليم كامل معلومات الأمان (حسب الحساب)."
-        ],
+        faqKicker:"❓ الأسئلة",
+        faqTitle:"الأسئلة الشائعة",
+        faqDesc:"إجابات سريعة قبل الطلب.",
+        faq1:"«كم يتم التحديث؟» — Google Sheet هو المرجع. يتم وضع علامة على الحسابات المباعة سريعًا.",
+        faq2:"«طرق الدفع؟» — $ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التأكيد على Discord.",
+        faq3_prefix:"«Authenticator؟» — استخدم صفحة",
+        faq3_suffix:": الصق Private Key ثم انسخ الرمز.",
 
-        faqTitle: "الأسئلة الشائعة",
-        faq: [
-          "⏱️ «كم مرة يتم التحديث؟» — Google Sheet هو المرجع، ويتم وضع علامة على المباع بسرعة.",
-          "💳🅿️₿🎁 «طرق الدفع؟» — بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التفاصيل والرسوم: تأكد عبر Discord.",
-          "🔒 «Authenticator؟» — افتح الأداة والصق Private Key ثم انسخ الرمز."
-        ],
+        btnStock:"عرض المخزون",
+        btnOrder:"اطلب عبر Discord",
 
-        miniAuth: "Authenticator",
-        miniStock: "عرض المخزون",
-        miniOrder: "اطلب الآن",
-        footer: "© {year} Roshine Account Store. جميع الحقوق محفوظة."
+        contactKicker:"💬 تواصل",
+        contactTitle:"تواصل معنا عبر Discord",
+        contactDesc:"أرسل ID الحساب أو لقطة شاشة لنؤكد التوفر والخطوات التالية.",
+        btnContact:"تواصل عبر Discord",
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
       },
 
       zh: {
-        kicker: "Google Sheet 实时库存 • Discord 私聊下单",
-        heroTitle: "挑账号 → 加 Discord → 下单",
-        heroDesc: "先看实时库存并筛选你想要的账号，然后在 Discord 发送账号编号（或截图）确认并购买。",
-        sheetBtn: "打开账号列表",
-        discordBtn: "去 Discord 下单",
+        nav: { home:"主页", services:"服务", warranty:"质保", faq:"FAQ", contact:"联系" },
+        auth:"Authenticator",
+        heroKicker:"⚡ 自 2021 年稳定运营",
+        heroTitle:"ROSHINE",
+        heroIntro:"Roshine Account Store 自 2021 年起持续提供精选 Overwatch 账号，流程清晰、交付稳定、支持长期售后。已稳定运行 5 年，专注于可靠性与买家信心。",
+        ctaExplore:"查看库存并下单",
+        servicesKicker:"✨ 服务",
+        servicesTitle:"库存与下单",
+        servicesDesc:"Google Sheet 实时展示库存；通过 Discord 发送账号 ID 或截图即可确认并购买。",
+        servicesList:[
+          "📄 打开列表，按价格/段位/皮肤筛选。",
+          "🧾 复制账号 ID（或截图对应行）。",
+          "💬 加入 Discord 发送 ID/截图，确认库存与总价。",
+          "✅ 付款后交付登录信息与安全资料包。"
+        ],
+        btnListings:"打开库存（Google Sheet）",
+        btnDiscord:"Discord 联系",
 
-        howTitle: "How it works",
-        how: [
-          "📄 打开列表，按价格 / 段位 / 皮肤筛选。",
-          "🆔 复制账号编号（或截图该行）。",
-          "💬 加入 Discord，把编号/截图发我确认库存。",
-          "✅ 确认后付款并交付登录资料包。"
+        warrantyKicker:"🛡️ 质保",
+        warrantyTitle:"质保与安全",
+        warrantyDesc:"降低长期风险，让交易更可控。",
+        warrantyList:[
+          "🛡️ 终身安全质保：被盗 / 被黑 / 找回（reclaimed）→ 全额补偿或同等替换。",
+          "📦 付款后交付安全资料包（按账号实际情况）：邮箱权限、Battle.net & Steam、安全令、账号 ID、手机号、订单/收据、创建信息、地址等。"
         ],
 
-        wTitle: "Warranty & Security",
-        w: [
-          "🛡️ ✅ 终身安全质保：被盗 / 被黑 / 找回（reclaimed）→ 全额补偿或同等替换。",
-          "📦 付款后交付完整安全资料（按账号实际情况）：邮箱权限、Battle.net & Steam（如适用）、安全令、账号 ID 等。"
-        ],
+        faqKicker:"❓ FAQ",
+        faqTitle:"常见问题",
+        faqDesc:"下单前最常问的几个点，直接看这里。",
+        faq1:"“列表多久更新？”—— 以 Google Sheet 为准，售出会尽快标记。",
+        faq2:"“支持什么支付方式？”—— $ 信用卡、PayPal、虚拟货币及部分礼品卡；可用性与手续费请 Discord 确认。",
+        faq3_prefix:"“Authenticator 怎么用？”—— 打开",
+        faq3_suffix:"页面：粘贴 Private Key，复制验证码。",
 
-        faqTitle: "FAQ",
-        faq: [
-          "⏱️ “列表多久更新？”—— 以 Google Sheet 为准，售出会尽快标记。",
-          "💳🅿️₿🎁 “支持什么支付？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；细节与手续费请 Discord 确认。",
-          "🔒 “安全令怎么用？”—— 打开工具页，粘贴 Private Key，复制验证码。"
-        ],
+        btnStock:"查看库存",
+        btnOrder:"Discord 下单",
 
-        miniAuth: "安全令",
-        miniStock: "查看库存",
-        miniOrder: "立即下单",
-        footer: "© {year} Roshine Account Store. 保留所有权利。"
+        contactKicker:"💬 联系",
+        contactTitle:"在 Discord 联系我们",
+        contactDesc:"发送账号 ID 或截图，我们会确认库存并给出下一步。",
+        btnContact:"Discord 联系",
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"All rights reserved — your reliable account supplier."
       }
     };
 
@@ -646,21 +877,22 @@
       if (saved && i18n[saved]) return saved;
 
       const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("zh")) return "zh";
       if (nav.startsWith("fr")) return "fr";
       if (nav.startsWith("de")) return "de";
       if (nav.startsWith("ar")) return "ar";
-      if (nav.startsWith("zh")) return "zh";
       return "en";
     }
 
-    function fillList(elId, items){
+    function setList(elId, items, type){
       const el = document.getElementById(elId);
       el.innerHTML = "";
-      items.forEach(t => {
+      items.forEach(txt=>{
         const li = document.createElement("li");
-        li.textContent = t;
+        li.textContent = txt;
         el.appendChild(li);
       });
+      if (type) el.setAttribute("data-type", type);
     }
 
     function applyLang(lang){
@@ -668,42 +900,107 @@
       const t = i18n[lang];
 
       document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === "ar" ? "rtl" : "ltr");
+      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
 
       const sel = document.getElementById("langSelect");
       if (sel) sel.value = lang;
 
-      document.getElementById("kickerText").textContent = t.kicker;
+      // nav
+      document.getElementById("navHome").textContent = t.nav.home;
+      document.getElementById("navServices").textContent = t.nav.services;
+      document.getElementById("navWarranty").textContent = t.nav.warranty;
+      document.getElementById("navFaq").textContent = t.nav.faq;
+      document.getElementById("navContact").textContent = t.nav.contact;
+
+      // auth btn
+      document.getElementById("authBtnText").textContent = t.auth;
+
+      // hero
+      document.getElementById("heroKicker").textContent = t.heroKicker;
       document.getElementById("heroTitle").textContent = t.heroTitle;
-      document.getElementById("heroDesc").textContent = t.heroDesc;
+      document.getElementById("heroIntro").textContent = t.heroIntro;
+      document.getElementById("ctaExplore").textContent = t.ctaExplore;
+      document.getElementById("ctaAuthText").textContent = t.auth;
 
-      document.getElementById("sheetBtnText").textContent = t.sheetBtn;
-      document.getElementById("discordBtnText").textContent = t.discordBtn;
+      // services
+      document.getElementById("servicesKicker").textContent = t.servicesKicker;
+      document.getElementById("servicesTitle").textContent = t.servicesTitle;
+      document.getElementById("servicesDesc").textContent = t.servicesDesc;
+      setList("servicesList", t.servicesList);
+      document.getElementById("btnListings").textContent = t.btnListings;
+      document.getElementById("btnDiscord").textContent = t.btnDiscord;
 
-      document.getElementById("howTitle").textContent = t.howTitle;
-      fillList("howList", t.how);
+      // warranty
+      document.getElementById("warrantyKicker").textContent = t.warrantyKicker;
+      document.getElementById("warrantyTitle").textContent = t.warrantyTitle;
+      document.getElementById("warrantyDesc").textContent = t.warrantyDesc;
+      setList("warrantyList", t.warrantyList);
 
-      document.getElementById("wTitle").textContent = t.wTitle;
-      fillList("wList", t.w);
-
+      // faq
+      document.getElementById("faqKicker").textContent = t.faqKicker;
       document.getElementById("faqTitle").textContent = t.faqTitle;
-      fillList("faqList", t.faq);
+      document.getElementById("faqDesc").textContent = t.faqDesc;
 
-      document.getElementById("miniAuthText").textContent = t.miniAuth;
-      document.getElementById("miniStockText").textContent = t.miniStock;
-      document.getElementById("miniOrderText").textContent = t.miniOrder;
+      document.getElementById("faq1").textContent = t.faq1;
+      document.getElementById("faq2").textContent = t.faq2;
 
-      document.getElementById("footer").textContent =
-        t.footer.replace("{year}", new Date().getFullYear());
+      // Build faq3 with icon span (auth.png)
+      const faq3 = document.getElementById("faq3");
+      faq3.innerHTML = "";
+      const prefix = document.createTextNode(t.faq3_prefix + " ");
+      faq3.appendChild(prefix);
+
+      const span = document.createElement("span");
+      span.style.display = "inline-flex";
+      span.style.alignItems = "center";
+      span.style.gap = "6px";
+      span.style.fontWeight = "800";
+      span.style.color = "rgba(231,239,255,.85)";
+
+      const img = document.createElement("img");
+      img.className = "auth-ico";
+      img.src = "/assets/auth.png";
+      img.alt = "Authenticator icon";
+
+      const label = document.createElement("span");
+      label.textContent = t.auth;
+
+      span.appendChild(img);
+      span.appendChild(label);
+      faq3.appendChild(span);
+
+      const suffix = document.createTextNode(" " + t.faq3_suffix);
+      faq3.appendChild(suffix);
+
+      document.getElementById("btnStock").textContent = t.btnStock;
+      document.getElementById("btnOrder").textContent = t.btnOrder;
+      document.getElementById("btnAuthRightText").textContent = t.auth;
+
+      // contact
+      document.getElementById("contactKicker").textContent = t.contactKicker;
+      document.getElementById("contactTitle").textContent = t.contactTitle;
+      document.getElementById("contactDesc").textContent = t.contactDesc;
+      document.getElementById("btnContact").textContent = t.btnContact;
+
+      // footer
+      document.getElementById("footerLine1").textContent = t.footer1;
+      document.getElementById("footerLine2").textContent = t.footer2;
+
+      // links (keep stable)
+      document.getElementById("btnListings").href = LINKS.sheet;
+      document.getElementById("btnStock").href = LINKS.sheet;
+      document.getElementById("btnDiscord").href = LINKS.discord;
+      document.getElementById("btnOrder").href = LINKS.discord;
+      document.getElementById("btnContact").href = LINKS.discord;
     }
 
     // init
     applyLang(detectLang());
 
-    document.getElementById("langSelect").addEventListener("change", (e) => {
+    document.getElementById("langSelect").addEventListener("change", (e)=>{
       const lang = e.target.value;
-      localStorage.setItem(LANG_KEY, lang);
       applyLang(lang);
+      localStorage.setItem(LANG_KEY, lang);
     });
   </script>
 </body>
