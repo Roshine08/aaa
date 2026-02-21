@@ -1,412 +1,256 @@
-<!doctype html>
-<html lang="zh-CN" data-theme="dark">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Roshine — Overwatch Account Store</title>
-  <link rel="icon" href="assets/logo.png" />
+// ===== i18n (language) =====
+const LANG_KEY = "locale-choice";
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+const i18n = {
 
-  <style>
-    :root{
-      --bg-dark:#05060b;
-      --card-dark:#0b1018;
-      --border-dark:#202736;
-      --text-dark:#e6f0ff;
-      --muted-dark:#7c8aaa;
-      --accent-dark:#29b6ff;
+  en: {
+    sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
+    auth: "Authenticator",
+    heroTitle: "Pick an account → Join Discord → Order",
+    heroIntro: "All listings are in Google Sheet. Filter by price, rank or skins. Then join Discord and send the account ID or screenshot to confirm and purchase.",
+    sheetBtn: "📄 View Listings",
+    discordBtn: "💬 Order on Discord",
 
-      --bg-light:#171920;
-      --card-light:#1f222b;
-      --border-light:#2c3140;
-      --text-light:#e4e7f5;
-      --muted-light:#8b94aa;
-      --accent-light:#3aa3ff;
+    flowTitle: "How to Buy",
+    flow1: "Open the Google Sheet listings and filter what you want.",
+    flow2: "Copy the account ID or screenshot the row.",
+    flow3: "Join Discord and send the ID/screenshot to confirm availability.",
+    flow4: "After confirmation, complete purchase and receive login info.",
+    flow5: "Need verification codes? Use the Authenticator page.",
 
-      --bg:var(--bg-dark);
-      --card:var(--card-dark);
-      --border:var(--border-dark);
-      --text:var(--text-dark);
-      --muted:var(--muted-dark);
-      --accent:var(--accent-dark);
-    }
+    faqTitle: "FAQ",
+    faq1: "\"How often updated?\" — The Sheet is the source of truth. Sold accounts are marked quickly.",
+    faq2: "\"How to use Authenticator?\" — Open the tool, paste Private Key, copy the code.",
 
-    html[data-theme="dark"]{
-      --bg:var(--bg-dark);
-      --card:var(--card-dark);
-      --border:var(--border-dark);
-      --text:var(--text-dark);
-      --muted:var(--muted-dark);
-      --accent:var(--accent-dark);
-    }
-    html[data-theme="light"]{
-      --bg:var(--bg-light);
-      --card:var(--card-light);
-      --border:var(--border-light);
-      --text:var(--text-light);
-      --muted:var(--muted-light);
-      --accent:var(--accent-light);
-    }
+    miniAuth: "🔐 Open Authenticator",
+    miniStock: "📌 View Stock",
+    miniOrder: "🧾 Order Now",
 
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
-      background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
-    }
-    html[data-theme="light"] body{
-      background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
-    }
+    footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
+  },
 
-    .wrap{
-      width:min(980px, 94vw);
-      margin:0 auto;
-      padding:28px 0 40px;
-    }
+  zh: {
+    sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
+    auth: "安全令工具",
+    heroTitle: "选账号 → 加 Discord → 直接下单",
+    heroIntro: "库存与详情都在 Google Sheet。先按价格/段位/皮肤筛选，选好后进 Discord 把账号编号或截图发我确认并购买。",
+    sheetBtn: "📄 查看账号列表",
+    discordBtn: "💬 进 Discord 下单",
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:18px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-    .brand img{
-      width:40px;height:40px;border-radius:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,.45);
-    }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.03em;
-      white-space:nowrap;
-    }
-    .brand .sub{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-    }
+    flowTitle: "购买流程",
+    flow1: "打开 Google Sheet 账号列表，筛选你想要的账号。",
+    flow2: "记录账号编号或截图对应行。",
+    flow3: "加入 Discord，把编号/截图发我确认库存。",
+    flow4: "确认后完成购买并交付登录信息。",
+    flow5: "需要验证码：打开右上角安全令工具。",
 
-    .top-controls{display:flex; align-items:center; gap:10px;}
-    .pill{
-      height:34px;
-      padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.25);
-      color:var(--text);
-      font-size:13px;
-      font-weight:700;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 8px 18px rgba(0,0,0,.45);
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
-      text-decoration:none;
-      user-select:none;
-    }
-    html[data-theme="light"] .pill{
-      border-color:rgba(0,0,0,.55);
-      background:rgba(0,0,0,.30);
-      box-shadow:0 8px 18px rgba(0,0,0,.65);
-    }
-    .pill:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 22px rgba(0,0,0,.75);
-      background:rgba(0,0,0,.4);
-    }
+    faqTitle: "常见问题",
+    faq1: "“列表多久更新？”—— 以 Sheet 为准，售出会尽快标记。",
+    faq2: "“怎么用安全令？”—— 进入工具页，粘贴 Private Key，复制验证码。",
 
-    .hero{
-      position:relative;
-      background:var(--card);
-      border-radius:26px;
-      padding:26px 22px;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 22px 52px rgba(0,0,0,.55);
-      overflow:hidden;
-      margin-bottom:16px;
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:inherit;
-      padding:1px;
-      background:linear-gradient(135deg,
-        rgba(0,185,255,.8),
-        rgba(0,110,255,.65),
-        rgba(0,40,120,.7));
-      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-              mask-composite:exclude;
-      opacity:.65;
-      pointer-events:none;
-    }
+    miniAuth: "🔐 打开安全令工具",
+    miniStock: "📌 查看库存",
+    miniOrder: "🧾 立即下单",
 
-    .hero h1{
-      margin:0 0 8px;
-      font-size:26px;
-      letter-spacing:.02em;
-    }
-    .hero p{
-      margin:0 0 16px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
-      max-width:70ch;
-    }
+    footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
+  },
 
-    .cta-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:8px;
-    }
-    .btn{
-      padding:12px 16px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.08);
-      color:var(--text);
-      font-weight:800;
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      min-width:220px;
-      justify-content:center;
-    }
-    .btn:hover{ transform:translateY(-1px); box-shadow:0 0 12px rgba(35,168,255,.55); }
-    .btn.primary{
-      background:var(--accent);
-      border-color:transparent;
-      color:#fff;
-      box-shadow:0 0 18px rgba(35,168,255,.25);
-    }
-    .btn.primary:hover{ box-shadow:0 0 18px rgba(35,168,255,.75); }
+  fr: {
+    sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
+    auth: "Jeton",
+    heroTitle: "Choisir un compte → Discord → Commander",
+    heroIntro: "Tous les comptes sont listés dans Google Sheet. Filtrez par prix, rang ou skins. Puis rejoignez Discord et envoyez l'ID ou la capture pour acheter.",
+    sheetBtn: "📄 Voir la liste",
+    discordBtn: "💬 Commander via Discord",
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(12, 1fr);
-      gap:14px;
-      margin-top:14px;
-    }
-    .card{
-      grid-column:span 6;
-      background:var(--card);
-      border-radius:22px;
-      padding:18px 18px 16px;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 18px 40px rgba(0,0,0,.45);
-      position:relative;
-      overflow:hidden;
-    }
-    .card h3{ margin:0 0 6px; font-size:16px; letter-spacing:.02em; }
-    .card p{ margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
+    flowTitle: "Procédure d'achat",
+    flow1: "Ouvrez la liste Google Sheet et filtrez.",
+    flow2: "Copiez l'ID ou capturez la ligne.",
+    flow3: "Envoyez l'ID/la capture sur Discord.",
+    flow4: "Après confirmation, finalisez l'achat.",
+    flow5: "Besoin de codes ? Utilisez la page Jeton.",
 
-    .steps{
-      margin-top:12px;
-      padding-left:18px;
-      color:var(--text);
-      font-size:13px;
-      line-height:1.7;
-    }
-    .steps li{ margin:6px 0; color:var(--muted); }
+    faqTitle: "FAQ",
+    faq1: "Mises à jour ? Le Sheet fait foi.",
+    faq2: "Comment utiliser le jeton ? Collez la clé privée et copiez le code.",
 
-    .mini-actions{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-top:14px;
-    }
-    .mini{
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.08);
-      color:var(--text);
-      font-weight:800;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      flex:1 1 160px;
-      transition:transform .15s ease, box-shadow .15s ease;
-    }
-    .mini:hover{ transform:translateY(-1px); box-shadow:0 0 12px rgba(35,168,255,.55); }
+    miniAuth: "🔐 Ouvrir le Jeton",
+    miniStock: "📌 Voir Stock",
+    miniOrder: "🧾 Commander",
 
-    .notice{
-      margin-top:14px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.6;
-    }
+    footer: "© {year} Roshine.love — Boutique Overwatch."
+  },
 
-    .footer{
-      margin-top:18px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      opacity:.85;
-      user-select:none;
-    }
+  de: {
+    sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
+    auth: "Token",
+    heroTitle: "Account wählen → Discord → Bestellen",
+    heroIntro: "Alle Accounts sind im Google Sheet gelistet. Filtere nach Preis, Rang oder Skins und sende dann die ID oder Screenshot über Discord.",
+    sheetBtn: "📄 Liste ansehen",
+    discordBtn: "💬 Über Discord bestellen",
 
-    @media (max-width:760px){
-      .card{ grid-column:span 12; }
-      .btn{ min-width:0; width:100%; }
-      .topbar{ flex-direction:column; align-items:flex-start; }
-      .top-controls{ width:100%; }
-    }
-  </style>
-</head>
+    flowTitle: "Kaufablauf",
+    flow1: "Google Sheet öffnen und filtern.",
+    flow2: "Account-ID kopieren oder Screenshot machen.",
+    flow3: "ID/Screenshot über Discord senden.",
+    flow4: "Nach Bestätigung Kauf abschließen.",
+    flow5: "Codes? Token-Seite nutzen.",
 
-<body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <img src="assets/logo.png" alt="Roshine Logo" />
-        <div>
-          <div class="name">Roshine.love</div>
-          <div class="sub">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
-        </div>
-      </div>
+    faqTitle: "FAQ",
+    faq1: "Wie oft aktualisiert? Sheet ist maßgeblich.",
+    faq2: "Token nutzen? Private Key einfügen und Code kopieren.",
 
-      <div class="top-controls">
-        <button class="pill" id="themeToggle" title="Theme">☀️</button>
-        <a class="pill" href="/auth/" title="Authenticator">安全令工具</a>
-      </div>
-    </div>
+    miniAuth: "🔐 Token öffnen",
+    miniStock: "📌 Bestand",
+    miniOrder: "🧾 Bestellen",
 
-    <div class="hero">
-      <h1>挑账号 → 私聊下单 → 交付与验号</h1>
-      <p>
-        账号都在 Google Sheet 列表中展示。你先筛选喜欢的账号（段位/皮肤/价格等），
-        然后进 Discord 把“账号编号/截图”发我完成购买。需要安全令验证码的，点右上角“安全令工具”即可。
-      </p>
+    footer: "© {year} Roshine.love — Overwatch-Shop."
+  },
 
-      <div class="cta-row">
-        <a class="btn primary" target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
-          📄 打开账号列表（Google Sheet）
-        </a>
-        <a class="btn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
-          💬 加入 Discord 联系购买
-        </a>
-      </div>
+  ru: {
+    sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
+    auth: "Токен",
+    heroTitle: "Выбрать аккаунт → Discord → Купить",
+    heroIntro: "Все аккаунты в Google Sheet. Отфильтруйте по цене, рангу или скинам, затем отправьте ID или скриншот в Discord.",
+    sheetBtn: "📄 Открыть список",
+    discordBtn: "💬 Купить через Discord",
 
-      <div class="notice">
-        提醒：账号交易可能与游戏/平台服务条款存在冲突风险。你需要自行评估并承担相应风险；站点仅提供信息与沟通入口。
-      </div>
-    </div>
+    flowTitle: "Как купить",
+    flow1: "Откройте Google Sheet и отфильтруйте.",
+    flow2: "Скопируйте ID или сделайте скрин.",
+    flow3: "Отправьте ID/скрин в Discord.",
+    flow4: "После подтверждения завершите покупку.",
+    flow5: "Нужны коды? Используйте страницу Токен.",
 
-    <div class="grid">
-      <div class="card">
-        <h3>购买流程</h3>
-        <p>把路径做得极短：看列表 → 选中 → Discord 私聊 → 付款 → 交付。</p>
-        <ol class="steps">
-          <li>点击上方“账号列表”，按价格/皮肤/段位筛选。</li>
-          <li>记录账号编号（或截图你想要的行）。</li>
-          <li>点击“Discord”，把编号/截图发我，确认库存与价格。</li>
-          <li>完成付款后交付登录信息，并协助检查与设置。</li>
-          <li>如需安全令验证码：用右上角“安全令工具”。</li>
-        </ol>
-      </div>
+    faqTitle: "FAQ",
+    faq1: "Обновления? Sheet — основной источник.",
+    faq2: "Как использовать токен? Вставьте ключ и скопируйте код.",
 
-      <div class="card">
-        <h3>常见问题</h3>
-        <p>减少来回问答，提高转化。</p>
-        <ol class="steps">
-          <li>“列表多久更新？”：以 Sheet 为准，售出会尽快标记。</li>
-          <li>“能不能先验？”：Discord 里沟通你要看的点（皮肤/历史等）。</li>
-          <li>“安全吗？”：安全令工具不存储你的 key（纯前端本地运算）。</li>
-          <li>“怎么用安全令？”：进入工具页，粘贴 Private Key，复制验证码。</li>
-        </ol>
+    miniAuth: "🔐 Открыть токен",
+    miniStock: "📌 Наличие",
+    miniOrder: "🧾 Купить",
 
-        <div class="mini-actions">
-          <a class="mini" href="/auth/">🔐 打开安全令工具</a>
-          <a class="mini" target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">📌 查看库存</a>
-          <a class="mini" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">🧾 立即下单</a>
-        </div>
-      </div>
-    </div>
+    footer: "© {year} Roshine.love — магазин Overwatch."
+  },
 
-    <div class="footer" id="footer"></div>
-  </div>
+  it: {
+    sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
+    auth: "Token",
+    heroTitle: "Scegli account → Discord → Acquista",
+    heroIntro: "Tutti gli account sono su Google Sheet. Filtra per prezzo, rank o skin e invia ID o screenshot su Discord.",
+    sheetBtn: "📄 Apri lista",
+    discordBtn: "💬 Acquista via Discord",
 
-  <script>
-    const THEME_MODE_KEY = "theme-mode"; // system / light / dark
-    const THEME_KEY = "theme-choice";    // light / dark
+    flowTitle: "Come acquistare",
+    flow1: "Apri Google Sheet e filtra.",
+    flow2: "Copia ID o fai screenshot.",
+    flow3: "Invia ID/screenshot su Discord.",
+    flow4: "Dopo conferma, completa l'acquisto.",
+    flow5: "Codici? Usa la pagina Token.",
 
-    function getSystemTheme(){
-      const prefersDark = window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return prefersDark ? "dark" : "light";
-    }
-    function applyTheme(theme){
-      document.documentElement.setAttribute("data-theme", theme);
-      const btn = document.getElementById("themeToggle");
-      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
-    }
+    faqTitle: "FAQ",
+    faq1: "Aggiornamenti? Il Sheet è la fonte ufficiale.",
+    faq2: "Come usare Token? Incolla la chiave e copia il codice.",
 
-    (function initTheme(){
-      let mode  = localStorage.getItem(THEME_MODE_KEY);
-      let theme = localStorage.getItem(THEME_KEY);
+    miniAuth: "🔐 Apri Token",
+    miniStock: "📌 Stock",
+    miniOrder: "🧾 Ordina",
 
-      if (!mode){
-        mode = "system";
-        theme = getSystemTheme();
-        localStorage.setItem(THEME_MODE_KEY, mode);
-        localStorage.setItem(THEME_KEY, theme);
-      }else{
-        if (mode === "system"){
-          theme = getSystemTheme();
-          localStorage.setItem(THEME_KEY, theme);
-        }else if (!theme){
-          theme = mode === "dark" ? "dark" : "light";
-          localStorage.setItem(THEME_KEY, theme);
-        }
-      }
-      applyTheme(theme);
+    footer: "© {year} Roshine.love — Negozio Overwatch."
+  },
 
-      if (window.matchMedia){
-        const mq = window.matchMedia("(prefers-color-scheme: dark)");
-        mq.addEventListener("change", e => {
-          const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
-          if (currentMode !== "system") return;
-          const nextTheme = e.matches ? "dark" : "light";
-          localStorage.setItem(THEME_KEY, nextTheme);
-          applyTheme(nextTheme);
-        });
-      }
-    })();
+  ar: {
+    sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
+    auth: "المُصدِّق",
+    heroTitle: "اختر حساباً → Discord → شراء",
+    heroIntro: "جميع الحسابات موجودة في Google Sheet. قم بالتصفية حسب السعر أو الرتبة أو الهيئات ثم أرسل الرقم عبر Discord.",
+    sheetBtn: "📄 عرض القائمة",
+    discordBtn: "💬 شراء عبر Discord",
 
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
-      let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
+    flowTitle: "طريقة الشراء",
+    flow1: "افتح Google Sheet وقم بالتصفية.",
+    flow2: "انسخ الرقم أو التقط صورة.",
+    flow3: "أرسل الرقم عبر Discord.",
+    flow4: "بعد التأكيد أكمل الشراء.",
+    flow5: "تحتاج رمزاً؟ استخدم صفحة المُصدِّق.",
 
-      if (mode === "system"){ mode = "dark"; theme = "dark"; }
-      else if (mode === "dark"){ mode = "light"; theme = "light"; }
-      else { mode = "system"; theme = getSystemTheme(); }
+    faqTitle: "الأسئلة الشائعة",
+    faq1: "التحديثات؟ Google Sheet هو المرجع.",
+    faq2: "طريقة استخدام المُصدِّق؟ الصق المفتاح وانسخ الرمز.",
 
-      localStorage.setItem(THEME_MODE_KEY, mode);
-      localStorage.setItem(THEME_KEY, theme);
-      applyTheme(theme);
-    });
+    miniAuth: "🔐 فتح المُصدِّق",
+    miniStock: "📌 المخزون",
+    miniOrder: "🧾 اطلب الآن",
 
-    // footer
-    document.getElementById("footer").textContent =
-      `© ${new Date().getFullYear()} Roshine.love — Overwatch Store. All rights reserved.`;
-  </script>
-</body>
-</html>
+    footer: "© {year} Roshine.love — متجر أوفرواتش."
+  }
+
+};
+
+// 自动识别浏览器语言
+function detectLang(){
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved && i18n[saved]) return saved;
+
+  const nav = navigator.language.toLowerCase();
+
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("fr")) return "fr";
+  if (nav.startsWith("de")) return "de";
+  if (nav.startsWith("ru")) return "ru";
+  if (nav.startsWith("it")) return "it";
+  if (nav.startsWith("ar")) return "ar";
+
+  return "en";
+}
+
+let currentLang = "en";
+
+function applyLang(lang){
+  if (!i18n[lang]) lang = "en";
+  currentLang = lang;
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+
+  document.getElementById("langSelect").value = lang;
+
+  const t = i18n[lang];
+
+  document.getElementById("subText").textContent   = t.sub;
+  document.getElementById("authLink").textContent  = t.auth;
+  document.getElementById("heroTitle").textContent = t.heroTitle;
+  document.getElementById("heroIntro").textContent = t.heroIntro;
+  document.getElementById("sheetBtn").textContent  = t.sheetBtn;
+  document.getElementById("discordBtn").textContent= t.discordBtn;
+
+  document.getElementById("flowTitle").textContent = t.flowTitle;
+
+  const flowLis = document.querySelectorAll("#flowSteps li");
+  flowLis[0].textContent = t.flow1;
+  flowLis[1].textContent = t.flow2;
+  flowLis[2].textContent = t.flow3;
+  flowLis[3].textContent = t.flow4;
+  flowLis[4].textContent = t.flow5;
+
+  document.getElementById("faqTitle").textContent = t.faqTitle;
+
+  const faqLis = document.querySelectorAll("#faqSteps li");
+  faqLis[0].textContent = t.faq1;
+  faqLis[1].textContent = t.faq2;
+
+  document.getElementById("miniAuth").textContent  = t.miniAuth;
+  document.getElementById("miniStock").textContent = t.miniStock;
+  document.getElementById("miniOrder").textContent = t.miniOrder;
+
+  document.getElementById("footer").textContent =
+    t.footer.replace("{year}", new Date().getFullYear());
+}
+
+applyLang(detectLang());
+
+document.getElementById("langSelect").addEventListener("change", e => {
+  const lang = e.target.value;
+  applyLang(lang);
+  localStorage.setItem(LANG_KEY, lang);
+});
