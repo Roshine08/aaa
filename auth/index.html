@@ -1,739 +1,837 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Battle.net Authenticator</title>
-<link rel="icon" href="logo.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roshine — Authenticator</title>
+  <link rel="icon" href="/assets/logo.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+  <style>
+    :root{
+      --bg-dark:#05060b;
+      --text-dark:#e6f0ff;
+      --muted-dark:#7c8aaa;
+      --accent-dark:#29b6ff;
 
-<style>
-:root{
-  --bg-dark:#05060b;
-  --card-dark:#0b1018;
-  --border-dark:#202736;
-  --text-dark:#e6f0ff;
-  --muted-dark:#7c8aaa;
-  --accent-dark:#29b6ff;
+      --bg-light:#171920;
+      --text-light:#e4e7f5;
+      --muted-light:#8b94aa;
+      --accent-light:#3aa3ff;
 
-  --bg-light:#171920;
-  --card-light:#1f222b;
-  --border-light:#2c3140;
-  --text-light:#e4e7f5;
-  --muted-light:#8b94aa;
-  --accent-light:#3aa3ff;
+      --bg:var(--bg-dark);
+      --text:var(--text-dark);
+      --muted:var(--muted-dark);
+      --accent:var(--accent-dark);
 
-  --bg:var(--bg-dark);
-  --card:var(--card-dark);
-  --border:var(--border-dark);
-  --text:var(--text-dark);
-  --muted:var(--muted-dark);
-  --accent:var(--accent-dark);
-}
+      --glass-bg: rgba(15, 18, 26, .46);
+      --glass-border: rgba(130, 170, 255, .18);
+      --glass-shadow: 0 30px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06) inset;
 
-html[data-theme="dark"]{
-  --bg:var(--bg-dark);
-  --card:var(--card-dark);
-  --border:var(--border-dark);
-  --text:var(--text-dark);
-  --muted:var(--muted-dark);
-  --accent:var(--accent-dark);
-}
-html[data-theme="light"]{
-  --bg:var(--bg-light);
-  --card:var(--card-light);
-  --border:var(--border-light);
-  --text:var(--text-light);
-  --muted:var(--muted-light);
-  --accent:var(--accent-light);
-}
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
 
-html,body{height:100%}
-body{
-  margin:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-}
+      --wrap: 980px;
+    }
 
-html[data-theme="dark"] body{
-  background: radial-gradient(circle at 50% -10%, #161b27 0%, #05060b 65%, #000000 100%);
-}
-html[data-theme="light"] body{
-  background: radial-gradient(circle at 50% -10%, #262a35 0%, #171920 65%, #10121a 100%);
-}
+    html[data-theme="dark"]{
+      --bg:var(--bg-dark);
+      --text:var(--text-dark);
+      --muted:var(--muted-dark);
+      --accent:var(--accent-dark);
+      --glass-bg: rgba(15, 18, 26, .46);
+      --glass-border: rgba(130, 170, 255, .18);
+    }
+    html[data-theme="light"]{
+      --bg:var(--bg-light);
+      --text:var(--text-light);
+      --muted:var(--muted-light);
+      --accent:var(--accent-light);
+      --glass-bg: rgba(255, 255, 255, .14);
+      --glass-border: rgba(0, 0, 0, .20);
+    }
 
-.wrap{
-  width:min(640px,96vw);
-}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:var(--bg);
+      overflow-x:hidden;
+    }
 
-.card{
-  position:relative;
-  background:var(--card);
-  border-radius:24px;
-  padding:36px 30px 28px;
-  box-shadow:0 22px 52px rgba(0,0,0,.55);
-  overflow:hidden;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  padding:1px;
-  background:linear-gradient(135deg,
-    rgba(0,185,255,.8),
-    rgba(0,110,255,.65),
-    rgba(0,40,120,.7));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-          mask-composite:exclude;
-  opacity:.75;
-  pointer-events:none;
-}
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 28px 66px rgba(0,0,0,.78);
-}
+    /* same clean blooms + light scan texture as store */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 520px at 18% 8%, rgba(41,182,255,.18), transparent 62%),
+        radial-gradient(820px 480px at 82% 14%, rgba(58,163,255,.14), transparent 64%),
+        radial-gradient(900px 700px at 55% 110%, rgba(41,182,255,.08), transparent 55%);
+      opacity:.55;
+      mix-blend-mode:screen;
+      filter:saturate(1.05);
+    }
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.025),
+          rgba(255,255,255,.025) 1px,
+          transparent 1px,
+          transparent 14px
+        );
+      opacity:.035;
+    }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:26px;
-}
-.top-left{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-.top-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .wrap{
+      width:min(var(--wrap), 92vw);
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
 
-.logo-img{
-  width:40px;height:40px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.logo-img:hover{
-  transform:translateY(-1px);
-  box-shadow:0 0 18px rgba(35,168,255,.9);
-}
+    /* ===== Top Nav ===== */
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,0));
+    }
+    html[data-theme="light"] .nav{
+      background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:18px 0 14px;
+    }
 
-.title{
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:.03em;
-  white-space:nowrap;
-}
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width:0;
+    }
+    .brand img{
+      width:40px;height:40px;border-radius:14px;
+      box-shadow:0 14px 42px rgba(0,0,0,.45);
+    }
+    .brand .name{
+      font-weight:900;
+      letter-spacing:.10em;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .brand .sub{
+      margin-top:2px;
+      font-size:12px;
+      color:var(--muted);
+      max-width:66ch;
+      line-height:1.35;
+    }
 
-.top-control{
-  min-width:52px;
-  height:32px;
-  padding:0 14px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.25);
-  color:var(--text);
-  font-size:13px;
-  font-weight:600;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 8px 18px rgba(0,0,0,.45);
-  cursor:pointer;
-  transition:background .15s ease, box-shadow .15s ease, transform .15s ease, opacity .15s ease;
-  text-decoration:none;
-  user-select:none;
-}
-html[data-theme="light"] .top-control{
-  border-color:rgba(0,0,0,.55);
-  background:rgba(0,0,0,.30);
-  box-shadow:0 8px 18px rgba(0,0,0,.65);
-}
-.top-control:hover{
-  background:rgba(0,0,0,.4);
-  transform:translateY(-1px);
-  box-shadow:0 10px 22px rgba(0,0,0,.75);
-}
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
-/* 语言选择：外观跟着 top-control，隐藏原生样式 */
-.lang-select{
-  appearance:none;
-  -moz-appearance:none;
-  -webkit-appearance:none;
-  border:none;
-  background:transparent;
-  padding:0 18px;
-  text-align:center;
-}
+    .pill{
+      height:34px;
+      padding:0 14px;
+      border-radius:var(--radius-pill);
+      border:1px solid var(--glass-border);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      font-size:13px;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      text-decoration:none;
+      box-shadow: 0 10px 26px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.05) inset;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    html[data-theme="light"] .pill{ background: rgba(255,255,255,.10); }
+    .pill:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 18px rgba(41,182,255,.16);
+      background: rgba(0,0,0,.26);
+    }
+    html[data-theme="light"] .pill:hover{ background: rgba(255,255,255,.16); }
 
-/* 下拉列表项颜色 */
-.lang-select option{
-  background:#050b16;
-  color:#e8eefc;
-}
-html[data-theme="light"] .lang-select option{
-  background:#1a1d26;
-  color:#e4e7f5;
-}
+    .lang-select{
+      appearance:none;
+      -moz-appearance:none;
+      -webkit-appearance:none;
+      border:none;
+      background:transparent;
+      padding:0 18px;
+      text-align:center;
+    }
+    .lang-select option{ background:#050b16; color:#e8eefc; }
+    html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
 
-/* 主题按钮：只控制图标大小，其余由 top-control 保证 */
-.theme-toggle{
-  border:none;
-  background:transparent;
-  padding:0;
-  min-width:auto;
-  font-size:18px;
-}
+    /* ===== Main ===== */
+    main{
+      min-height: calc(100vh - 86px);
+      display:flex;
+      align-items:center;
+      padding: 22px 0 56px;
+    }
 
-.code{
-  text-align:center;
-  font-family:ui-monospace,monospace;
-  font-size:76px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:32px 0 16px;
-}
+    .panel{
+      width: min(720px, 94vw);
+      margin: 0 auto;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      box-shadow: var(--glass-shadow);
+      padding: 26px 22px 22px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(700px 260px at 30% 0%, rgba(41,182,255,.16), transparent 62%);
+      opacity:.85;
+      pointer-events:none;
+    }
 
-.hint{
-  text-align:center;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:18px;
-}
-#remain{
-  color:rgba(110,125,150,.9);
-}
+    .panel-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      position:relative;
+      z-index:1;
+      margin-bottom:14px;
+    }
 
-.barwrap{
-  height:12px;
-  background:rgba(255,255,255,.08);
-  border-radius:999px;
-  overflow:hidden;
-}
-html[data-theme="light"] .barwrap{
-  background:rgba(0,0,0,.35);
-}
-.bar{
-  height:100%;
-  width:0%;
-  background:var(--accent);
-  background-image:linear-gradient(90deg,
-    rgba(255,255,255,.4),
-    rgba(255,255,255,.9),
-    rgba(255,255,255,.4));
-  background-size:200% 100%;
-  animation:stripe 1.3s linear infinite;
-  transition:width .15s linear;
-}
-@keyframes stripe{
-  0%{background-position:0% 0}
-  100%{background-position:200% 0}
-}
+    .panel-title{
+      font-weight:900;
+      letter-spacing:.06em;
+      font-size:14px;
+      opacity:.95;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      white-space:nowrap;
+    }
 
-.field-label{
-  margin-top:30px;
-  font-size:14px;
-  color:rgba(200,210,235,.96);
-  font-weight:600;
-}
-input{
-  width:100%;
-  box-sizing:border-box;
-  margin-top:10px;
-  padding:13px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.1);
-  color:var(--text);
-  font-family:ui-monospace,monospace;
-}
-html[data-theme="light"] input{
-  background:rgba(255,255,255,.04);
-}
-input::placeholder{
-  color:rgba(159,176,200,.7);
-}
-html[data-theme="light"] input::placeholder{
-  color:rgba(180,190,210,.7);
-}
+    .panel-note{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+      position:relative;
+      z-index:1;
+    }
 
-.row{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  margin-top:26px;
-}
-button{
-  padding:11px 18px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.08);
-  color:var(--text);
-  cursor:pointer;
-  font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
-  min-width:120px;
-}
-button.primary{
-  background:var(--accent);
-  border-color:transparent;
-  color:#fff;
-}
-button.primary:hover{
-  box-shadow:0 0 16px rgba(35,168,255,.9);
-  transform:translateY(-1px);
-}
-button:not(.primary):hover{
-  box-shadow:0 0 10px rgba(35,168,255,.6);
-  transform:translateY(-1px);
-}
+    /* code display */
+    .code{
+      text-align:center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: clamp(44px, 7.5vw, 78px);
+      font-weight: 900;
+      letter-spacing: 7px;
+      margin: 18px 0 10px;
+      position:relative;
+      z-index:1;
+    }
 
-.status{
-  margin-top:12px;
-  text-align:center;
-  font-size:12px;
-  min-height:18px;
-}
-.status.ok{color:#4cd18c;}
-.status.err{color:#ff6b6b;}
+    .hint{
+      text-align:center;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:14px;
+      position:relative;
+      z-index:1;
+    }
 
-.footer{
-  margin-top:20px;
-  font-size:12px;
-  color:var(--muted);
-  text-align:center;
-  user-select:none;
-  opacity:.8;
-}
+    /* progress bar */
+    .barwrap{
+      height: 10px;
+      border-radius: 999px;
+      overflow:hidden;
+      border:1px solid rgba(130,170,255,.14);
+      background: rgba(0,0,0,.14);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
+      position:relative;
+      z-index:1;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    html[data-theme="light"] .barwrap{ background: rgba(255,255,255,.10); }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(41,182,255,1), rgba(25,145,240,1));
+      position:relative;
+      overflow:hidden;
+      transition: width .15s linear;
+    }
+    .bar::after{
+      content:"";
+      position:absolute; inset:-40% -60%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+      transform: translateX(-30%);
+      animation: sheen 1.4s linear infinite;
+      opacity:.35;
+    }
+    @keyframes sheen{
+      0%{ transform: translateX(-35%); }
+      100%{ transform: translateX(35%); }
+    }
 
-@media (max-width:480px){
-  .wrap{ width:92vw; }
-  .card{ padding:20px 14px 16px; border-radius:20px; }
-  .title{ font-size:15px }
-  .code{ font-size:clamp(36px,11vw,48px); letter-spacing:4px; }
-  .row{ flex-direction:column; }
-  button{ width:100%; min-width:0; }
-  .logo-img{ width:32px;height:32px; border-radius:12px; }
-}
-</style>
+    /* input */
+    .field{
+      margin-top: 18px;
+      position:relative;
+      z-index:1;
+    }
+    .field-label{
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.04em;
+      color: rgba(230,240,255,.92);
+      margin-bottom:8px;
+    }
+    html[data-theme="light"] .field-label{ color: rgba(25,30,42,.90); }
+
+    input{
+      width:100%;
+      box-sizing:border-box;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(130,170,255,.18);
+      background: rgba(0,0,0,.14);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      outline:none;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    html[data-theme="light"] input{ background: rgba(255,255,255,.10); }
+    input::placeholder{ color: rgba(160,178,210,.70); }
+    html[data-theme="light"] input::placeholder{ color: rgba(90,98,120,.65); }
+
+    /* buttons */
+    .row{
+      display:flex;
+      gap:12px;
+      margin-top: 14px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    .btn{
+      height:46px;
+      padding: 0 16px;
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0,0,0,.14);
+      color: var(--text);
+      font-weight: 900;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex: 1 1 220px;
+      box-shadow: 0 18px 46px rgba(0,0,0,.38), 0 0 0 1px rgba(255,255,255,.05) inset;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    html[data-theme="light"] .btn{ background: rgba(255,255,255,.10); }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 22px 56px rgba(0,0,0,.46), 0 0 22px rgba(41,182,255,.16);
+      background: rgba(0,0,0,.20);
+    }
+    html[data-theme="light"] .btn:hover{ background: rgba(255,255,255,.16); }
+    .btn.primary{
+      border-color: transparent;
+      color:#fff;
+      background: linear-gradient(180deg, rgba(41,182,255,1), rgba(25,145,240,1));
+      box-shadow: 0 22px 56px rgba(41,182,255,.18), 0 0 0 1px rgba(255,255,255,.10) inset;
+    }
+    .btn.primary:hover{
+      box-shadow: 0 0 26px rgba(41,182,255,.42), 0 22px 56px rgba(41,182,255,.18);
+      opacity:.98;
+    }
+
+    /* status */
+    .status{
+      margin-top:12px;
+      min-height:18px;
+      text-align:center;
+      font-size:12px;
+      position:relative;
+      z-index:1;
+    }
+    .status.ok{ color:#4cd18c; }
+    .status.err{ color:#ff6b6b; }
+
+    .foot{
+      margin-top:14px;
+      text-align:center;
+      color: var(--muted);
+      font-size:12px;
+      opacity:.88;
+      user-select:none;
+      position:relative;
+      z-index:1;
+    }
+
+    @media (max-width: 760px){
+      .controls{ justify-content:flex-start; width:100%; }
+      .nav-inner{ flex-direction:column; align-items:flex-start; }
+      .panel{ padding: 22px 16px 18px; }
+      .code{ letter-spacing: 4px; }
+      .row{ flex-direction:column; }
+      .btn{ flex: 1 1 auto; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="top">
-      <div class="top-left">
-        <img src="logo.png" class="logo-img" alt="Logo">
-        <div class="title" id="titleText">Battle.net Authenticator</div>
-      </div>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <div class="brand">
+          <img src="/assets/logo.png" alt="Roshine Logo" />
+          <div>
+            <div class="name">ROSHINE.LOVE</div>
+            <div class="sub" id="subText">Overwatch Account Store • Listings via Google Sheet • Purchase via Discord</div>
+          </div>
+        </div>
 
-      <div class="top-right">
-        <a class="top-control" href="/" id="storeLink">Store</a>
+        <div class="controls">
+          <select id="langSelect" class="pill lang-select" title="Language">
+            <option value="en">EN</option>
+            <option value="zh">中文</option>
+            <option value="fr">FR</option>
+            <option value="de">DE</option>
+            <option value="ru">RU</option>
+            <option value="it">IT</option>
+            <option value="ar">العربية</option>
+          </select>
 
-        <select id="langSelect" class="lang-select top-control" aria-label="Language">
-          <option value="en">EN</option>
-          <option value="zh">中文</option>
-          <option value="fr">FR</option>
-          <option value="de">DE</option>
-          <option value="ru">RU</option>
-          <option value="it">IT</option>
-          <option value="ar">العربية</option>
-        </select>
-
-        <button class="theme-toggle top-control" id="themeToggle" aria-label="Theme">☀️</button>
+          <button class="pill" id="themeToggle" title="Theme">☀️</button>
+          <a class="pill" href="/" id="backLink" title="Back">← <span id="backText">Back to Store</span></a>
+        </div>
       </div>
     </div>
-
-    <div class="code" id="code">--------</div>
-    <div class="hint" id="remain"></div>
-    <div class="barwrap"><div class="bar" id="bar"></div></div>
-
-    <div class="field-label" id="secretLabel">Please enter your Private Key!</div>
-    <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
-
-    <div class="row">
-      <button class="primary" id="copy">Copy Code</button>
-      <button id="clear">Clear Key</button>
-    </div>
-
-    <div class="status" id="status"></div>
   </div>
-</div>
 
-<div class="footer" id="footer"></div>
+  <main>
+    <div class="wrap">
+      <section class="panel" aria-label="Authenticator">
+        <div class="panel-head">
+          <div class="panel-title" id="titleText">🔐 Battle.net Authenticator</div>
+          <div class="pill" id="modeBadge" style="cursor:default;opacity:.95;">TOTP • 30s</div>
+        </div>
 
-<script>
-const DIGITS = 8;
-const PERIOD = 30;
+        <p class="panel-note" id="descText">
+          Paste your Private Key to generate the current verification code. Then copy the code into Battle.net.
+        </p>
 
-const THEME_KEY = "theme-choice";       // 实际 data-theme
-const THEME_MODE_KEY = "theme-mode";    // system / light / dark
-const LANG_KEY  = "locale-choice";      // 与主页一致（同一个 key）
+        <div class="code" id="code">--------</div>
+        <div class="hint" id="remain"></div>
+        <div class="barwrap"><div class="bar" id="bar"></div></div>
 
-const $ = id => document.getElementById(id);
+        <div class="field">
+          <div class="field-label" id="secretLabel">Private Key</div>
+          <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+        </div>
 
-/* 多语言文案（与主页一致的语言集合） */
-const i18n = {
-  en: {
-    store: "Store",
-    title: "Battle.net Authenticator",
-    secretLabel: "Please enter your Private Key!",
-    placeholder: "Private Key",
-    copy: "Copy Code",
-    clear: "Clear Key",
-    copied: "Copied",
-    copyBlocked: "Copy blocked",
-    enterKeyError: "Enter Your Private Key",
-    invalidKey: "Invalid Private Key",
-    footer: "© {year} Roshine.love — Overwatch Store. All rights reserved."
-  },
-  zh: {
-    store: "返回商店",
-    title: "战网安全令",
-    secretLabel: "请输入你的安全令秘钥！",
-    placeholder: "安全令秘钥",
-    copy: "复制验证码",
-    clear: "清空秘钥",
-    copied: "已复制验证码",
-    copyBlocked: "浏览器禁止复制",
-    enterKeyError: "请输入安全令秘钥",
-    invalidKey: "无效的安全令秘钥",
-    footer: "© {year} Roshine.love — Overwatch 商店。保留所有权利。"
-  },
-  fr: {
-    store: "Boutique",
-    title: "Jeton de sécurité Battle.net",
-    secretLabel: "Veuillez entrer votre clé secrète !",
-    placeholder: "Clé secrète",
-    copy: "Copier le code",
-    clear: "Effacer la clé",
-    copied: "Code copié",
-    copyBlocked: "Copie bloquée par le navigateur",
-    enterKeyError: "Veuillez entrer votre clé secrète",
-    invalidKey: "Clé secrète invalide",
-    footer: "© {year} Roshine.love — Boutique Overwatch."
-  },
-  de: {
-    store: "Shop",
-    title: "Battle.net-Sicherheitstoken",
-    secretLabel: "Bitte gib deinen Sicherheitsschlüssel ein!",
-    placeholder: "Sicherheitsschlüssel",
-    copy: "Code kopieren",
-    clear: "Schlüssel löschen",
-    copied: "Code kopiert",
-    copyBlocked: "Kopieren vom Browser blockiert",
-    enterKeyError: "Bitte gib deinen Sicherheitsschlüssel ein",
-    invalidKey: "Ungültiger Sicherheitsschlüssel",
-    footer: "© {year} Roshine.love — Overwatch-Shop."
-  },
-  ru: {
-    store: "Магазин",
-    title: "Токен безопасности Battle.net",
-    secretLabel: "Введите ключ токена безопасности!",
-    placeholder: "Ключ токена",
-    copy: "Скопировать код",
-    clear: "Очистить ключ",
-    copied: "Код скопирован",
-    copyBlocked: "Браузер запретил копирование",
-    enterKeyError: "Введите ключ токена безопасности",
-    invalidKey: "Недействительный ключ токена",
-    footer: "© {year} Roshine.love — магазин Overwatch."
-  },
-  it: {
-    store: "Negozio",
-    title: "Token di sicurezza Battle.net",
-    secretLabel: "Inserisci la chiave del token!",
-    placeholder: "Chiave token",
-    copy: "Copia codice",
-    clear: "Cancella chiave",
-    copied: "Codice copiato",
-    copyBlocked: "Copia bloccata dal browser",
-    enterKeyError: "Inserisci la chiave del token",
-    invalidKey: "Chiave token non valida",
-    footer: "© {year} Roshine.love — Negozio Overwatch."
-  },
-  ar: {
-    store: "المتجر",
-    title: "رمز أمان Battle.net",
-    secretLabel: "يرجى إدخال المفتاح الخاص بك!",
-    placeholder: "المفتاح الخاص",
-    copy: "نسخ الرمز",
-    clear: "مسح المفتاح",
-    copied: "تم النسخ",
-    copyBlocked: "النسخ محظور",
-    enterKeyError: "أدخل المفتاح الخاص",
-    invalidKey: "مفتاح غير صالح",
-    footer: "© {year} Roshine.love — متجر أوفرواتش."
-  }
-};
+        <div class="row">
+          <button class="btn primary" id="copy">📋 <span id="copyText">Copy Code</span></button>
+          <button class="btn" id="clear">🧹 <span id="clearText">Clear Key</span></button>
+        </div>
 
-let currentLang = "en";
-const t = key => {
-  const dict = i18n[currentLang] || i18n.en;
-  return dict[key] || i18n.en[key] || key;
-};
+        <div class="status" id="status"></div>
+        <div class="foot" id="footer"></div>
+      </section>
+    </div>
+  </main>
 
-// 默认语言：优先用户选择（localStorage），否则跟随浏览器
-function detectLang(){
-  const saved = localStorage.getItem(LANG_KEY);
-  if (saved && i18n[saved]) return saved;
+  <script>
+    // ===== TOTP =====
+    const DIGITS = 8;
+    const PERIOD = 30;
 
-  const nav = (navigator.language || "en").toLowerCase();
-  if (nav.startsWith("zh")) return "zh";
-  if (nav.startsWith("fr")) return "fr";
-  if (nav.startsWith("de")) return "de";
-  if (nav.startsWith("ru")) return "ru";
-  if (nav.startsWith("it")) return "it";
-  if (nav.startsWith("ar")) return "ar";
-  return "en";
-}
+    const THEME_KEY = "theme-choice";
+    const THEME_MODE_KEY = "theme-mode";
+    const LANG_KEY  = "locale-choice";
 
-function applyLang(lang){
-  if (!i18n[lang]) lang = "en";
-  currentLang = lang;
+    const $ = id => document.getElementById(id);
 
-  document.documentElement.lang = lang;
-  document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+    // i18n (aligned with store language set)
+    const i18n = {
+      en: {
+        sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
+        back: "Back to Store",
+        title: "🔐 Battle.net Authenticator",
+        desc: "Paste your Private Key to generate the current verification code. Then copy the code into Battle.net.",
+        secretLabel: "Private Key",
+        placeholder: "Private Key",
+        copy: "Copy Code",
+        clear: "Clear Key",
+        copied: "Copied",
+        copyBlocked: "Copy blocked",
+        enterKeyError: "Enter your Private Key",
+        invalidKey: "Invalid Private Key",
+        footer: "© {year} Roshine.love — Authenticator."
+      },
+      zh: {
+        sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
+        back: "返回商店",
+        title: "🔐 战网安全令",
+        desc: "粘贴你的安全令秘钥生成当前验证码，然后复制到 Battle.net 使用。",
+        secretLabel: "安全令秘钥",
+        placeholder: "安全令秘钥",
+        copy: "复制验证码",
+        clear: "清空秘钥",
+        copied: "已复制验证码",
+        copyBlocked: "浏览器禁止复制",
+        enterKeyError: "请输入安全令秘钥",
+        invalidKey: "无效的安全令秘钥",
+        footer: "© {year} Roshine.love — 安全令工具。"
+      },
+      fr: {
+        sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
+        back: "Retour boutique",
+        title: "🔐 Jeton Battle.net",
+        desc: "Collez votre clé privée pour générer le code, puis copiez-le dans Battle.net.",
+        secretLabel: "Clé privée",
+        placeholder: "Clé privée",
+        copy: "Copier le code",
+        clear: "Effacer la clé",
+        copied: "Code copié",
+        copyBlocked: "Copie bloquée",
+        enterKeyError: "Entrez votre clé privée",
+        invalidKey: "Clé privée invalide",
+        footer: "© {year} Roshine.love — Jeton."
+      },
+      de: {
+        sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
+        back: "Zurück zum Shop",
+        title: "🔐 Battle.net-Token",
+        desc: "Füge deinen Private Key ein, generiere den Code und kopiere ihn in Battle.net.",
+        secretLabel: "Private Key",
+        placeholder: "Private Key",
+        copy: "Code kopieren",
+        clear: "Key löschen",
+        copied: "Kopiert",
+        copyBlocked: "Kopieren blockiert",
+        enterKeyError: "Private Key eingeben",
+        invalidKey: "Ungültiger Private Key",
+        footer: "© {year} Roshine.love — Token."
+      },
+      ru: {
+        sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
+        back: "Назад в магазин",
+        title: "🔐 Токен Battle.net",
+        desc: "Вставьте Private Key, получите код и скопируйте его в Battle.net.",
+        secretLabel: "Private Key",
+        placeholder: "Private Key",
+        copy: "Скопировать код",
+        clear: "Очистить ключ",
+        copied: "Скопировано",
+        copyBlocked: "Копирование запрещено",
+        enterKeyError: "Введите Private Key",
+        invalidKey: "Недействительный Private Key",
+        footer: "© {year} Roshine.love — токен."
+      },
+      it: {
+        sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
+        back: "Torna al negozio",
+        title: "🔐 Token Battle.net",
+        desc: "Incolla il Private Key per generare il codice e copialo in Battle.net.",
+        secretLabel: "Private Key",
+        placeholder: "Private Key",
+        copy: "Copia codice",
+        clear: "Cancella key",
+        copied: "Copiato",
+        copyBlocked: "Copia bloccata",
+        enterKeyError: "Inserisci Private Key",
+        invalidKey: "Private Key non valido",
+        footer: "© {year} Roshine.love — Token."
+      },
+      ar: {
+        sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
+        back: "العودة للمتجر",
+        title: "🔐 مُصدِّق Battle.net",
+        desc: "ألصق Private Key لتوليد الرمز ثم انسخه إلى Battle.net.",
+        secretLabel: "Private Key",
+        placeholder: "Private Key",
+        copy: "نسخ الرمز",
+        clear: "مسح المفتاح",
+        copied: "تم النسخ",
+        copyBlocked: "تم حظر النسخ",
+        enterKeyError: "أدخل Private Key",
+        invalidKey: "Private Key غير صالح",
+        footer: "© {year} Roshine.love — المُصدِّق."
+      }
+    };
 
-  const sel = $("langSelect");
-  if (sel) sel.value = lang;
+    function detectLang(){
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && i18n[saved]) return saved;
 
-  $("storeLink").textContent    = t("store");
-  $("titleText").textContent    = t("title");
-  $("secretLabel").textContent  = t("secretLabel");
-  $("secret").placeholder       = t("placeholder");
-  $("copy").textContent         = t("copy");
-  $("clear").textContent        = t("clear");
-
-  const year = new Date().getFullYear();
-  $("footer").textContent = t("footer").replace("{year}", year);
-
-  // 切换语言后立即刷新一次状态文案（避免残留上一个语言）
-  const statusEl = $("status");
-  if (statusEl) {
-    statusEl.textContent = "";
-    statusEl.classList.remove("err","ok");
-  }
-}
-
-(function initLang(){
-  applyLang(detectLang());
-})();
-
-$("langSelect").addEventListener("change", e => {
-  const lang = e.target.value;
-  applyLang(lang);
-  localStorage.setItem(LANG_KEY, lang); // 与主页一致
-});
-
-/* 主题切换：按钮显示“将切换到的主题”图标 */
-function applyTheme(theme){
-  document.documentElement.setAttribute("data-theme", theme);
-  const btn = $("themeToggle");
-  if (!btn) return;
-  btn.textContent = theme === "dark" ? "☀️" : "🌙";
-}
-function getSystemTheme(){
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
-}
-(function initTheme(){
-  let mode  = localStorage.getItem(THEME_MODE_KEY);
-  let theme = localStorage.getItem(THEME_KEY);
-
-  if (!mode){
-    mode = "system";
-    theme = getSystemTheme();
-    localStorage.setItem(THEME_MODE_KEY, mode);
-    localStorage.setItem(THEME_KEY, theme);
-  }else{
-    if (mode === "system"){
-      theme = getSystemTheme();
-      localStorage.setItem(THEME_KEY, theme);
-    }else if (!theme){
-      theme = mode === "dark" ? "dark" : "light";
-      localStorage.setItem(THEME_KEY, theme);
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("zh")) return "zh";
+      if (nav.startsWith("fr")) return "fr";
+      if (nav.startsWith("de")) return "de";
+      if (nav.startsWith("ru")) return "ru";
+      if (nav.startsWith("it")) return "it";
+      if (nav.startsWith("ar")) return "ar";
+      return "en";
     }
-  }
 
-  applyTheme(theme);
+    let currentLang = "en";
+    const t = (key) => (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
 
-  if (window.matchMedia){
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    mq.addEventListener("change", e => {
-      const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
-      if (currentMode !== "system") return;
-      const nextTheme = e.matches ? "dark" : "light";
-      localStorage.setItem(THEME_KEY, nextTheme);
-      applyTheme(nextTheme);
+    function applyLang(lang){
+      if (!i18n[lang]) lang = "en";
+      currentLang = lang;
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+
+      const sel = $("langSelect");
+      if (sel) sel.value = lang;
+
+      $("subText").textContent = t("sub");
+      $("backText").textContent = t("back");
+      $("titleText").textContent = t("title");
+      $("descText").textContent = t("desc");
+      $("secretLabel").textContent = t("secretLabel");
+      $("secret").placeholder = t("placeholder");
+      $("copyText").textContent = t("copy");
+      $("clearText").textContent = t("clear");
+
+      $("footer").textContent = t("footer").replace("{year}", new Date().getFullYear());
+    }
+
+    // lang init
+    (function initLang(){
+      applyLang(detectLang());
+    })();
+
+    $("langSelect").addEventListener("change", e => {
+      const lang = e.target.value;
+      applyLang(lang);
+      localStorage.setItem(LANG_KEY, lang);
+      // refresh status message language (if any)
+      if ($("status").classList.contains("err")) gen();
     });
-  }
-})();
 
-// 三态切换：system -> dark -> light -> system
-$("themeToggle").addEventListener("click", () => {
-  let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
-  let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
-
-  if (mode === "system"){
-    mode  = "dark";
-    theme = "dark";
-  }else if (mode === "dark"){
-    mode  = "light";
-    theme = "light";
-  }else{
-    mode  = "system";
-    theme = getSystemTheme();
-  }
-
-  localStorage.setItem(THEME_MODE_KEY, mode);
-  localStorage.setItem(THEME_KEY, theme);
-  applyTheme(theme);
-});
-
-/* 支持 ?key= 和 /hex 两种方式 */
-function getKeyFromURL(){
-  const u = new URL(location.href);
-  const paramKey = u.searchParams.get("key");
-  if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
-
-  const parts = u.pathname.split("/").filter(Boolean);
-  if (parts.length){
-    const last = parts[parts.length - 1];
-    if (/^[0-9a-fA-F]+$/.test(last)) return last;
-  }
-  return null;
-}
-
-/* TOTP 逻辑 */
-function hexToBytes(s){
-  s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
-  if (!s) throw new Error("ERR_EMPTY_KEY");
-  if (s.length % 2) throw new Error("ERR_INVALID_KEY");
-  return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
-}
-function counterBytes(c){
-  const b = new Uint8Array(8); let x = BigInt(c);
-  for (let i = 7; i >= 0; i--){
-    b[i] = Number(x & 0xffn);
-    x >>= 8n;
-  }
-  return b;
-}
-async function hmacSha1(key,msg){
-  const k = await crypto.subtle.importKey(
-    "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
-  );
-  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
-}
-function truncate(mac){
-  const o = mac[mac.length - 1] & 0x0f;
-  return (((mac[o]   & 0x7f) << 24) |
-          ((mac[o+1] & 0xff) << 16) |
-          ((mac[o+2] & 0xff) << 8)  |
-          ( mac[o+3] & 0xff)) >>> 0;
-}
-function fmt(n){
-  const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
-  return raw.slice(0,4) + " " + raw.slice(4);
-}
-
-async function gen(){
-  const statusEl = $("status");
-  try{
-    const key = hexToBytes($("secret").value);
-    const ctr = Math.floor(Date.now()/1000 / PERIOD);
-    const mac = await hmacSha1(key, counterBytes(ctr));
-    $("code").textContent = fmt(truncate(mac));
-    if (statusEl){
-      statusEl.textContent = "";
-      statusEl.classList.remove("err","ok");
+    // ===== Theme (system -> dark -> light -> system) =====
+    function getSystemTheme(){
+      const prefersDark = window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return prefersDark ? "dark" : "light";
     }
-  }catch(e){
-    $("code").textContent = "--------";
-    if (!statusEl) return;
-    let msg;
-    if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
-    else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
-    else msg = e.message;
-    statusEl.textContent = msg;
-    statusEl.classList.add("err");
-    statusEl.classList.remove("ok");
-  }
-}
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      const btn = $("themeToggle");
+      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
 
-/* 进度条 & 剩余时间 */
-function tick(){
-  const s   = Math.floor(Date.now()/1000);
-  const rem = PERIOD - (s % PERIOD);
-  $("remain").textContent = `${rem}s`;
-  $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
-}
+    (function initTheme(){
+      let mode  = localStorage.getItem(THEME_MODE_KEY);
+      let theme = localStorage.getItem(THEME_KEY);
 
-let last = -1;
-setInterval(() => {
-  tick();
-  const s = Math.floor(Date.now()/1000);
-  if (s !== last){
-    last = s;
+      if (!mode){
+        mode = "system";
+        theme = getSystemTheme();
+        localStorage.setItem(THEME_MODE_KEY, mode);
+        localStorage.setItem(THEME_KEY, theme);
+      }else{
+        if (mode === "system"){
+          theme = getSystemTheme();
+          localStorage.setItem(THEME_KEY, theme);
+        }else if (!theme){
+          theme = mode === "dark" ? "dark" : "light";
+          localStorage.setItem(THEME_KEY, theme);
+        }
+      }
+      applyTheme(theme);
+
+      if (window.matchMedia){
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        mq.addEventListener("change", e => {
+          const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
+          if (currentMode !== "system") return;
+          const nextTheme = e.matches ? "dark" : "light";
+          localStorage.setItem(THEME_KEY, nextTheme);
+          applyTheme(nextTheme);
+        });
+      }
+    })();
+
+    $("themeToggle").addEventListener("click", () => {
+      let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
+      let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
+
+      if (mode === "system"){ mode = "dark"; theme = "dark"; }
+      else if (mode === "dark"){ mode = "light"; theme = "light"; }
+      else { mode = "system"; theme = getSystemTheme(); }
+
+      localStorage.setItem(THEME_MODE_KEY, mode);
+      localStorage.setItem(THEME_KEY, theme);
+      applyTheme(theme);
+    });
+
+    // ===== URL key support (?key= or /hex) =====
+    function getKeyFromURL(){
+      const u = new URL(location.href);
+      const paramKey = u.searchParams.get("key");
+      if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+
+      const parts = u.pathname.split("/").filter(Boolean);
+      if (parts.length){
+        const last = parts[parts.length - 1];
+        if (/^[0-9a-fA-F]+$/.test(last)) return last;
+      }
+      return null;
+    }
+
+    // ===== TOTP core =====
+    function hexToBytes(s){
+      s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
+      if (!s) throw new Error("ERR_EMPTY_KEY");
+      if (s.length % 2) throw new Error("ERR_INVALID_KEY");
+      return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
+    }
+    function counterBytes(c){
+      const b = new Uint8Array(8); let x = BigInt(c);
+      for (let i = 7; i >= 0; i--){
+        b[i] = Number(x & 0xffn);
+        x >>= 8n;
+      }
+      return b;
+    }
+    async function hmacSha1(key,msg){
+      const k = await crypto.subtle.importKey(
+        "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
+      );
+      return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
+    }
+    function truncate(mac){
+      const o = mac[mac.length - 1] & 0x0f;
+      return (((mac[o]   & 0x7f) << 24) |
+              ((mac[o+1] & 0xff) << 16) |
+              ((mac[o+2] & 0xff) << 8)  |
+              ( mac[o+3] & 0xff)) >>> 0;
+    }
+    function fmt(n){
+      const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
+      return raw.slice(0,4) + " " + raw.slice(4);
+    }
+
+    async function gen(){
+      const statusEl = $("status");
+      try{
+        const key = hexToBytes($("secret").value);
+        const ctr = Math.floor(Date.now()/1000 / PERIOD);
+        const mac = await hmacSha1(key, counterBytes(ctr));
+        $("code").textContent = fmt(truncate(mac));
+        if (statusEl){
+          statusEl.textContent = "";
+          statusEl.classList.remove("err","ok");
+        }
+      }catch(e){
+        $("code").textContent = "--------";
+        if (!statusEl) return;
+        let msg;
+        if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
+        else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
+        else msg = e.message;
+        statusEl.textContent = msg;
+        statusEl.classList.add("err");
+        statusEl.classList.remove("ok");
+      }
+    }
+
+    function tick(){
+      const s   = Math.floor(Date.now()/1000);
+      const rem = PERIOD - (s % PERIOD);
+      $("remain").textContent = `${rem}s`;
+      $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
+    }
+
+    let last = -1;
+    setInterval(() => {
+      tick();
+      const s = Math.floor(Date.now()/1000);
+      if (s !== last){
+        last = s;
+        gen();
+      }
+    }, 150);
+
+    $("secret").addEventListener("input", gen);
+
+    $("copy").addEventListener("click", async () => {
+      const v = $("code").textContent;
+      const statusEl = $("status");
+      if (v.includes("-")) return;
+      try{
+        await navigator.clipboard.writeText(v.replace(/\s/g,""));
+        if (statusEl){
+          statusEl.textContent = t("copied");
+          statusEl.classList.remove("err");
+          statusEl.classList.add("ok");
+        }
+      }catch{
+        if (statusEl){
+          statusEl.textContent = t("copyBlocked");
+          statusEl.classList.remove("ok");
+          statusEl.classList.add("err");
+        }
+      }
+    });
+
+    $("clear").addEventListener("click", () => {
+      $("secret").value = "";
+      $("code").textContent = "--------";
+      const statusEl = $("status");
+      if (statusEl){
+        statusEl.textContent = "";
+        statusEl.classList.remove("err","ok");
+      }
+    });
+
+    // init: prefill from URL if any
+    const urlKey = getKeyFromURL();
+    if (urlKey) $("secret").value = urlKey;
+
+    tick();
     gen();
-  }
-}, 150);
-
-/* 输入 & 按钮事件 */
-$("secret").addEventListener("input", gen);
-
-$("copy").addEventListener("click", async () => {
-  const v = $("code").textContent;
-  const statusEl = $("status");
-  if (v.includes("-")) return;
-  try{
-    await navigator.clipboard.writeText(v.replace(/\s/g,""));
-    if (statusEl){
-      statusEl.textContent = t("copied");
-      statusEl.classList.remove("err");
-      statusEl.classList.add("ok");
-    }
-  }catch{
-    if (statusEl){
-      statusEl.textContent = t("copyBlocked");
-      statusEl.classList.remove("ok");
-      statusEl.classList.add("err");
-    }
-  }
-});
-
-$("clear").addEventListener("click", () => {
-  $("secret").value = "";
-  $("code").textContent = "--------";
-  const statusEl = $("status");
-  if (statusEl){
-    statusEl.textContent = "";
-    statusEl.classList.remove("err","ok");
-  }
-});
-
-/* 初始化：URL 中有 key 就预填（支持 ?key= 与 /hex） */
-const urlKey = getKeyFromURL();
-if (urlKey){
-  $("secret").value = urlKey;
-}
-
-tick();
-gen();
-</script>
+  </script>
 </body>
 </html>
