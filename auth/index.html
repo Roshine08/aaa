@@ -1,664 +1,710 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Authenticator</title>
-<link rel="icon" href="/assets/logo.png" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roshine Account Store</title>
+  <link rel="icon" href="/assets/logo.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;800;900&display=swap">
 
-<style>
-  :root{
-    --bg:#05060b;
-    --card:rgba(15,18,26,.58);
-    --border:rgba(160,190,255,.16);
-    --border2:rgba(255,255,255,.08);
-    --text:#e6f0ff;
-    --muted:#8fa0bf;
-    --accent:#29b6ff;
-    --shadow: 0 22px 70px rgba(0,0,0,.58);
-  }
-
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    color:var(--text);
-    background: var(--bg);
-    overflow-x:hidden;
-  }
-
-  body::before{
-    content:"";
-    position:fixed;
-    inset:-20%;
-    pointer-events:none;
-    background:
-      radial-gradient(900px 520px at 50% 28%, rgba(255,255,255,.10), transparent 60%),
-      radial-gradient(1200px 700px at 12% 12%, rgba(41,182,255,.22), transparent 55%),
-      radial-gradient(1200px 700px at 88% 18%, rgba(255,79,216,.13), transparent 58%),
-      radial-gradient(900px 600px at 50% 85%, rgba(41,182,255,.10), transparent 62%),
-      linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.75));
-    opacity:1;
-  }
-  body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    background:
-      radial-gradient(circle at 50% 30%, transparent 0 55%, rgba(0,0,0,.70) 100%),
-      repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.028),
-        rgba(255,255,255,.028) 1px,
-        transparent 1px,
-        transparent 9px
-      );
-    opacity:.14;
-    mix-blend-mode:overlay;
-  }
-
-  .wrap{
-    position:relative;
-    z-index:1;
-    width:min(980px, 92vw);
-    margin:0 auto;
-    padding:18px 0 60px;
-    min-height:100%;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-  }
-
-  /* top nav (same system as homepage) */
-  .top{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding-top:10px;
-  }
-  .nav{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    border-radius:999px;
-    background:rgba(12,14,20,.46);
-    border:1px solid var(--border2);
-    box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.05) inset;
-    backdrop-filter: blur(12px);
-    width:min(920px, 92vw);
-    justify-content:space-between;
-  }
-
-  .left{
-    display:flex; align-items:center; gap:10px;
-  }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    padding:6px 10px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.06);
-    background:rgba(0,0,0,.12);
-  }
-  .brand img{
-    width:28px;height:28px;border-radius:10px;
-    box-shadow:0 10px 25px rgba(0,0,0,.40);
-  }
-  .brand .txt{
-    font-weight:900;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    font-size:12px;
-    white-space:nowrap;
-    opacity:.95;
-  }
-
-  .right{
-    display:flex; align-items:center; gap:10px;
-  }
-
-  .pill{
-    height:34px;
-    padding:0 14px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:rgba(0,0,0,.16);
-    color:var(--text);
-    font-size:13px;
-    font-weight:800;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    text-decoration:none;
-    user-select:none;
-    box-shadow:0 8px 20px rgba(0,0,0,.40), 0 0 0 1px rgba(255,255,255,.05) inset;
-    backdrop-filter: blur(12px);
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  }
-  .pill:hover{
-    transform:translateY(-1px);
-    background:rgba(0,0,0,.22);
-    box-shadow:0 12px 26px rgba(0,0,0,.58), 0 0 18px rgba(41,182,255,.12);
-  }
-
-  .lang-select{
-    appearance:none;
-    -moz-appearance:none;
-    -webkit-appearance:none;
-    border:none;
-    background:transparent;
-    padding:0 18px;
-    text-align:center;
-    cursor:pointer;
-  }
-  .lang-select option{ background:#050b16; color:#e8eefc; }
-
-  /* main card */
-  .card{
-    margin: 6px auto 0;
-    width:min(720px, 92vw);
-    border-radius: 28px;
-    background: linear-gradient(180deg, rgba(15,18,26,.58), rgba(10,12,18,.38));
-    border: 1px solid var(--border2);
-    box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.04) inset;
-    backdrop-filter: blur(14px);
-    overflow:hidden;
-    position:relative;
-    padding:32px 26px 24px;
-  }
-
-  .card::before{
-    content:"";
-    position:absolute;
-    inset:-40%;
-    background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
-    transform: rotate(10deg) translateX(-30%);
-    animation:sweep 8.5s linear infinite;
-    opacity:.55;
-    pointer-events:none;
-  }
-  @keyframes sweep{
-    0%{ transform: rotate(10deg) translateX(-35%); opacity:0; }
-    12%{ opacity:.55; }
-    70%{ opacity:.20; }
-    100%{ transform: rotate(10deg) translateX(35%); opacity:0; }
-  }
-
-  .title{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:14px;
-    position:relative;
-    z-index:1;
-  }
-  .title h1{
-    margin:0;
-    font-size:18px;
-    letter-spacing:.04em;
-    font-weight:900;
-  }
-  .subtitle{
-    margin:0;
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-    position:relative;
-    z-index:1;
-  }
-
-  .code{
-    text-align:center;
-    font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size:72px;
-    font-weight:900;
-    letter-spacing:6px;
-    margin:26px 0 12px;
-    position:relative;
-    z-index:1;
-  }
-  .hint{
-    text-align:center;
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:14px;
-    position:relative;
-    z-index:1;
-  }
-
-  .barwrap{
-    height:12px;
-    background:rgba(255,255,255,.08);
-    border-radius:999px;
-    overflow:hidden;
-    position:relative;
-    z-index:1;
-  }
-  .bar{
-    height:100%;
-    width:0%;
-    background:var(--accent);
-    background-image:linear-gradient(90deg,
-      rgba(255,255,255,.35),
-      rgba(255,255,255,.92),
-      rgba(255,255,255,.35));
-    background-size:200% 100%;
-    animation:stripe 1.3s linear infinite;
-    transition:width .15s linear;
-  }
-  @keyframes stripe{
-    0%{background-position:0% 0}
-    100%{background-position:200% 0}
-  }
-
-  .field-label{
-    margin-top:20px;
-    font-size:14px;
-    color:rgba(230,240,255,.92);
-    font-weight:800;
-    position:relative;
-    z-index:1;
-  }
-  input{
-    width:100%;
-    box-sizing:border-box;
-    margin-top:10px;
-    padding:13px 14px;
-    border-radius:16px;
-    border:1px solid rgba(160,190,255,.18);
-    background:rgba(0,0,0,.16);
-    color:var(--text);
-    font-family:ui-monospace,monospace;
-    outline:none;
-    box-shadow:0 12px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.04) inset;
-    backdrop-filter: blur(14px);
-    position:relative;
-    z-index:1;
-  }
-  input::placeholder{ color:rgba(143,160,191,.72); }
-
-  .row{
-    display:flex;
-    gap:12px;
-    margin-top:18px;
-    position:relative;
-    z-index:1;
-  }
-  button{
-    flex:1 1 auto;
-    height:46px;
-    padding:0 14px;
-    border-radius:16px;
-    border:1px solid rgba(160,190,255,.18);
-    background:rgba(0,0,0,.16);
-    color:var(--text);
-    cursor:pointer;
-    font-weight:900;
-    font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    box-shadow:0 16px 40px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.04) inset;
-    backdrop-filter: blur(14px);
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  }
-  button:hover{
-    transform:translateY(-1px);
-    background:rgba(0,0,0,.22);
-    box-shadow:0 18px 52px rgba(0,0,0,.50), 0 0 16px rgba(41,182,255,.12);
-  }
-  button.primary{
-    border-color: transparent;
-    background: linear-gradient(135deg, rgba(41,182,255,.95), rgba(41,182,255,.70));
-    color:#071018;
-  }
-
-  .status{
-    margin-top:10px;
-    text-align:center;
-    font-size:12px;
-    min-height:18px;
-    position:relative;
-    z-index:1;
-  }
-  .status.ok{color:#4cd18c;}
-  .status.err{color:#ff6b6b;}
-
-  .footer{
-    margin-top:auto;
-    text-align:center;
-    color:rgba(143,160,191,.78);
-    font-size:12px;
-    opacity:.9;
-    user-select:none;
-    padding-top:10px;
-  }
-
-  @media (max-width:520px){
-    .nav{
-      border-radius:20px;
-      width:92vw;
-      padding:10px 10px;
-      gap:8px;
-      flex-wrap:wrap;
+  <style>
+    :root{
+      --bg:#05060b;
+      --text:#e6f0ff;
+      --muted:#7c8aaa;
+      --glass: rgba(12,16,24,.62);
+      --glass2: rgba(12,16,24,.46);
+      --stroke: rgba(120,170,255,.16);
+      --stroke2: rgba(255,255,255,.08);
+      --accent:#29b6ff;
+      --accent2:#7a5cff;
+      --shadow: 0 24px 70px rgba(0,0,0,.62);
+      --radius: 22px;
     }
-    .brand .txt{ font-size:11px; }
-    .card{ padding:24px 16px 18px; border-radius:24px; }
-    .code{ font-size:clamp(40px, 12vw, 52px); letter-spacing:4px; }
-    .row{ flex-direction:column; }
-  }
 
-  html[dir="rtl"] .left{ flex-direction:row-reverse; }
-</style>
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background: #05060b;
+      overflow-x:hidden;
+    }
+
+    /* Deadcell-ish cinematic background (no external assets) */
+    body::before{
+      content:"";
+      position:fixed; inset:-20%;
+      background:
+        radial-gradient(1000px 600px at 18% 12%, rgba(41,182,255,.16), transparent 60%),
+        radial-gradient(900px 520px at 78% 18%, rgba(122,92,255,.12), transparent 62%),
+        radial-gradient(900px 600px at 50% 70%, rgba(41,182,255,.08), transparent 60%),
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:auto,auto,auto,56px 56px,56px 56px;
+      filter: blur(0px);
+      opacity:.55;
+      pointer-events:none;
+      z-index:0;
+      transform: translateZ(0);
+    }
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      background:
+        radial-gradient(70% 60% at 50% 40%, rgba(0,0,0,.00), rgba(0,0,0,.72) 65%, rgba(0,0,0,.90) 100%),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.03),
+          rgba(255,255,255,.03) 1px,
+          transparent 1px,
+          transparent 9px
+        );
+      opacity:.08;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .wrap{
+      width:min(1040px, 92vw);
+      margin:0 auto;
+      padding:18px 0 80px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* Top floating glass bar */
+    .topbar{
+      position:sticky;
+      top:14px;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: linear-gradient(180deg, rgba(12,16,24,.66), rgba(12,16,24,.40));
+      border:1px solid var(--stroke);
+      box-shadow: 0 14px 42px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05) inset;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(0,0,0,.18);
+    }
+    .brand img{
+      width:30px; height:30px;
+      border-radius:12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.45);
+      flex:0 0 auto;
+    }
+    .brand .title{
+      font-weight:900;
+      letter-spacing:.06em;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-transform:uppercase;
+      opacity:.95;
+    }
+
+    .controls{
+      display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
+    }
+
+    .pill{
+      height:36px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      letter-spacing:.03em;
+      text-decoration:none;
+      user-select:none;
+      cursor:pointer;
+      box-shadow: 0 10px 26px rgba(0,0,0,.45);
+      backdrop-filter: blur(12px);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      background: rgba(0,0,0,.26);
+      box-shadow: 0 14px 34px rgba(0,0,0,.62), 0 0 18px rgba(41,182,255,.12);
+    }
+
+    select.pill{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      padding:0 18px;
+    }
+    select.pill option{
+      background:#050b16;
+      color:#e8eefc;
+    }
+
+    /* Fullscreen hero */
+    .hero{
+      min-height: calc(100vh - 140px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:34px 0 24px;
+    }
+
+    .hero-inner{
+      width:100%;
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(180deg, rgba(12,16,24,.62), rgba(12,16,24,.35));
+      border:1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(16px);
+      padding: clamp(22px, 4vw, 42px);
+    }
+    .hero-inner::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background: linear-gradient(135deg, rgba(41,182,255,.55), rgba(122,92,255,.30), rgba(41,182,255,.35));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+              mask-composite:exclude;
+      opacity:.65;
+      pointer-events:none;
+    }
+    .hero-inner::after{
+      content:"";
+      position:absolute;
+      left:-25%;
+      top:-40%;
+      width:150%;
+      height:150%;
+      background: linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
+      transform: rotate(8deg);
+      animation: sweep 7.5s linear infinite;
+      opacity:.40;
+      pointer-events:none;
+    }
+    @keyframes sweep{
+      0%{ transform:translateX(-40%) rotate(8deg); opacity:0; }
+      14%{ opacity:.45; }
+      70%{ opacity:.18; }
+      100%{ transform:translateX(40%) rotate(8deg); opacity:0; }
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      color: rgba(230,240,255,.92);
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .hero h1{
+      margin:14px 0 10px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height:1.02;
+      letter-spacing:.04em;
+      font-weight:900;
+    }
+    .hero p{
+      margin:0 0 18px;
+      max-width: 78ch;
+      color: rgba(124,138,170,.95);
+      line-height:1.65;
+      font-size: 15px;
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:16px;
+    }
+    .btn{
+      height:48px;
+      padding:0 18px;
+      border-radius:16px;
+      border:1px solid rgba(120,170,255,.18);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      font-weight:900;
+      letter-spacing:.02em;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-width: 240px;
+      backdrop-filter: blur(12px);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(0,0,0,.24);
+      box-shadow: 0 0 22px rgba(41,182,255,.18);
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(41,182,255,.92), rgba(122,92,255,.72));
+      border-color: transparent;
+      color:#fff;
+      box-shadow: 0 16px 40px rgba(41,182,255,.18);
+    }
+    .btn.primary:hover{
+      box-shadow: 0 0 28px rgba(41,182,255,.32);
+    }
+
+    /* Sections (no “card grid” layout, just spaced glass blocks) */
+    .sections{
+      margin-top: 22px;
+      display:flex;
+      flex-direction:column;
+      gap:18px; /* consistent spacing */
+    }
+    .section{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(12,16,24,.54), rgba(12,16,24,.30));
+      border:1px solid rgba(120,170,255,.14);
+      box-shadow: 0 18px 54px rgba(0,0,0,.52);
+      backdrop-filter: blur(16px);
+      padding: 22px 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .section::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background: linear-gradient(135deg, rgba(41,182,255,.34), rgba(255,255,255,.08), rgba(122,92,255,.20));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+              mask-composite:exclude;
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .h2{
+      margin:0 0 10px;
+      font-size: 18px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .h2 .dot{
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(41,182,255,.55);
+      flex:0 0 auto;
+    }
+
+    .list{
+      margin:0;
+      padding-left:18px;
+      color: rgba(124,138,170,.98);
+      line-height:1.8;
+      font-size:14px;
+    }
+    .list li{ margin:8px 0; }
+
+    .mini{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:14px;
+    }
+    .mini a{
+      flex: 1 1 220px;
+      height:44px;
+      border-radius:16px;
+      border:1px solid rgba(120,170,255,.18);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      font-weight:900;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      backdrop-filter: blur(12px);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .mini a:hover{
+      transform: translateY(-1px);
+      background: rgba(0,0,0,.24);
+      box-shadow: 0 0 20px rgba(41,182,255,.16);
+    }
+
+    .footer{
+      margin-top:20px;
+      text-align:center;
+      color: rgba(124,138,170,.86);
+      font-size:12px;
+      opacity:.9;
+      user-select:none;
+    }
+
+    /* Mobile */
+    @media (max-width:760px){
+      .wrap{ width:min(980px, 92vw); padding-bottom:64px; }
+      .topbar{ top:10px; padding:10px; gap:10px; }
+      .brand{ padding:6px 8px; }
+      .brand .title{ font-size:12px; }
+      .pill{ height:34px; padding:0 12px; }
+      .hero{ min-height: calc(100vh - 120px); padding:22px 0 14px; }
+      .btn{ min-width:0; width:100%; height:50px; }
+      .section{ padding:18px 16px; }
+      .mini a{ width:100%; flex:1 1 auto; }
+    }
+
+    /* RTL niceties */
+    html[dir="rtl"] .brand{ flex-direction: row-reverse; }
+    html[dir="rtl"] .controls{ flex-direction: row-reverse; }
+    html[dir="rtl"] .cta{ justify-content:flex-start; }
+    html[dir="rtl"] .kicker{ direction:rtl; }
+  </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="top">
-      <div class="nav">
-        <div class="left">
-          <a class="pill" href="/" id="homeBtn" title="Home">🏠</a>
-          <div class="brand">
-            <img src="/assets/logo.png" alt="Logo">
-            <div class="txt" id="brandText">ROSHINE ACCOUNT STORE.</div>
+    <div class="topbar">
+      <div class="brand" aria-label="brand">
+        <img src="/assets/logo.png" alt="Roshine Logo" />
+        <div class="title" id="brandTitle">ROSHINE ACCOUNT STORE.</div>
+      </div>
+
+      <div class="controls">
+        <!-- LANG: EN / FR / DE / AR / 中文(最后) -->
+        <select id="langSelect" class="pill" title="Language">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+          <option value="de">DE</option>
+          <option value="ar">AR</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <a class="pill" id="authPill" href="/auth/" title="Authenticator">🔒</a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="kicker" id="kickerText">Listings on Google Sheet • Order via Discord</div>
+
+        <h1 id="heroTitle">Pick an account → Join Discord → Order</h1>
+        <p id="heroDesc">
+          Browse the live inventory, filter what you want, then message us on Discord with the account ID (or a screenshot) to confirm and purchase.
+        </p>
+
+        <div class="cta">
+          <a class="btn primary" id="sheetBtn" target="_blank" rel="noopener"
+            href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105">
+            📄 <span id="sheetBtnText">View Listings</span>
+          </a>
+
+          <a class="btn" id="discordBtn" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu">
+            💬 <span id="discordBtnText">Order on Discord</span>
+          </a>
+        </div>
+
+        <div class="sections">
+          <div class="section" id="howSection">
+            <div class="h2"><span class="dot"></span><span id="howTitle">How it works</span></div>
+            <ol class="list" id="howList"></ol>
+          </div>
+
+          <div class="section" id="warrantySection">
+            <div class="h2"><span class="dot"></span><span id="wTitle">Warranty & Security</span></div>
+            <ol class="list" id="wList"></ol>
+          </div>
+
+          <div class="section" id="faqSection">
+            <div class="h2"><span class="dot"></span><span id="faqTitle">FAQ</span></div>
+            <ol class="list" id="faqList"></ol>
+
+            <div class="mini">
+              <a href="/auth/" id="miniAuth">🔒 <span id="miniAuthText">Authenticator</span></a>
+              <a target="_blank" rel="noopener"
+                href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
+                id="miniStock">📌 <span id="miniStockText">View stock</span></a>
+              <a target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="miniOrder">🧾 <span id="miniOrderText">Order now</span></a>
+            </div>
           </div>
         </div>
 
-        <div class="right">
-          <select id="langSelect" class="pill lang-select" title="Language">
-            <option value="en">EN</option>
-            <option value="zh">中文</option>
-            <option value="fr">FR</option>
-            <option value="de">DE</option>
-            <option value="ar">العربية</option>
-          </select>
-        </div>
+        <div class="footer" id="footer"></div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="title">
-        <h1 id="titleText">Authenticator</h1>
-      </div>
-      <p class="subtitle" id="subtitleText">Paste your Private Key to generate the 8-digit code.</p>
-
-      <div class="code" id="code">--------</div>
-      <div class="hint" id="remain"></div>
-      <div class="barwrap"><div class="bar" id="bar"></div></div>
-
-      <div class="field-label" id="secretLabel">Private Key</div>
-      <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
-
-      <div class="row">
-        <button class="primary" id="copy">Copy Code</button>
-        <button id="clear">Clear</button>
-      </div>
-
-      <div class="status" id="status"></div>
-    </div>
-
-    <div class="footer" id="footer"></div>
+    </section>
   </div>
 
-<script>
-  // ===== constants =====
-  const DIGITS = 8;
-  const PERIOD = 30;
-  const LANG_KEY  = "locale-choice";
-  const $ = id => document.getElementById(id);
+  <script>
+    // ===== i18n =====
+    const LANG_KEY = "locale-choice";
 
-  // ===== i18n: EN / 中文 / FR / DE / AR only =====
-  const i18n = {
-    en: {
-      brand: "ROSHINE ACCOUNT STORE.",
-      homeTitle: "Home",
-      title: "Authenticator",
-      subtitle: "Paste your Private Key to generate the 8-digit code.",
-      secretLabel: "Private Key",
-      placeholder: "Private Key",
-      copy: "Copy Code",
-      clear: "Clear",
-      copied: "Copied",
-      copyBlocked: "Copy blocked",
-      enterKeyError: "Enter your Private Key",
-      invalidKey: "Invalid Private Key",
-      footer: "© {year} roshine account store. All rights reserved."
-    },
-    zh: {
-      brand: "ROSHINE ACCOUNT STORE.",
-      homeTitle: "返回主页",
-      title: "安全令",
-      subtitle: "粘贴 Private Key 生成 8 位验证码。",
-      secretLabel: "安全令秘钥",
-      placeholder: "安全令秘钥",
-      copy: "复制验证码",
-      clear: "清空",
-      copied: "已复制",
-      copyBlocked: "浏览器禁止复制",
-      enterKeyError: "请输入安全令秘钥",
-      invalidKey: "无效的安全令秘钥",
-      footer: "© {year} roshine account store. 保留所有权利。"
-    },
-    fr: {
-      brand: "ROSHINE ACCOUNT STORE.",
-      homeTitle: "Accueil",
-      title: "Jeton",
-      subtitle: "Collez votre clé privée pour générer le code à 8 chiffres.",
-      secretLabel: "Clé privée",
-      placeholder: "Clé privée",
-      copy: "Copier",
-      clear: "Effacer",
-      copied: "Copié",
-      copyBlocked: "Copie bloquée",
-      enterKeyError: "Entrez la clé privée",
-      invalidKey: "Clé privée invalide",
-      footer: "© {year} roshine account store. Tous droits réservés."
-    },
-    de: {
-      brand: "ROSHINE ACCOUNT STORE.",
-      homeTitle: "Startseite",
-      title: "Token",
-      subtitle: "Private Key einfügen, um den 8-stelligen Code zu erzeugen.",
-      secretLabel: "Private Key",
-      placeholder: "Private Key",
-      copy: "Code kopieren",
-      clear: "Löschen",
-      copied: "Kopiert",
-      copyBlocked: "Kopieren blockiert",
-      enterKeyError: "Private Key eingeben",
-      invalidKey: "Ungültiger Private Key",
-      footer: "© {year} roshine account store. Alle Rechte vorbehalten."
-    },
-    ar: {
-      brand: "ROSHINE ACCOUNT STORE.",
-      homeTitle: "الرئيسية",
-      title: "المُصدِّق",
-      subtitle: "الصق Private Key لإنشاء رمز مكوّن من 8 أرقام.",
-      secretLabel: "Private Key",
-      placeholder: "Private Key",
-      copy: "نسخ الرمز",
-      clear: "مسح",
-      copied: "تم النسخ",
-      copyBlocked: "تم حظر النسخ",
-      enterKeyError: "أدخل Private Key",
-      invalidKey: "Private Key غير صالح",
-      footer: "© {year} roshine account store. جميع الحقوق محفوظة."
-    }
-  };
+    const i18n = {
+      en: {
+        kicker: "Listings on Google Sheet • Order via Discord",
+        heroTitle: "Pick an account → Join Discord → Order",
+        heroDesc: "Browse the live inventory, filter what you want, then message us on Discord with the account ID (or a screenshot) to confirm and purchase.",
+        sheetBtn: "View Listings",
+        discordBtn: "Order on Discord",
 
-  function detectLang(){
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved && i18n[saved]) return saved;
+        howTitle: "How it works",
+        how: [
+          "📄 Open the listings and filter by price / rank / skins.",
+          "🆔 Copy the account ID (or screenshot the row).",
+          "💬 Join Discord and send the ID/screenshot to confirm availability.",
+          "✅ After confirmation, pay and receive the login package."
+        ],
 
-    const nav = (navigator.language || "en").toLowerCase();
-    if (nav.startsWith("zh")) return "zh";
-    if (nav.startsWith("fr")) return "fr";
-    if (nav.startsWith("de")) return "de";
-    if (nav.startsWith("ar")) return "ar";
-    return "en";
-  }
+        wTitle: "Warranty & Security",
+        w: [
+          "🛡️ ✅ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.",
+          "📦 After payment, you receive a complete security handover (Email access, Battle.net & Steam (if applicable), Authenticator, Account ID, and more — based on the account)."
+        ],
 
-  let currentLang = "en";
-  const t = key => (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
+        faqTitle: "FAQ",
+        faq: [
+          "⏱️ “How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.",
+          "💳🅿️₿🎁 “Payment methods?” — Credit card, PayPal, crypto, and selected gift cards. Details & fees: please confirm on Discord.",
+          "🔒 “Authenticator?” — Open the tool, paste Private Key, then copy the code."
+        ],
 
-  function applyLang(lang){
-    if (!i18n[lang]) lang = "en";
-    currentLang = lang;
+        miniAuth: "Authenticator",
+        miniStock: "View stock",
+        miniOrder: "Order now",
+        footer: "© {year} Roshine Account Store. All rights reserved."
+      },
 
-    document.documentElement.lang = lang;
-    document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+      fr: {
+        kicker: "Liste sur Google Sheet • Commande via Discord",
+        heroTitle: "Choisir un compte → Discord → Commander",
+        heroDesc: "Consultez l’inventaire en temps réel, filtrez, puis envoyez l’ID (ou une capture) sur Discord pour confirmer et acheter.",
+        sheetBtn: "Voir la liste",
+        discordBtn: "Commander sur Discord",
 
-    const sel = $("langSelect");
-    if (sel) sel.value = lang;
+        howTitle: "Comment ça marche",
+        how: [
+          "📄 Ouvrez la liste et filtrez (prix / rang / skins).",
+          "🆔 Copiez l’ID (ou capturez la ligne).",
+          "💬 Rejoignez Discord et envoyez ID/capture pour confirmer.",
+          "✅ Après confirmation : paiement puis remise du pack de connexion."
+        ],
 
-    $("brandText").textContent = t("brand");
-    $("homeBtn").title = t("homeTitle");
+        wTitle: "Garantie & Sécurité",
+        w: [
+          "🛡️ ✅ Garantie à vie (sécurité) : piraté / volé / récupéré → remplacement complet ou remboursement total.",
+          "📦 Après paiement : remise complète des infos de sécurité (selon le compte)."
+        ],
 
-    $("titleText").textContent = t("title");
-    $("subtitleText").textContent = t("subtitle");
-    $("secretLabel").textContent = t("secretLabel");
-    $("secret").placeholder = t("placeholder");
-    $("copy").textContent = t("copy");
-    $("clear").textContent = t("clear");
+        faqTitle: "FAQ",
+        faq: [
+          "⏱️ “Mises à jour ?” — Le Google Sheet fait foi. Les comptes vendus sont marqués rapidement.",
+          "💳🅿️₿🎁 “Paiements ?” — Carte, PayPal, crypto et certaines cartes cadeaux. Détails & frais : confirmez sur Discord.",
+          "🔒 “Authenticator ?” — Ouvrez l’outil, collez la clé privée, copiez le code."
+        ],
 
-    $("footer").textContent = t("footer").replace("{year}", new Date().getFullYear());
-  }
+        miniAuth: "Authenticator",
+        miniStock: "Voir stock",
+        miniOrder: "Commander",
+        footer: "© {year} Roshine Account Store. Tous droits réservés."
+      },
 
-  applyLang(detectLang());
+      de: {
+        kicker: "Listings in Google Sheet • Bestellung über Discord",
+        heroTitle: "Account wählen → Discord → Bestellen",
+        heroDesc: "Sieh dir das Live-Inventar an, filtere, dann sende die Account-ID (oder Screenshot) auf Discord zur Bestätigung und zum Kauf.",
+        sheetBtn: "Liste öffnen",
+        discordBtn: "Über Discord bestellen",
 
-  $("langSelect").addEventListener("change", e => {
-    const lang = e.target.value;
-    localStorage.setItem(LANG_KEY, lang);
-    applyLang(lang);
-  });
+        howTitle: "So funktioniert’s",
+        how: [
+          "📄 Liste öffnen und nach Preis / Rang / Skins filtern.",
+          "🆔 Account-ID kopieren (oder Zeile screenshotten).",
+          "💬 Discord beitreten und ID/Screenshot zur Bestätigung senden.",
+          "✅ Nach Bestätigung bezahlen und Login-Paket erhalten."
+        ],
 
-  // ===== URL key support (?key= or /hex) =====
-  function getKeyFromURL(){
-    const u = new URL(location.href);
-    const paramKey = u.searchParams.get("key");
-    if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+        wTitle: "Garantie & Sicherheit",
+        w: [
+          "🛡️ ✅ Lebenslange Garantie bei Sicherheitsproblemen (gehackt / gestohlen / reclaimed): Ersatz oder volle Erstattung.",
+          "📦 Nach Zahlung: vollständige Sicherheitsübergabe (je nach Account)."
+        ],
 
-    const parts = u.pathname.split("/").filter(Boolean);
-    if (parts.length){
-      const last = parts[parts.length - 1];
-      if (/^[0-9a-fA-F]+$/.test(last)) return last;
-    }
-    return null;
-  }
+        faqTitle: "FAQ",
+        faq: [
+          "⏱️ „Wie oft aktualisiert?“ — Google Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
+          "💳🅿️₿🎁 „Zahlung?“ — Kreditkarte, PayPal, Krypto und ausgewählte Geschenkkarten. Details & Gebühren: bitte auf Discord bestätigen.",
+          "🔒 „Authenticator?“ — Tool öffnen, Private Key einfügen, Code kopieren."
+        ],
 
-  // ===== TOTP =====
-  function hexToBytes(s){
-    s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
-    if (!s) throw new Error("ERR_EMPTY_KEY");
-    if (s.length % 2) throw new Error("ERR_INVALID_KEY");
-    return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
-  }
-  function counterBytes(c){
-    const b = new Uint8Array(8); let x = BigInt(c);
-    for (let i = 7; i >= 0; i--){
-      b[i] = Number(x & 0xffn);
-      x >>= 8n;
-    }
-    return b;
-  }
-  async function hmacSha1(key,msg){
-    const k = await crypto.subtle.importKey(
-      "raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]
-    );
-    return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
-  }
-  function truncate(mac){
-    const o = mac[mac.length - 1] & 0x0f;
-    return (((mac[o]   & 0x7f) << 24) |
-            ((mac[o+1] & 0xff) << 16) |
-            ((mac[o+2] & 0xff) << 8)  |
-            ( mac[o+3] & 0xff)) >>> 0;
-  }
-  function fmt(n){
-    const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
-    return raw.slice(0,4) + " " + raw.slice(4);
-  }
+        miniAuth: "Authenticator",
+        miniStock: "Bestand",
+        miniOrder: "Jetzt bestellen",
+        footer: "© {year} Roshine Account Store. Alle Rechte vorbehalten."
+      },
 
-  async function gen(){
-    const statusEl = $("status");
-    try{
-      const key = hexToBytes($("secret").value);
-      const ctr = Math.floor(Date.now()/1000 / PERIOD);
-      const mac = await hmacSha1(key, counterBytes(ctr));
-      $("code").textContent = fmt(truncate(mac));
-      if (statusEl){
-        statusEl.textContent = "";
-        statusEl.classList.remove("err","ok");
+      ar: {
+        kicker: "القائمة عبر Google Sheet • الطلب عبر Discord",
+        heroTitle: "اختر حسابًا → Discord → شراء",
+        heroDesc: "تصفّح المخزون المباشر وفلتر ما تريد، ثم أرسل معرف الحساب (أو لقطة) عبر Discord للتأكيد والشراء.",
+        sheetBtn: "عرض القائمة",
+        discordBtn: "اطلب عبر Discord",
+
+        howTitle: "كيف تعمل",
+        how: [
+          "📄 افتح القائمة وفلتر حسب السعر / الرتبة / السكنات.",
+          "🆔 انسخ معرف الحساب (أو التقط لقطة للصف).",
+          "💬 انضم إلى Discord وأرسل المعرف/اللقطة للتأكيد.",
+          "✅ بعد التأكيد: ادفع واستلم حزمة تسجيل الدخول."
+        ],
+
+        wTitle: "الضمان والأمان",
+        w: [
+          "🛡️ ✅ ضمان مدى الحياة لأي مشكلة أمنية (اختراق / سرقة / استرجاع): استبدال كامل أو تعويض كامل.",
+          "📦 بعد الدفع: تسليم كامل معلومات الأمان (حسب الحساب)."
+        ],
+
+        faqTitle: "الأسئلة الشائعة",
+        faq: [
+          "⏱️ «كم مرة يتم التحديث؟» — Google Sheet هو المرجع، ويتم وضع علامة على المباع بسرعة.",
+          "💳🅿️₿🎁 «طرق الدفع؟» — بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التفاصيل والرسوم: تأكد عبر Discord.",
+          "🔒 «Authenticator؟» — افتح الأداة والصق Private Key ثم انسخ الرمز."
+        ],
+
+        miniAuth: "Authenticator",
+        miniStock: "عرض المخزون",
+        miniOrder: "اطلب الآن",
+        footer: "© {year} Roshine Account Store. جميع الحقوق محفوظة."
+      },
+
+      zh: {
+        kicker: "Google Sheet 实时库存 • Discord 私聊下单",
+        heroTitle: "挑账号 → 加 Discord → 下单",
+        heroDesc: "先看实时库存并筛选你想要的账号，然后在 Discord 发送账号编号（或截图）确认并购买。",
+        sheetBtn: "打开账号列表",
+        discordBtn: "去 Discord 下单",
+
+        howTitle: "How it works",
+        how: [
+          "📄 打开列表，按价格 / 段位 / 皮肤筛选。",
+          "🆔 复制账号编号（或截图该行）。",
+          "💬 加入 Discord，把编号/截图发我确认库存。",
+          "✅ 确认后付款并交付登录资料包。"
+        ],
+
+        wTitle: "Warranty & Security",
+        w: [
+          "🛡️ ✅ 终身安全质保：被盗 / 被黑 / 找回（reclaimed）→ 全额补偿或同等替换。",
+          "📦 付款后交付完整安全资料（按账号实际情况）：邮箱权限、Battle.net & Steam（如适用）、安全令、账号 ID 等。"
+        ],
+
+        faqTitle: "FAQ",
+        faq: [
+          "⏱️ “列表多久更新？”—— 以 Google Sheet 为准，售出会尽快标记。",
+          "💳🅿️₿🎁 “支持什么支付？”—— 信用卡、PayPal、虚拟货币及部分礼品卡；细节与手续费请 Discord 确认。",
+          "🔒 “安全令怎么用？”—— 打开工具页，粘贴 Private Key，复制验证码。"
+        ],
+
+        miniAuth: "安全令",
+        miniStock: "查看库存",
+        miniOrder: "立即下单",
+        footer: "© {year} Roshine Account Store. 保留所有权利。"
       }
-    }catch(e){
-      $("code").textContent = "--------";
-      if (!statusEl) return;
-      let msg;
-      if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
-      else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
-      else msg = e.message;
-      statusEl.textContent = msg;
-      statusEl.classList.add("err");
-      statusEl.classList.remove("ok");
+    };
+
+    function detectLang(){
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && i18n[saved]) return saved;
+
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("fr")) return "fr";
+      if (nav.startsWith("de")) return "de";
+      if (nav.startsWith("ar")) return "ar";
+      if (nav.startsWith("zh")) return "zh";
+      return "en";
     }
-  }
 
-  function tick(){
-    const s   = Math.floor(Date.now()/1000);
-    const rem = PERIOD - (s % PERIOD);
-    $("remain").textContent = `${rem}s`;
-    $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
-  }
-
-  let last = -1;
-  setInterval(() => {
-    tick();
-    const s = Math.floor(Date.now()/1000);
-    if (s !== last){
-      last = s;
-      gen();
+    function fillList(elId, items){
+      const el = document.getElementById(elId);
+      el.innerHTML = "";
+      items.forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        el.appendChild(li);
+      });
     }
-  }, 150);
 
-  $("secret").addEventListener("input", gen);
+    function applyLang(lang){
+      if (!i18n[lang]) lang = "en";
+      const t = i18n[lang];
 
-  $("copy").addEventListener("click", async () => {
-    const v = $("code").textContent;
-    const statusEl = $("status");
-    if (v.includes("-")) return;
-    try{
-      await navigator.clipboard.writeText(v.replace(/\s/g,""));
-      if (statusEl){
-        statusEl.textContent = t("copied");
-        statusEl.classList.remove("err");
-        statusEl.classList.add("ok");
-      }
-    }catch{
-      if (statusEl){
-        statusEl.textContent = t("copyBlocked");
-        statusEl.classList.remove("ok");
-        statusEl.classList.add("err");
-      }
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === "ar" ? "rtl" : "ltr");
+
+      const sel = document.getElementById("langSelect");
+      if (sel) sel.value = lang;
+
+      document.getElementById("kickerText").textContent = t.kicker;
+      document.getElementById("heroTitle").textContent = t.heroTitle;
+      document.getElementById("heroDesc").textContent = t.heroDesc;
+
+      document.getElementById("sheetBtnText").textContent = t.sheetBtn;
+      document.getElementById("discordBtnText").textContent = t.discordBtn;
+
+      document.getElementById("howTitle").textContent = t.howTitle;
+      fillList("howList", t.how);
+
+      document.getElementById("wTitle").textContent = t.wTitle;
+      fillList("wList", t.w);
+
+      document.getElementById("faqTitle").textContent = t.faqTitle;
+      fillList("faqList", t.faq);
+
+      document.getElementById("miniAuthText").textContent = t.miniAuth;
+      document.getElementById("miniStockText").textContent = t.miniStock;
+      document.getElementById("miniOrderText").textContent = t.miniOrder;
+
+      document.getElementById("footer").textContent =
+        t.footer.replace("{year}", new Date().getFullYear());
     }
-  });
 
-  $("clear").addEventListener("click", () => {
-    $("secret").value = "";
-    $("code").textContent = "--------";
-    const statusEl = $("status");
-    if (statusEl){
-      statusEl.textContent = "";
-      statusEl.classList.remove("err","ok");
-    }
-  });
+    // init
+    applyLang(detectLang());
 
-  // init key from url
-  const urlKey = getKeyFromURL();
-  if (urlKey) $("secret").value = urlKey;
-
-  tick();
-  gen();
-</script>
+    document.getElementById("langSelect").addEventListener("change", (e) => {
+      const lang = e.target.value;
+      localStorage.setItem(LANG_KEY, lang);
+      applyLang(lang);
+    });
+  </script>
 </body>
 </html>
