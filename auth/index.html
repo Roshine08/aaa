@@ -3,61 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Battle.net Authenticator</title>
-<link rel="icon" href="logo.png" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap">
+<title>Authenticator</title>
+<link rel="icon" href="/assets/logo.png" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap">
 
 <style>
   :root{
-    --bg-dark:#05060b;
-    --panel-dark:rgba(11,16,24,.58);
-    --panel2-dark:rgba(11,16,24,.42);
-    --border-dark:rgba(130,170,255,.14);
-    --text-dark:#e6f0ff;
-    --muted-dark:#8a97b6;
-    --accent-dark:#29b6ff;
-
-    --bg-light:#171920;
-    --panel-light:rgba(255,255,255,.08);
-    --panel2-light:rgba(255,255,255,.06);
-    --border-light:rgba(0,0,0,.22);
-    --text-light:#e4e7f5;
-    --muted-light:#7b849c;
-    --accent-light:#3aa3ff;
-
-    --bg:var(--bg-dark);
-    --panel:var(--panel-dark);
-    --panel2:var(--panel2-dark);
-    --border:var(--border-dark);
-    --text:var(--text-dark);
-    --muted:var(--muted-dark);
-    --accent:var(--accent-dark);
-
-    --blur: 14px;
-    --radius: 22px;
-    --shadow: 0 22px 70px rgba(0,0,0,.55);
-  }
-
-  html[data-theme="dark"]{
-    --bg:var(--bg-dark);
-    --panel:var(--panel-dark);
-    --panel2:var(--panel2-dark);
-    --border:var(--border-dark);
-    --text:var(--text-dark);
-    --muted:var(--muted-dark);
-    --accent:var(--accent-dark);
-  }
-  html[data-theme="light"]{
-    --bg:var(--bg-light);
-    --panel:var(--panel-light);
-    --panel2:var(--panel2-light);
-    --border:var(--border-light);
-    --text:var(--text-light);
-    --muted:var(--muted-light);
-    --accent:var(--accent-light);
+    --bg:#05060b;
+    --card:rgba(15,18,26,.58);
+    --border:rgba(160,190,255,.16);
+    --border2:rgba(255,255,255,.08);
+    --text:#e6f0ff;
+    --muted:#8fa0bf;
+    --accent:#29b6ff;
+    --shadow: 0 22px 70px rgba(0,0,0,.58);
   }
 
   html,body{height:100%}
@@ -65,16 +24,8 @@
     margin:0;
     font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
     color:var(--text);
-    background: radial-gradient(900px 520px at 18% 12%, rgba(41,182,255,.16), transparent 55%),
-                radial-gradient(760px 480px at 86% 18%, rgba(58,163,255,.12), transparent 60%),
-                radial-gradient(980px 560px at 50% 90%, rgba(41,182,255,.08), transparent 60%),
-                linear-gradient(180deg, #05060b 0%, #02030a 100%);
+    background: var(--bg);
     overflow-x:hidden;
-  }
-  html[data-theme="light"] body{
-    background: radial-gradient(900px 520px at 18% 12%, rgba(58,163,255,.14), transparent 55%),
-                radial-gradient(760px 480px at 86% 18%, rgba(58,163,255,.10), transparent 60%),
-                linear-gradient(180deg, #171920 0%, #0f1118 100%);
   }
 
   body::before{
@@ -82,72 +33,98 @@
     position:fixed;
     inset:-20%;
     pointer-events:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    opacity:.07;
+    background:
+      radial-gradient(900px 520px at 50% 28%, rgba(255,255,255,.10), transparent 60%),
+      radial-gradient(1200px 700px at 12% 12%, rgba(41,182,255,.22), transparent 55%),
+      radial-gradient(1200px 700px at 88% 18%, rgba(255,79,216,.13), transparent 58%),
+      radial-gradient(900px 600px at 50% 85%, rgba(41,182,255,.10), transparent 62%),
+      linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.75));
+    opacity:1;
+  }
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 30%, transparent 0 55%, rgba(0,0,0,.70) 100%),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.028),
+        rgba(255,255,255,.028) 1px,
+        transparent 1px,
+        transparent 9px
+      );
+    opacity:.14;
     mix-blend-mode:overlay;
-    transform:translateZ(0);
   }
 
-  .container{
+  .wrap{
+    position:relative;
+    z-index:1;
     width:min(980px, 92vw);
     margin:0 auto;
+    padding:18px 0 60px;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
   }
 
-  /* Top nav (same feel as homepage) */
+  /* top nav (same system as homepage) */
+  .top{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding-top:10px;
+  }
   .nav{
-    position:sticky;
-    top:0;
-    z-index:50;
-    padding:14px 0;
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    background: linear-gradient(180deg, rgba(0,0,0,.32), rgba(0,0,0,0));
-  }
-  .nav-inner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-  }
-
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    min-width:0;
-  }
-  .brand img{
-    width:40px;height:40px;border-radius:16px;
-    box-shadow:0 12px 36px rgba(0,0,0,.45);
-  }
-  .brand .title{
-    font-weight:900;
-    letter-spacing:.06em;
-    font-size:15px;
-    white-space:nowrap;
-  }
-  .brand .sub{
-    margin-top:2px;
-    font-size:12px;
-    color:var(--muted);
-    line-height:1.25;
-    max-width:70ch;
-  }
-
-  .controls{
     display:flex;
     align-items:center;
     gap:10px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
+    padding:10px 12px;
+    border-radius:999px;
+    background:rgba(12,14,20,.46);
+    border:1px solid var(--border2);
+    box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.05) inset;
+    backdrop-filter: blur(12px);
+    width:min(920px, 92vw);
+    justify-content:space-between;
+  }
+
+  .left{
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(0,0,0,.12);
+  }
+  .brand img{
+    width:28px;height:28px;border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.40);
+  }
+  .brand .txt{
+    font-weight:900;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    font-size:12px;
+    white-space:nowrap;
+    opacity:.95;
+  }
+
+  .right{
+    display:flex; align-items:center; gap:10px;
   }
 
   .pill{
-    height:36px;
+    height:34px;
     padding:0 14px;
     border-radius:999px;
     border:1px solid var(--border);
-    background:var(--panel2);
+    background:rgba(0,0,0,.16);
     color:var(--text);
     font-size:13px;
     font-weight:800;
@@ -155,18 +132,16 @@
     align-items:center;
     justify-content:center;
     cursor:pointer;
-    user-select:none;
     text-decoration:none;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+    user-select:none;
+    box-shadow:0 8px 20px rgba(0,0,0,.40), 0 0 0 1px rgba(255,255,255,.05) inset;
+    backdrop-filter: blur(12px);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
   }
   .pill:hover{
     transform:translateY(-1px);
-    box-shadow: 0 14px 40px rgba(0,0,0,.35), 0 0 18px rgba(41,182,255,.18);
-    background:rgba(0,0,0,.18);
-    border-color:rgba(41,182,255,.26);
+    background:rgba(0,0,0,.22);
+    box-shadow:0 12px 26px rgba(0,0,0,.58), 0 0 18px rgba(41,182,255,.12);
   }
 
   .lang-select{
@@ -180,92 +155,79 @@
     cursor:pointer;
   }
   .lang-select option{ background:#050b16; color:#e8eefc; }
-  html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
 
-  /* Main panel */
-  .main{
-    padding: 16px 0 48px;
-    display:flex;
-    justify-content:center;
-  }
-
-  .panel{
-    width:min(720px, 100%);
-    border-radius: calc(var(--radius) + 10px);
-    border:1px solid var(--border);
-    background: var(--panel);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
+  /* main card */
+  .card{
+    margin: 6px auto 0;
+    width:min(720px, 92vw);
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(15,18,26,.58), rgba(10,12,18,.38));
+    border: 1px solid var(--border2);
+    box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(14px);
     overflow:hidden;
     position:relative;
-    padding: clamp(18px, 2.6vw, 34px);
+    padding:32px 26px 24px;
   }
 
-  .panel::before{
+  .card::before{
     content:"";
     position:absolute;
-    inset:0;
-    pointer-events:none;
-    background: linear-gradient(135deg, rgba(41,182,255,.18), rgba(58,163,255,.10), transparent 60%);
-    opacity:.85;
-  }
-  .panel::after{
-    content:"";
-    position:absolute;
-    left:-25%;
-    top:-45%;
-    width:150%;
-    height:150%;
+    inset:-40%;
     background:linear-gradient(90deg, transparent, rgba(41,182,255,.10), transparent);
-    transform:rotate(10deg);
+    transform: rotate(10deg) translateX(-30%);
     animation:sweep 8.5s linear infinite;
-    opacity:.25;
+    opacity:.55;
     pointer-events:none;
   }
   @keyframes sweep{
-    0%{ transform:translateX(-35%) rotate(10deg); opacity:0; }
-    10%{ opacity:.25; }
-    70%{ opacity:.12; }
-    100%{ transform:translateX(35%) rotate(10deg); opacity:0; }
+    0%{ transform: rotate(10deg) translateX(-35%); opacity:0; }
+    12%{ opacity:.55; }
+    70%{ opacity:.20; }
+    100%{ transform: rotate(10deg) translateX(35%); opacity:0; }
   }
 
-  .panel-inner{ position:relative; z-index:1; }
-
-  .title-row{
+  .title{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    margin-bottom:18px;
+    margin-bottom:14px;
+    position:relative;
+    z-index:1;
   }
-  .title-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    min-width:0;
-  }
-  .title-left .t{
-    font-weight:900;
+  .title h1{
+    margin:0;
+    font-size:18px;
     letter-spacing:.04em;
-    font-size:16px;
-    white-space:nowrap;
+    font-weight:900;
+  }
+  .subtitle{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+    position:relative;
+    z-index:1;
   }
 
   .code{
     text-align:center;
     font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: clamp(44px, 7vw, 76px);
+    font-size:72px;
     font-weight:900;
-    letter-spacing: clamp(3px, .6vw, 7px);
-    margin: 22px 0 12px;
+    letter-spacing:6px;
+    margin:26px 0 12px;
+    position:relative;
+    z-index:1;
   }
-
   .hint{
     text-align:center;
     font-size:13px;
     color:var(--muted);
     margin-bottom:14px;
+    position:relative;
+    z-index:1;
   }
 
   .barwrap{
@@ -273,9 +235,9 @@
     background:rgba(255,255,255,.08);
     border-radius:999px;
     overflow:hidden;
+    position:relative;
+    z-index:1;
   }
-  html[data-theme="light"] .barwrap{ background:rgba(0,0,0,.18); }
-
   .bar{
     height:100%;
     width:0%;
@@ -294,66 +256,62 @@
   }
 
   .field-label{
-    margin-top:22px;
-    font-size:13px;
-    color:rgba(230,240,255,.86);
+    margin-top:20px;
+    font-size:14px;
+    color:rgba(230,240,255,.92);
     font-weight:800;
-    letter-spacing:.02em;
+    position:relative;
+    z-index:1;
   }
-
   input{
     width:100%;
     box-sizing:border-box;
     margin-top:10px;
     padding:13px 14px;
     border-radius:16px;
-    border:1px solid var(--border);
-    background:rgba(0,0,0,.10);
+    border:1px solid rgba(160,190,255,.18);
+    background:rgba(0,0,0,.16);
     color:var(--text);
     font-family:ui-monospace,monospace;
     outline:none;
-    transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+    box-shadow:0 12px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(14px);
+    position:relative;
+    z-index:1;
   }
-  html[data-theme="light"] input{ background:rgba(255,255,255,.06); }
-  input:focus{
-    border-color:rgba(41,182,255,.35);
-    box-shadow:0 0 0 4px rgba(41,182,255,.12);
-  }
-  input::placeholder{ color:rgba(159,176,200,.68); }
+  input::placeholder{ color:rgba(143,160,191,.72); }
 
   .row{
     display:flex;
     gap:12px;
     margin-top:18px;
+    position:relative;
+    z-index:1;
   }
   button{
-    flex:1;
+    flex:1 1 auto;
     height:46px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--panel2);
+    padding:0 14px;
+    border-radius:16px;
+    border:1px solid rgba(160,190,255,.18);
+    background:rgba(0,0,0,.16);
     color:var(--text);
     cursor:pointer;
     font-weight:900;
-    letter-spacing:.02em;
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
+    font-family:"Titillium Web",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    box-shadow:0 16px 40px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(14px);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
   }
   button:hover{
     transform:translateY(-1px);
-    box-shadow:0 18px 46px rgba(0,0,0,.30), 0 0 18px rgba(41,182,255,.14);
-    border-color:rgba(41,182,255,.26);
-    background:rgba(0,0,0,.16);
+    background:rgba(0,0,0,.22);
+    box-shadow:0 18px 52px rgba(0,0,0,.50), 0 0 16px rgba(41,182,255,.12);
   }
   button.primary{
-    border-color:transparent;
-    background: linear-gradient(135deg, rgba(41,182,255,1), rgba(58,163,255,.92));
-    color:#fff;
-    box-shadow:0 18px 50px rgba(41,182,255,.18);
-  }
-  button.primary:hover{
-    box-shadow:0 22px 60px rgba(41,182,255,.22), 0 0 22px rgba(41,182,255,.22);
+    border-color: transparent;
+    background: linear-gradient(135deg, rgba(41,182,255,.95), rgba(41,182,255,.70));
+    color:#071018;
   }
 
   .status{
@@ -361,213 +319,188 @@
     text-align:center;
     font-size:12px;
     min-height:18px;
+    position:relative;
+    z-index:1;
   }
   .status.ok{color:#4cd18c;}
   .status.err{color:#ff6b6b;}
 
   .footer{
-    margin-top:18px;
+    margin-top:auto;
     text-align:center;
-    color:var(--muted);
+    color:rgba(143,160,191,.78);
     font-size:12px;
-    opacity:.85;
+    opacity:.9;
     user-select:none;
+    padding-top:10px;
   }
 
-  @media (max-width:760px){
-    .nav-inner{ flex-direction:column; align-items:flex-start; }
-    .controls{ width:100%; justify-content:flex-start; }
+  @media (max-width:520px){
+    .nav{
+      border-radius:20px;
+      width:92vw;
+      padding:10px 10px;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .brand .txt{ font-size:11px; }
+    .card{ padding:24px 16px 18px; border-radius:24px; }
+    .code{ font-size:clamp(40px, 12vw, 52px); letter-spacing:4px; }
     .row{ flex-direction:column; }
-    button{ width:100%; }
   }
+
+  html[dir="rtl"] .left{ flex-direction:row-reverse; }
 </style>
 </head>
 
 <body>
-  <div class="nav">
-    <div class="container">
-      <div class="nav-inner">
-        <div class="brand">
-          <img src="logo.png" alt="Logo" />
-          <div>
-            <div class="title" id="navTitle">Battle.net Authenticator</div>
-            <div class="sub" id="navSub">Generate verification codes locally.</div>
+  <div class="wrap">
+    <div class="top">
+      <div class="nav">
+        <div class="left">
+          <a class="pill" href="/" id="homeBtn" title="Home">🏠</a>
+          <div class="brand">
+            <img src="/assets/logo.png" alt="Logo">
+            <div class="txt" id="brandText">ROSHINE ACCOUNT STORE.</div>
           </div>
         </div>
 
-        <div class="controls">
-          <a class="pill" href="/" id="homeBtn" title="Back">🏠</a>
-
+        <div class="right">
           <select id="langSelect" class="pill lang-select" title="Language">
             <option value="en">EN</option>
             <option value="zh">中文</option>
             <option value="fr">FR</option>
             <option value="de">DE</option>
-            <option value="ru">RU</option>
-            <option value="it">IT</option>
             <option value="ar">العربية</option>
           </select>
-
-          <button class="pill" id="themeToggle" title="Theme">☀️</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="main">
-    <div class="container">
-      <div class="panel">
-        <div class="panel-inner">
-          <div class="title-row">
-            <div class="title-left">
-              <div class="t" id="titleText">Battle.net Authenticator</div>
-            </div>
-          </div>
-
-          <div class="code" id="code">--------</div>
-          <div class="hint" id="remain"></div>
-          <div class="barwrap"><div class="bar" id="bar"></div></div>
-
-          <div class="field-label" id="secretLabel">Please enter your Private Key!</div>
-          <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
-
-          <div class="row">
-            <button class="primary" id="copy">Copy Code</button>
-            <button id="clear">Clear Key</button>
-          </div>
-
-          <div class="status" id="status"></div>
-          <div class="footer" id="footer"></div>
-        </div>
+    <div class="card">
+      <div class="title">
+        <h1 id="titleText">Authenticator</h1>
       </div>
+      <p class="subtitle" id="subtitleText">Paste your Private Key to generate the 8-digit code.</p>
+
+      <div class="code" id="code">--------</div>
+      <div class="hint" id="remain"></div>
+      <div class="barwrap"><div class="bar" id="bar"></div></div>
+
+      <div class="field-label" id="secretLabel">Private Key</div>
+      <input id="secret" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+
+      <div class="row">
+        <button class="primary" id="copy">Copy Code</button>
+        <button id="clear">Clear</button>
+      </div>
+
+      <div class="status" id="status"></div>
     </div>
+
+    <div class="footer" id="footer"></div>
   </div>
 
 <script>
+  // ===== constants =====
   const DIGITS = 8;
   const PERIOD = 30;
-
-  const THEME_KEY = "theme-choice";
-  const THEME_MODE_KEY = "theme-mode";
   const LANG_KEY  = "locale-choice";
   const $ = id => document.getElementById(id);
 
+  // ===== i18n: EN / 中文 / FR / DE / AR only =====
   const i18n = {
     en: {
-      navTitle:"Battle.net Authenticator",
-      navSub:"Generate verification codes locally.",
-      title:"Battle.net Authenticator",
-      secretLabel:"Please enter your Private Key!",
-      placeholder:"Private Key",
-      copy:"Copy Code",
-      clear:"Clear Key",
-      copied:"Copied",
-      copyBlocked:"Copy blocked",
-      enterKeyError:"Enter Your Private Key",
-      invalidKey:"Invalid Private Key",
-      footer:"© {year} Roshine — Overwatch Store. All rights reserved."
+      brand: "ROSHINE ACCOUNT STORE.",
+      homeTitle: "Home",
+      title: "Authenticator",
+      subtitle: "Paste your Private Key to generate the 8-digit code.",
+      secretLabel: "Private Key",
+      placeholder: "Private Key",
+      copy: "Copy Code",
+      clear: "Clear",
+      copied: "Copied",
+      copyBlocked: "Copy blocked",
+      enterKeyError: "Enter your Private Key",
+      invalidKey: "Invalid Private Key",
+      footer: "© {year} roshine account store. All rights reserved."
     },
     zh: {
-      navTitle:"战网安全令",
-      navSub:"本地生成验证码（不上传）。",
-      title:"战网安全令",
-      secretLabel:"请输入你的安全令秘钥！",
-      placeholder:"安全令秘钥",
-      copy:"复制验证码",
-      clear:"清空秘钥",
-      copied:"已复制验证码",
-      copyBlocked:"浏览器禁止复制",
-      enterKeyError:"请输入安全令秘钥",
-      invalidKey:"无效的安全令秘钥",
-      footer:"© {year} Roshine — Overwatch 商店。保留所有权利。"
+      brand: "ROSHINE ACCOUNT STORE.",
+      homeTitle: "返回主页",
+      title: "安全令",
+      subtitle: "粘贴 Private Key 生成 8 位验证码。",
+      secretLabel: "安全令秘钥",
+      placeholder: "安全令秘钥",
+      copy: "复制验证码",
+      clear: "清空",
+      copied: "已复制",
+      copyBlocked: "浏览器禁止复制",
+      enterKeyError: "请输入安全令秘钥",
+      invalidKey: "无效的安全令秘钥",
+      footer: "© {year} roshine account store. 保留所有权利。"
     },
     fr: {
-      navTitle:"Jeton Battle.net",
-      navSub:"Génération locale des codes.",
-      title:"Jeton de sécurité Battle.net",
-      secretLabel:"Veuillez entrer votre clé secrète !",
-      placeholder:"Clé secrète",
-      copy:"Copier le code",
-      clear:"Effacer la clé",
-      copied:"Code copié",
-      copyBlocked:"Copie bloquée",
-      enterKeyError:"Veuillez entrer la clé",
-      invalidKey:"Clé invalide",
-      footer:"© {year} Roshine — Boutique Overwatch."
+      brand: "ROSHINE ACCOUNT STORE.",
+      homeTitle: "Accueil",
+      title: "Jeton",
+      subtitle: "Collez votre clé privée pour générer le code à 8 chiffres.",
+      secretLabel: "Clé privée",
+      placeholder: "Clé privée",
+      copy: "Copier",
+      clear: "Effacer",
+      copied: "Copié",
+      copyBlocked: "Copie bloquée",
+      enterKeyError: "Entrez la clé privée",
+      invalidKey: "Clé privée invalide",
+      footer: "© {year} roshine account store. Tous droits réservés."
     },
     de: {
-      navTitle:"Battle.net Token",
-      navSub:"Codes lokal erzeugen.",
-      title:"Battle.net-Sicherheitstoken",
-      secretLabel:"Bitte gib deinen Schlüssel ein!",
-      placeholder:"Sicherheitsschlüssel",
-      copy:"Code kopieren",
-      clear:"Schlüssel löschen",
-      copied:"Code kopiert",
-      copyBlocked:"Kopieren blockiert",
-      enterKeyError:"Bitte Schlüssel eingeben",
-      invalidKey:"Ungültiger Schlüssel",
-      footer:"© {year} Roshine — Overwatch-Shop."
-    },
-    ru: {
-      navTitle:"Токен Battle.net",
-      navSub:"Коды генерируются локально.",
-      title:"Токен безопасности Battle.net",
-      secretLabel:"Введите ключ токена!",
-      placeholder:"Ключ токена",
-      copy:"Скопировать код",
-      clear:"Очистить ключ",
-      copied:"Код скопирован",
-      copyBlocked:"Копирование запрещено",
-      enterKeyError:"Введите ключ",
-      invalidKey:"Недействительный ключ",
-      footer:"© {year} Roshine — магазин Overwatch."
-    },
-    it: {
-      navTitle:"Token Battle.net",
-      navSub:"Codici generati localmente.",
-      title:"Token di sicurezza Battle.net",
-      secretLabel:"Inserisci la chiave del token!",
-      placeholder:"Chiave token",
-      copy:"Copia codice",
-      clear:"Cancella chiave",
-      copied:"Codice copiato",
-      copyBlocked:"Copia bloccata",
-      enterKeyError:"Inserisci la chiave",
-      invalidKey:"Chiave non valida",
-      footer:"© {year} Roshine — Negozio Overwatch."
+      brand: "ROSHINE ACCOUNT STORE.",
+      homeTitle: "Startseite",
+      title: "Token",
+      subtitle: "Private Key einfügen, um den 8-stelligen Code zu erzeugen.",
+      secretLabel: "Private Key",
+      placeholder: "Private Key",
+      copy: "Code kopieren",
+      clear: "Löschen",
+      copied: "Kopiert",
+      copyBlocked: "Kopieren blockiert",
+      enterKeyError: "Private Key eingeben",
+      invalidKey: "Ungültiger Private Key",
+      footer: "© {year} roshine account store. Alle Rechte vorbehalten."
     },
     ar: {
-      navTitle:"مُصدِّق Battle.net",
-      navSub:"توليد الرموز محلياً.",
-      title:"رمز أمان Battle.net",
-      secretLabel:"يرجى إدخال مفتاحك!",
-      placeholder:"المفتاح",
-      copy:"نسخ الرمز",
-      clear:"مسح المفتاح",
-      copied:"تم النسخ",
-      copyBlocked:"النسخ غير مسموح",
-      enterKeyError:"أدخل المفتاح",
-      invalidKey:"مفتاح غير صالح",
-      footer:"© {year} Roshine — متجر أوفرواتش."
+      brand: "ROSHINE ACCOUNT STORE.",
+      homeTitle: "الرئيسية",
+      title: "المُصدِّق",
+      subtitle: "الصق Private Key لإنشاء رمز مكوّن من 8 أرقام.",
+      secretLabel: "Private Key",
+      placeholder: "Private Key",
+      copy: "نسخ الرمز",
+      clear: "مسح",
+      copied: "تم النسخ",
+      copyBlocked: "تم حظر النسخ",
+      enterKeyError: "أدخل Private Key",
+      invalidKey: "Private Key غير صالح",
+      footer: "© {year} roshine account store. جميع الحقوق محفوظة."
     }
   };
-
-  let currentLang = "en";
-  const t = key => (i18n[currentLang] && i18n[currentLang][key]) || (i18n.en[key] || key);
 
   function detectLang(){
     const saved = localStorage.getItem(LANG_KEY);
     if (saved && i18n[saved]) return saved;
+
     const nav = (navigator.language || "en").toLowerCase();
     if (nav.startsWith("zh")) return "zh";
     if (nav.startsWith("fr")) return "fr";
     if (nav.startsWith("de")) return "de";
-    if (nav.startsWith("ru")) return "ru";
-    if (nav.startsWith("it")) return "it";
     if (nav.startsWith("ar")) return "ar";
     return "en";
   }
+
+  let currentLang = "en";
+  const t = key => (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
 
   function applyLang(lang){
     if (!i18n[lang]) lang = "en";
@@ -579,87 +512,28 @@
     const sel = $("langSelect");
     if (sel) sel.value = lang;
 
-    $("navTitle").textContent = t("navTitle");
-    $("navSub").textContent   = t("navSub");
-    $("titleText").textContent   = t("title");
-    $("secretLabel").textContent = t("secretLabel");
-    $("secret").placeholder      = t("placeholder");
-    $("copy").textContent        = t("copy");
-    $("clear").textContent       = t("clear");
+    $("brandText").textContent = t("brand");
+    $("homeBtn").title = t("homeTitle");
 
-    const year = new Date().getFullYear();
-    $("footer").textContent = t("footer").replace("{year}", year);
+    $("titleText").textContent = t("title");
+    $("subtitleText").textContent = t("subtitle");
+    $("secretLabel").textContent = t("secretLabel");
+    $("secret").placeholder = t("placeholder");
+    $("copy").textContent = t("copy");
+    $("clear").textContent = t("clear");
+
+    $("footer").textContent = t("footer").replace("{year}", new Date().getFullYear());
   }
 
-  (function initLang(){
-    applyLang(detectLang());
-  })();
+  applyLang(detectLang());
 
   $("langSelect").addEventListener("change", e => {
     const lang = e.target.value;
-    applyLang(lang);
     localStorage.setItem(LANG_KEY, lang);
+    applyLang(lang);
   });
 
-  // Theme
-  function getSystemTheme(){
-    const prefersDark = window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return prefersDark ? "dark" : "light";
-  }
-  function applyTheme(theme){
-    document.documentElement.setAttribute("data-theme", theme);
-    const btn = $("themeToggle");
-    if (!btn) return;
-    btn.textContent = theme === "dark" ? "☀️" : "🌙";
-  }
-
-  (function initTheme(){
-    let mode  = localStorage.getItem(THEME_MODE_KEY);
-    let theme = localStorage.getItem(THEME_KEY);
-
-    if (!mode){
-      mode = "system";
-      theme = getSystemTheme();
-      localStorage.setItem(THEME_MODE_KEY, mode);
-      localStorage.setItem(THEME_KEY, theme);
-    }else{
-      if (mode === "system"){
-        theme = getSystemTheme();
-        localStorage.setItem(THEME_KEY, theme);
-      }else if (!theme){
-        theme = mode === "dark" ? "dark" : "light";
-        localStorage.setItem(THEME_KEY, theme);
-      }
-    }
-    applyTheme(theme);
-
-    if (window.matchMedia){
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      mq.addEventListener("change", e => {
-        const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
-        if (currentMode !== "system") return;
-        const nextTheme = e.matches ? "dark" : "light";
-        localStorage.setItem(THEME_KEY, nextTheme);
-        applyTheme(nextTheme);
-      });
-    }
-  })();
-
-  $("themeToggle").addEventListener("click", () => {
-    let mode  = localStorage.getItem(THEME_MODE_KEY) || "system";
-    let theme = localStorage.getItem(THEME_KEY) || getSystemTheme();
-
-    if (mode === "system"){ mode  = "dark";  theme = "dark"; }
-    else if (mode === "dark"){ mode = "light"; theme = "light"; }
-    else { mode = "system"; theme = getSystemTheme(); }
-
-    localStorage.setItem(THEME_MODE_KEY, mode);
-    localStorage.setItem(THEME_KEY, theme);
-    applyTheme(theme);
-  });
-
-  // ===== TOTP =====
+  // ===== URL key support (?key= or /hex) =====
   function getKeyFromURL(){
     const u = new URL(location.href);
     const paramKey = u.searchParams.get("key");
@@ -673,6 +547,7 @@
     return null;
   }
 
+  // ===== TOTP =====
   function hexToBytes(s){
     s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
     if (!s) throw new Error("ERR_EMPTY_KEY");
@@ -778,6 +653,7 @@
     }
   });
 
+  // init key from url
   const urlKey = getKeyFromURL();
   if (urlKey) $("secret").value = urlKey;
 
