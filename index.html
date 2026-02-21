@@ -190,14 +190,14 @@
       flex:0 0 auto;
     }
 
-    /* ===== unified icon spec ===== */
+    /* ===== unified icon spec (global) ===== */
     .ico{
       width:16px;
       height:16px;
       display:inline-block;
       object-fit:contain;
-      opacity:.82; /* not too loud */
-      transform: translateY(.5px); /* optical alignment */
+      opacity:.82;
+      transform: translateY(.5px);
       filter: drop-shadow(0 10px 20px rgba(0,0,0,.55));
       transition: opacity .18s ease, transform .18s ease, filter .18s ease;
       flex:0 0 auto;
@@ -411,13 +411,26 @@
         0 0 34px rgba(183,124,255,.14);
     }
 
-    /* icons inside buttons:统一规格，不抢 */
-    .btn .ico, .pill .ico{
-      opacity:.82;
-    }
+    /* icons inside buttons: global spec */
+    .btn .ico, .pill .ico{ opacity:.82; }
     .btn:hover .ico{
       opacity:.92;
       transform: translateY(.5px) scale(1.02);
+    }
+
+    /* FAQ inline link style */
+    .inline-link{
+      color: rgba(231,239,255,.92);
+      font-weight: 900;
+      letter-spacing: .02em;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(41,182,255,.28);
+      padding-bottom: 1px;
+      transition: border-color .18s ease, color .18s ease;
+    }
+    .inline-link:hover{
+      color: rgba(231,239,255,.98);
+      border-bottom-color: rgba(183,124,255,.38);
     }
 
     /* scroll hint */
@@ -522,10 +535,10 @@
 
     .section-actions{
       display:flex;
-      gap:12px;
+      gap:14px;
       justify-content:center;
       flex-wrap:wrap;
-      margin-top:16px;
+      margin-top:18px;
       position:relative;
       z-index:1;
     }
@@ -727,36 +740,33 @@
 
       <div class="glass-block">
         <ol class="list" id="faqList">
-          <li id="faq1">“How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.</li>
-          <li id="faq2">“Payment methods?” — $ Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
+          <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
+          <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
           <li id="faq3">
-            “Authenticator?” — Use the
-            <span style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:rgba(231,239,255,.85);">
-              <img class="ico" src="/assets/auth.png" alt="Authenticator icon">
-              <span>Authenticator</span>
-            </span>
-            page: paste Private Key and copy the code.
+            Authenticator? — A private tool for Battle.net Authenticator. Use the
+            <a class="inline-link" href="/auth/" id="faqAuthLink">Authenticator</a>,
+            paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify.
           </li>
         </ol>
 
-        <div class="section-actions" style="justify-content:space-between; gap:12px;">
+        <!-- centered, equal spacing, relaxed -->
+        <div class="section-actions">
           <a class="btn" target="_blank" rel="noopener"
              href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105"
              id="btnStock">
             View stock
           </a>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
-            <a class="btn" target="_blank" rel="noopener"
-               href="https://discord.gg/35GGuJwjVu"
-               id="btnOrder">
-              Order via Discord
-            </a>
-            <a class="btn" href="/auth/" id="btnAuthRight">
-              <img class="ico" src="/assets/auth.png" alt="Authenticator icon">
-              <span id="btnAuthRightText">Authenticator</span>
-            </a>
-          </div>
+          <a class="btn primary" target="_blank" rel="noopener"
+             href="https://discord.gg/35GGuJwjVu"
+             id="btnOrder">
+            Order via Discord
+          </a>
+
+          <!-- removed PNG element before text (as requested) -->
+          <a class="btn" href="/auth/" id="btnAuthRight">
+            <span id="btnAuthRightText">Authenticator</span>
+          </a>
         </div>
       </div>
     </section>
@@ -765,16 +775,21 @@
     <section id="contact">
       <div class="section-head">
         <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
-        <h2 class="section-title" id="contactTitle">Reach us on Discord</h2>
+        <h2 class="section-title" id="contactTitle">Reach us</h2>
         <p class="section-desc" id="contactDesc">
-          Send the account ID or a screenshot and we’ll confirm availability and next steps.
+          For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
         </p>
       </div>
 
       <div class="contact-row">
-        <a class="btn primary" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="btnContact">
-          Contact on Discord
-        </a>
+        <div class="section-actions" style="margin-top:0;">
+          <a class="btn primary" target="_blank" rel="noopener" href="https://discord.gg/35GGuJwjVu" id="btnContact">
+            Discord
+          </a>
+          <a class="btn" href="mailto:roshine_store@roshine.love" id="btnEmail">
+            Email
+          </a>
+        </div>
       </div>
     </section>
 
@@ -791,7 +806,9 @@
 
     const LINKS = {
       sheet: "https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105",
-      discord: "https://discord.gg/35GGuJwjVu"
+      discord: "https://discord.gg/35GGuJwjVu",
+      email: "mailto:roshine_store@roshine.love",
+      auth: "/auth/"
     };
 
     const i18n = {
@@ -826,18 +843,19 @@
         faqKicker:"❓ FAQ",
         faqTitle:"Frequently Asked Questions",
         faqDesc:"Quick answers to the questions that most buyers ask before ordering.",
-        faq1:"“How often updated?” — The Google Sheet is the source of truth. Sold accounts are marked quickly.",
-        faq2:"“Payment methods?” — $ Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.",
-        faq3_prefix:"“Authenticator?” — Use the",
-        faq3_suffix:"page: paste Private Key and copy the code.",
+        faq1:"How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.",
+        faq2:"Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.",
+        faq3:"Authenticator? — A private tool for Battle.net Authenticator. Use the Authenticator, paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify.",
+        faqAuthLinkText:"Authenticator",
 
         btnStock:"View stock",
         btnOrder:"Order via Discord",
 
         contactKicker:"💬 CONTACT",
-        contactTitle:"Reach us on Discord",
-        contactDesc:"Send the account ID or a screenshot and we’ll confirm availability and next steps.",
-        btnContact:"Contact on Discord",
+        contactTitle:"Reach us",
+        contactDesc:"For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.",
+        btnContact:"Discord",
+        btnEmail:"Email",
 
         footer1:"© 2021–2026 Roshine Account Store.",
         footer2:"All rights reserved — your reliable account supplier."
@@ -874,18 +892,19 @@
         faqKicker:"❓ FAQ",
         faqTitle:"Questions fréquentes",
         faqDesc:"Réponses rapides avant de passer commande.",
-        faq1:"« Mise à jour ? » — Le Google Sheet fait foi. Les comptes vendus sont marqués rapidement.",
-        faq2:"« Paiement ? » — $ Carte, PayPal, crypto et certaines cartes cadeaux. Disponibilité/frais à confirmer sur Discord.",
-        faq3_prefix:"« Authenticator ? » — Utilisez la page",
-        faq3_suffix:": collez la clé privée et copiez le code.",
+        faq1:"Mise à jour de la liste ? — Google Sheet fait foi, et les comptes vendus sont marqués rapidement.",
+        faq2:"Paiement ? — Carte, PayPal, crypto et certaines cartes cadeaux. Disponibilité/frais à confirmer sur Discord.",
+        faq3:"Authenticator ? — Outil privé pour Battle.net Authenticator. Utilisez la page Authenticator, collez votre Private Key, puis copiez le code dans l’app Battle.net pour valider.",
+        faqAuthLinkText:"Authenticator",
 
         btnStock:"Voir le stock",
         btnOrder:"Commander via Discord",
 
         contactKicker:"💬 CONTACT",
-        contactTitle:"Contactez-nous sur Discord",
-        contactDesc:"Envoyez l’ID du compte ou une capture et nous confirmons la disponibilité.",
-        btnContact:"Contacter sur Discord",
+        contactTitle:"Nous contacter",
+        contactDesc:"Le plus rapide : Discord (envoyez l’ID ou une capture). Sinon, vous pouvez aussi nous écrire par e-mail.",
+        btnContact:"Discord",
+        btnEmail:"Email",
 
         footer1:"© 2021–2026 Roshine Account Store.",
         footer2:"Tous droits réservés — votre fournisseur fiable."
@@ -922,18 +941,19 @@
         faqKicker:"❓ FAQ",
         faqTitle:"Häufige Fragen",
         faqDesc:"Kurzantworten für den schnellen Kaufentscheid.",
-        faq1:"„Wie oft aktualisiert?“ — Google Sheet ist maßgeblich. Verkauftes wird schnell markiert.",
-        faq2:"„Zahlung?“ — $ Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Verfügbarkeit/Gebühren auf Discord bestätigen.",
-        faq3_prefix:"„Authenticator?“ — Nutze die",
-        faq3_suffix:"Seite: Private Key einfügen und Code kopieren.",
+        faq1:"Wie oft wird aktualisiert? — Google Sheet ist maßgeblich, verkaufte Accounts werden schnell markiert.",
+        faq2:"Zahlung? — Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Verfügbarkeit/Gebühren auf Discord bestätigen.",
+        faq3:"Authenticator? — Privates Tool für Battle.net Authenticator. Öffne die Authenticator-Seite, füge den Private Key ein und kopiere den Code in die Battle.net App zur Verifizierung.",
+        faqAuthLinkText:"Authenticator",
 
         btnStock:"Bestand ansehen",
         btnOrder:"Über Discord bestellen",
 
         contactKicker:"💬 KONTAKT",
-        contactTitle:"Kontakt über Discord",
-        contactDesc:"Sende Account-ID oder Screenshot – wir bestätigen Verfügbarkeit und nächste Schritte.",
-        btnContact:"Auf Discord kontaktieren",
+        contactTitle:"Kontakt",
+        contactDesc:"Am schnellsten über Discord (ID oder Screenshot senden). Alternativ per E-Mail erreichbar.",
+        btnContact:"Discord",
+        btnEmail:"Email",
 
         footer1:"© 2021–2026 Roshine Account Store.",
         footer2:"Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
@@ -970,18 +990,19 @@
         faqKicker:"❓ الأسئلة",
         faqTitle:"الأسئلة الشائعة",
         faqDesc:"إجابات سريعة قبل الطلب.",
-        faq1:"«كم يتم التحديث؟» — Google Sheet هو المرجع. يتم وضع علامة على الحسابات المباعة سريعًا.",
-        faq2:"«طرق الدفع؟» — $ بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التأكيد على Discord.",
-        faq3_prefix:"«Authenticator؟» — استخدم صفحة",
-        faq3_suffix:": الصق Private Key ثم انسخ الرمز.",
+        faq1:"كم يتم التحديث؟ — Google Sheet هو المرجع ويتم تمييز الحسابات المباعة بسرعة.",
+        faq2:"طرق الدفع؟ — بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التأكيد على Discord.",
+        faq3:"Authenticator؟ — أداة خاصة لـ Battle.net Authenticator. استخدم صفحة Authenticator، ألصق Private Key ثم انسخ الرمز إلى تطبيق Battle.net للتحقق.",
+        faqAuthLinkText:"Authenticator",
 
         btnStock:"عرض المخزون",
         btnOrder:"اطلب عبر Discord",
 
         contactKicker:"💬 تواصل",
-        contactTitle:"تواصل معنا عبر Discord",
-        contactDesc:"أرسل ID الحساب أو لقطة شاشة لنؤكد التوفر والخطوات التالية.",
-        btnContact:"تواصل عبر Discord",
+        contactTitle:"تواصل معنا",
+        contactDesc:"للرد الأسرع: Discord (أرسل ID أو لقطة). ويمكنك أيضًا مراسلتنا عبر البريد الإلكتروني.",
+        btnContact:"Discord",
+        btnEmail:"Email",
 
         footer1:"© 2021–2026 Roshine Account Store.",
         footer2:"جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
@@ -1018,18 +1039,19 @@
         faqKicker:"❓ FAQ",
         faqTitle:"常见问题",
         faqDesc:"下单前最常问的几个点，直接看这里。",
-        faq1:"“列表多久更新？”—— 以 Google Sheet 为准，售出会尽快标记。",
-        faq2:"“支持什么支付方式？”—— $ 信用卡、PayPal、虚拟货币及部分礼品卡；可用性与手续费请 Discord 确认。",
-        faq3_prefix:"“Authenticator 怎么用？”—— 打开",
-        faq3_suffix:"页面：粘贴 Private Key，复制验证码。",
+        faq1:"列表多久更新？— 以 Google Sheet 为准，售出会尽快标记。",
+        faq2:"支持什么支付方式？— 信用卡、PayPal、虚拟货币及部分礼品卡；可用性与手续费请 Discord 确认。",
+        faq3:"Authenticator 是什么？— 这是 Battle.net Authenticator 的私人工具。打开 Authenticator 页面，粘贴你收到的账号信息中的 Private Key，然后把验证码复制到 Battle.net App 完成验证。",
+        faqAuthLinkText:"Authenticator",
 
         btnStock:"查看库存",
         btnOrder:"Discord 下单",
 
         contactKicker:"💬 联系",
-        contactTitle:"在 Discord 联系我们",
-        contactDesc:"发送账号 ID 或截图，我们会确认库存并给出下一步。",
-        btnContact:"Discord 联系",
+        contactTitle:"联系我们",
+        contactDesc:"最快方式：Discord（发送账号 ID 或截图）。也可随时通过邮箱联系我们。",
+        btnContact:"Discord",
+        btnEmail:"Email",
 
         footer1:"© 2021–2026 Roshine Account Store.",
         footer2:"All rights reserved — your reliable account supplier."
@@ -1075,7 +1097,7 @@
       document.getElementById("navFaq").textContent = t.nav.faq;
       document.getElementById("navContact").textContent = t.nav.contact;
 
-      // auth btn
+      // auth btn (top)
       document.getElementById("authBtnText").textContent = t.auth;
 
       // hero
@@ -1108,31 +1130,52 @@
       document.getElementById("faq1").textContent = t.faq1;
       document.getElementById("faq2").textContent = t.faq2;
 
-      // Build faq3 with icon span (auth.png)
+      // faq3 rebuilt (no png icon) with link to /auth/
       const faq3 = document.getElementById("faq3");
       faq3.innerHTML = "";
-      faq3.appendChild(document.createTextNode(t.faq3_prefix + " "));
 
-      const span = document.createElement("span");
-      span.style.display = "inline-flex";
-      span.style.alignItems = "center";
-      span.style.gap = "6px";
-      span.style.fontWeight = "800";
-      span.style.color = "rgba(231,239,255,.85)";
+      // We keep the EN “structure” in HTML; for other languages we use a full sentence
+      // If you want per-language structured linking, we keep a link text field
+      const full = (t.faq3 || "");
+      if (lang !== "en") {
+        // for non-EN, keep it simple: sentence + link on the Authenticator word
+        // Try to replace the first occurrence of link text with an anchor.
+        const linkText = t.faqAuthLinkText || t.auth || "Authenticator";
+        const idx = full.indexOf(linkText);
+        if (idx >= 0) {
+          const before = full.slice(0, idx);
+          const after = full.slice(idx + linkText.length);
+          faq3.appendChild(document.createTextNode(before));
 
-      const img = document.createElement("img");
-      img.className = "ico";
-      img.src = "/assets/auth.png";
-      img.alt = "Authenticator icon";
+          const a = document.createElement("a");
+          a.className = "inline-link";
+          a.href = LINKS.auth;
+          a.id = "faqAuthLink";
+          a.textContent = linkText;
+          faq3.appendChild(a);
 
-      const label = document.createElement("span");
-      label.textContent = t.auth;
-
-      span.appendChild(img);
-      span.appendChild(label);
-      faq3.appendChild(span);
-
-      faq3.appendChild(document.createTextNode(" " + t.faq3_suffix));
+          faq3.appendChild(document.createTextNode(after));
+        } else {
+          // fallback: just append + add link at end
+          faq3.appendChild(document.createTextNode(full + " "));
+          const a = document.createElement("a");
+          a.className = "inline-link";
+          a.href = LINKS.auth;
+          a.id = "faqAuthLink";
+          a.textContent = t.auth || "Authenticator";
+          faq3.appendChild(a);
+        }
+      } else {
+        // EN: keep the cleaner structured wording
+        faq3.appendChild(document.createTextNode("Authenticator? — A private tool for Battle.net Authenticator. Use the "));
+        const a = document.createElement("a");
+        a.className = "inline-link";
+        a.href = LINKS.auth;
+        a.id = "faqAuthLink";
+        a.textContent = t.faqAuthLinkText || "Authenticator";
+        faq3.appendChild(a);
+        faq3.appendChild(document.createTextNode(", paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify."));
+      }
 
       document.getElementById("btnStock").textContent = t.btnStock;
       document.getElementById("btnOrder").textContent = t.btnOrder;
@@ -1143,6 +1186,7 @@
       document.getElementById("contactTitle").textContent = t.contactTitle;
       document.getElementById("contactDesc").textContent = t.contactDesc;
       document.getElementById("btnContact").textContent = t.btnContact;
+      document.getElementById("btnEmail").textContent = t.btnEmail;
 
       // footer
       document.getElementById("footerLine1").textContent = t.footer1;
@@ -1151,9 +1195,17 @@
       // links (keep stable)
       document.getElementById("btnListings").href = LINKS.sheet;
       document.getElementById("btnStock").href = LINKS.sheet;
+
       document.getElementById("btnDiscord").href = LINKS.discord;
       document.getElementById("btnOrder").href = LINKS.discord;
       document.getElementById("btnContact").href = LINKS.discord;
+
+      document.getElementById("btnEmail").href = LINKS.email;
+
+      // keep these stable
+      document.getElementById("btnAuthRight").href = LINKS.auth;
+      document.getElementById("ctaAuth").href = LINKS.auth;
+      document.getElementById("authBtn").href = LINKS.auth;
     }
 
     // init
