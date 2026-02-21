@@ -7,7 +7,7 @@
   <link rel="icon" href="/assets/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 电竞科技字体：Orbitron(标题) + Inter(正文) -->
+  <!-- 你原来的字体链接保留也行；实际生效字体已强制为 Helvetica -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800;900&display=swap">
 
   <style>
@@ -43,7 +43,7 @@
     html,body{ height:100%; }
     body{
       margin:0;
-      font-family: Inter, "Titillium Web", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       color:var(--text);
       background: var(--bg);
       overflow-x:hidden;
@@ -60,13 +60,15 @@
       content:"";
       position:absolute; inset:-20%;
       background:
-        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.16), transparent 60%),
-        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.16), transparent 62%),
-        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.10), transparent 62%),
-        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.10), transparent 62%);
+        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
+        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
+        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
+        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
       filter: blur(0px);
       animation: fogmove 10.5s ease-in-out infinite alternate;
-      opacity:.95;
+      opacity:.98;
+      will-change: transform;
+      transform: translate3d(0,0,0);
     }
     @keyframes fogmove{
       0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
@@ -78,14 +80,16 @@
       content:"";
       position:absolute; inset:0;
       background:
-        linear-gradient(rgba(255,255,255,.032) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.032) 1px, transparent 1px),
-        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.08), transparent 60%),
-        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.06), transparent 60%);
+        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
+        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
+        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
       background-size: 58px 58px, 58px 58px, auto, auto;
       mix-blend-mode: screen;
-      opacity:.22;
+      opacity:.26; /* 桌面端更“强”一点 */
       animation: griddrift 14s linear infinite;
+      will-change: background-position;
+      transform: translate3d(0,0,0);
     }
     @keyframes griddrift{
       0%{ background-position: 0 0, 0 0, center, center; }
@@ -169,7 +173,6 @@
       flex:0 0 auto;
     }
     .brand .name{
-      font-family: Orbitron, Inter, system-ui;
       font-weight:800;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -190,7 +193,6 @@
     }
 
     .nav a{
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       font-size:11px;
       letter-spacing:.14em;
@@ -282,7 +284,6 @@
       padding:0 14px;
       border-radius:var(--r2);
       color:rgba(231,239,255,.90);
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       letter-spacing:.10em;
       font-size:11px;
@@ -329,7 +330,6 @@
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
       color:rgba(231,239,255,.70);
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -342,7 +342,6 @@
 
     .title{
       margin:0;
-      font-family: Orbitron, Inter, system-ui;
       font-size: clamp(40px, 6.2vw, 78px);
       font-weight:900;
       letter-spacing:.09em;
@@ -356,7 +355,6 @@
 
     .hero-subbrand{
       margin: 10px auto 0;
-      font-family: Orbitron, Inter, system-ui;
       font-size: 12px;
       letter-spacing: .26em;
       text-transform: uppercase;
@@ -366,6 +364,23 @@
       text-shadow:
         0 20px 60px rgba(0,0,0,.55),
         0 0 18px rgba(41,182,255,.10);
+
+      /* HUD lines */
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding: 0 10px;
+    }
+    .hero-subbrand::before,
+    .hero-subbrand::after{
+      content:"";
+      height:1px;
+      width:48px;
+      background: linear-gradient(90deg, transparent, rgba(231,239,255,.55), transparent);
+      opacity:.85;
+      transform: translateY(.5px);
     }
 
     .subline{
@@ -390,7 +405,6 @@
       padding:0 18px;
       border-radius:16px;
       color:rgba(231,239,255,.92);
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       letter-spacing:.08em;
       font-size:12px;
@@ -400,14 +414,26 @@
       gap:10px;
     }
 
+    /* ===== Primary button: 电竞层级更明显（conic 内光 + 更硬的霓虹描边） ===== */
     .btn.primary{
-      background: rgba(41,182,255,.14);
+      /* conic 内光（不占用伪元素，避免和 neon-border 冲突） */
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.22),
+          rgba(183,124,255,.16),
+          rgba(51,255,204,.12),
+          rgba(41,182,255,.22)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
+      background-blend-mode: screen, normal;
+
       border:1px solid rgba(41,182,255,.34);
       color: rgba(231,239,255,.95);
       box-shadow:
         0 18px 52px rgba(0,0,0,.44),
-        0 0 36px rgba(41,182,255,.18),
-        0 0 24px rgba(183,124,255,.10),
+        0 0 40px rgba(41,182,255,.20),
+        0 0 28px rgba(183,124,255,.12),
         0 0 0 1px rgba(255,255,255,.03) inset;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -417,14 +443,37 @@
     }
     .btn.primary:hover{
       transform: translateY(-1px);
-      background: rgba(41,182,255,.18);
-      border-color: rgba(41,182,255,.46);
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.30),
+          rgba(183,124,255,.22),
+          rgba(51,255,204,.16),
+          rgba(41,182,255,.30)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
+      background-blend-mode: screen, normal;
+
+      border-color: rgba(41,182,255,.50);
       box-shadow:
         0 0 0 1px rgba(255,255,255,.06) inset,
         0 26px 64px rgba(0,0,0,.62),
-        0 0 46px rgba(41,182,255,.24),
-        0 0 34px rgba(183,124,255,.14);
+        0 0 52px rgba(41,182,255,.28),
+        0 0 38px rgba(183,124,255,.16);
     }
+
+    /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
+    .btn.primary.neon-border::after{
+      opacity:.35;
+      background: linear-gradient(120deg,
+        rgba(41,182,255,.0),
+        rgba(41,182,255,.85),
+        rgba(183,124,255,.85),
+        rgba(51,255,204,.60),
+        rgba(41,182,255,.0)
+      );
+    }
+    .btn.primary.neon-border:hover::after{ opacity:1; }
 
     .scrollhint{
       margin:26px auto 0;
@@ -462,7 +511,6 @@
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
       color:rgba(231,239,255,.70);
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -474,7 +522,6 @@
 
     .section-title{
       margin:14px 0 0;
-      font-family: Orbitron, Inter, system-ui;
       font-size: clamp(30px, 4.0vw, 52px);
       font-weight:900;
       letter-spacing:.02em;
@@ -548,7 +595,6 @@
       color: rgba(154,168,198,.78);
     }
     .footer .line1{
-      font-family: Orbitron, Inter, system-ui;
       font-weight:700;
       letter-spacing:.08em;
       color: rgba(231,239,255,.72);
@@ -570,12 +616,16 @@
         0 0 0 6px rgba(41,182,255,.16);
     }
 
-    /* mobile */
+    /* ===== Performance knobs ===== */
     @media (max-width: 900px){
       .nav{ gap:10px; }
       .nav a{ padding:10px 8px; }
     }
+
+    /* ✅ 要求 1：移动端降低网格层 opacity，防止掉帧 */
     @media (max-width: 760px){
+      .bgfx::after{ opacity:.12; }
+
       .top{ top:10px; }
       .topbar{
         flex-wrap:wrap;
@@ -602,10 +652,32 @@
       .btn{ width:100%; min-width:0; }
       section{ padding-top: 68px; }
       .glass-block{ padding:18px 16px; }
+
+      /* HUD lines shorter on small screens */
+      .hero-subbrand::before,
+      .hero-subbrand::after{
+        width:34px;
+        opacity:.75;
+      }
     }
+
     @media (max-width: 380px){
       .brand .name{ font-size:10px; }
       .pill{ padding:0 12px; }
+    }
+
+    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
+    @media (prefers-reduced-motion: reduce){
+      .bgfx::before, .bgfx::after{ animation:none !important; }
+      .scrollhint{ animation:none !important; }
+      body::before{ opacity:.03; }
+    }
+
+    /* ✅ 全站字体强制 Helvetica（覆盖你原来所有 Orbitron/Inter 的局部规则） */
+    body, button, input, select, textarea,
+    .brand .name, .nav a, .pill, .kicker, .title,
+    .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
     }
   </style>
 </head>
@@ -638,7 +710,6 @@
           <option value="zh">中文</option>
         </select>
 
-        <!-- Topbar Auth: 按你的“主页去logo元素”思路，这里也去掉 icon，让视觉更统一 -->
         <a class="pill neon-border auth-pill" href="/auth/" id="authBtn" aria-label="Authenticator">
           <span id="authBtnText">Authenticator</span>
         </a>
@@ -662,7 +733,6 @@
         <div class="cta" id="heroCta">
           <a class="btn primary neon-border" href="#services" id="ctaExplore">View listings & order</a>
 
-          <!-- ✅ 删除截图中红框里的 logo/icon 元素：此按钮不再带图标 -->
           <a class="btn neon-border" href="/auth/" id="ctaAuth">
             <span id="ctaAuthText">Authenticator</span>
           </a>
@@ -1102,7 +1172,6 @@
       document.getElementById("faq1").textContent = t.faq1;
       document.getElementById("faq2").textContent = t.faq2;
 
-      // faq3 keep link on "Authenticator"
       const faq3 = document.getElementById("faq3");
       faq3.textContent = "";
       if (lang === "en"){
@@ -1118,7 +1187,6 @@
         faq3.appendChild(a);
         faq3.appendChild(document.createTextNode(", paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify."));
       } else {
-        // non-EN: simple full sentence
         faq3.textContent = t.faq3;
       }
 
@@ -1135,7 +1203,6 @@
       document.getElementById("footerLine1").textContent = t.footer1;
       document.getElementById("footerLine2").textContent = t.footer2;
 
-      // stable links
       document.getElementById("btnListings").href = LINKS.sheet;
       document.getElementById("btnStock").href = LINKS.sheet;
 
