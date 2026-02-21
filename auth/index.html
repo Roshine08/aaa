@@ -9,6 +9,7 @@
 
   <style>
     :root{
+      /* ===== SAME TOKENS AS STORE (glass + sci-fi blue) ===== */
       --bg-dark:#05060b;
       --text-dark:#e6f0ff;
       --muted-dark:#7c8aaa;
@@ -61,7 +62,7 @@
       overflow-x:hidden;
     }
 
-    /* same clean blooms + light scan texture as store */
+    /* ===== same background vibe as store ===== */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -96,7 +97,7 @@
       z-index:1;
     }
 
-    /* ===== Top Nav ===== */
+    /* ===== NAV (match store: brand left, pills right, same colors) ===== */
     .nav{
       position:sticky;
       top:0;
@@ -108,6 +109,7 @@
     html[data-theme="light"] .nav{
       background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));
     }
+
     .nav-inner{
       display:flex;
       align-items:center;
@@ -117,12 +119,15 @@
     }
 
     .brand{
-      display:flex; align-items:center; gap:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
       min-width:0;
     }
     .brand img{
       width:40px;height:40px;border-radius:14px;
       box-shadow:0 14px 42px rgba(0,0,0,.45);
+      flex:0 0 auto;
     }
     .brand .name{
       font-weight:900;
@@ -165,6 +170,8 @@
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      white-space:nowrap;
+      -webkit-tap-highlight-color: transparent;
     }
     html[data-theme="light"] .pill{ background: rgba(255,255,255,.10); }
     .pill:hover{
@@ -182,11 +189,14 @@
       background:transparent;
       padding:0 18px;
       text-align:center;
+      cursor:pointer;
+      color:var(--text);
+      font-weight:800;
     }
     .lang-select option{ background:#050b16; color:#e8eefc; }
     html[data-theme="light"] .lang-select option{ background:#1a1d26; color:#e4e7f5; }
 
-    /* ===== Main ===== */
+    /* ===== MAIN ===== */
     main{
       min-height: calc(100vh - 86px);
       display:flex;
@@ -222,9 +232,8 @@
       gap:14px;
       position:relative;
       z-index:1;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
-
     .panel-title{
       font-weight:900;
       letter-spacing:.06em;
@@ -235,6 +244,25 @@
       gap:10px;
       white-space:nowrap;
     }
+    .badge{
+      height:34px;
+      padding:0 14px;
+      border-radius:var(--radius-pill);
+      border:1px solid var(--glass-border);
+      background: rgba(0,0,0,.14);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:900;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 26px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.05) inset;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      user-select:none;
+      white-space:nowrap;
+    }
+    html[data-theme="light"] .badge{ background: rgba(255,255,255,.10); }
 
     .panel-note{
       margin:0 0 14px;
@@ -245,7 +273,6 @@
       z-index:1;
     }
 
-    /* code display */
     .code{
       text-align:center;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -266,9 +293,8 @@
       z-index:1;
     }
 
-    /* progress bar */
     .barwrap{
-      height: 10px;
+      height: 12px;
       border-radius: 999px;
       overflow:hidden;
       border:1px solid rgba(130,170,255,.14);
@@ -280,6 +306,7 @@
       -webkit-backdrop-filter: blur(12px);
     }
     html[data-theme="light"] .barwrap{ background: rgba(255,255,255,.10); }
+
     .bar{
       height:100%;
       width:0%;
@@ -301,12 +328,7 @@
       100%{ transform: translateX(35%); }
     }
 
-    /* input */
-    .field{
-      margin-top: 18px;
-      position:relative;
-      z-index:1;
-    }
+    .field{ margin-top: 18px; position:relative; z-index:1; }
     .field-label{
       font-size:13px;
       font-weight:900;
@@ -319,7 +341,7 @@
     input{
       width:100%;
       box-sizing:border-box;
-      padding: 14px 14px;
+      padding: 16px 14px;
       border-radius: 18px;
       border: 1px solid rgba(130,170,255,.18);
       background: rgba(0,0,0,.14);
@@ -334,7 +356,6 @@
     input::placeholder{ color: rgba(160,178,210,.70); }
     html[data-theme="light"] input::placeholder{ color: rgba(90,98,120,.65); }
 
-    /* buttons */
     .row{
       display:flex;
       gap:12px;
@@ -343,8 +364,9 @@
       position:relative;
       z-index:1;
     }
+
     .btn{
-      height:46px;
+      height:52px;
       padding: 0 16px;
       border-radius: 18px;
       border: 1px solid var(--glass-border);
@@ -361,6 +383,7 @@
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+      -webkit-tap-highlight-color: transparent;
     }
     html[data-theme="light"] .btn{ background: rgba(255,255,255,.10); }
     .btn:hover{
@@ -369,6 +392,7 @@
       background: rgba(0,0,0,.20);
     }
     html[data-theme="light"] .btn:hover{ background: rgba(255,255,255,.16); }
+
     .btn.primary{
       border-color: transparent;
       color:#fff;
@@ -380,7 +404,6 @@
       opacity:.98;
     }
 
-    /* status */
     .status{
       margin-top:12px;
       min-height:18px;
@@ -403,19 +426,68 @@
       z-index:1;
     }
 
-    @media (max-width: 760px){
-      .controls{ justify-content:flex-start; width:100%; }
-      .nav-inner{ flex-direction:column; align-items:flex-start; }
-      .panel{ padding: 22px 16px 18px; }
-      .code{ letter-spacing: 4px; }
+    /* ===== Mobile: same logic as store (not cramped) ===== */
+    @media (max-width: 860px){
+      .nav-inner{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+      }
+      .controls{
+        width:100%;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width: 560px){
+      .wrap{ width:min(var(--wrap), 94vw); }
+      .nav-inner{ padding:16px 0 12px; }
+
+      .brand img{ width:38px;height:38px; }
+      .brand .name{ font-size:13px; }
+      .brand .sub{ max-width:46ch; }
+
+      /* 3 items -> breathable grid like store */
+      .controls{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:10px;
+        align-items:stretch;
+      }
+      .pill{ width:100%; height:40px; }
+      .lang-select{ padding:0 22px; }
+
+      main{ padding: 16px 0 44px; }
+      .panel{
+        width: min(720px, 96vw);
+        padding: 22px 16px 18px;
+        border-radius: 24px;
+      }
+
+      .panel-head{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+      .badge{ width:100%; justify-content:center; height:38px; }
+
+      .code{
+        letter-spacing: 4px;
+        font-size: clamp(40px, 12vw, 58px);
+      }
+
       .row{ flex-direction:column; }
-      .btn{ flex: 1 1 auto; }
+      .btn{ width:100%; height:54px; }
+    }
+
+    @media (max-width: 360px){
+      .controls{ grid-template-columns: 1fr; }
+      .code{ letter-spacing: 3px; }
     }
   </style>
 </head>
 
 <body>
-  <!-- NAV -->
   <div class="nav">
     <div class="wrap">
       <div class="nav-inner">
@@ -439,7 +511,7 @@
           </select>
 
           <button class="pill" id="themeToggle" title="Theme">☀️</button>
-          <a class="pill" href="/" id="backLink" title="Back">← <span id="backText">Back to Store</span></a>
+          <a class="pill" href="/" id="homeLink" title="Home">← <span id="homeText">Home</span></a>
         </div>
       </div>
     </div>
@@ -450,7 +522,7 @@
       <section class="panel" aria-label="Authenticator">
         <div class="panel-head">
           <div class="panel-title" id="titleText">🔐 Battle.net Authenticator</div>
-          <div class="pill" id="modeBadge" style="cursor:default;opacity:.95;">TOTP • 30s</div>
+          <div class="badge" id="modeBadge">TOTP • 30s</div>
         </div>
 
         <p class="panel-note" id="descText">
@@ -488,11 +560,11 @@
 
     const $ = id => document.getElementById(id);
 
-    // i18n (aligned with store language set)
+    // ===== i18n (keep consistent with store language set) =====
     const i18n = {
       en: {
         sub: "Overwatch Account Store • Listings via Google Sheet • Purchase via Discord",
-        back: "Back to Store",
+        home: "Home",
         title: "🔐 Battle.net Authenticator",
         desc: "Paste your Private Key to generate the current verification code. Then copy the code into Battle.net.",
         secretLabel: "Private Key",
@@ -507,7 +579,7 @@
       },
       zh: {
         sub: "Overwatch Account Store • Google Sheet 展示库存 • Discord 联系购买",
-        back: "返回商店",
+        home: "返回",
         title: "🔐 战网安全令",
         desc: "粘贴你的安全令秘钥生成当前验证码，然后复制到 Battle.net 使用。",
         secretLabel: "安全令秘钥",
@@ -522,7 +594,7 @@
       },
       fr: {
         sub: "Boutique de comptes Overwatch • Liste via Google Sheet • Achat via Discord",
-        back: "Retour boutique",
+        home: "Accueil",
         title: "🔐 Jeton Battle.net",
         desc: "Collez votre clé privée pour générer le code, puis copiez-le dans Battle.net.",
         secretLabel: "Clé privée",
@@ -537,7 +609,7 @@
       },
       de: {
         sub: "Overwatch Account Shop • Liste via Google Sheet • Kauf über Discord",
-        back: "Zurück zum Shop",
+        home: "Start",
         title: "🔐 Battle.net-Token",
         desc: "Füge deinen Private Key ein, generiere den Code und kopiere ihn in Battle.net.",
         secretLabel: "Private Key",
@@ -552,7 +624,7 @@
       },
       ru: {
         sub: "Магазин аккаунтов Overwatch • Список в Google Sheet • Покупка через Discord",
-        back: "Назад в магазин",
+        home: "Домой",
         title: "🔐 Токен Battle.net",
         desc: "Вставьте Private Key, получите код и скопируйте его в Battle.net.",
         secretLabel: "Private Key",
@@ -567,7 +639,7 @@
       },
       it: {
         sub: "Negozio account Overwatch • Lista su Google Sheet • Acquisto via Discord",
-        back: "Torna al negozio",
+        home: "Home",
         title: "🔐 Token Battle.net",
         desc: "Incolla il Private Key per generare il codice e copialo in Battle.net.",
         secretLabel: "Private Key",
@@ -582,7 +654,7 @@
       },
       ar: {
         sub: "متجر حسابات أوفرواتش • القائمة عبر Google Sheet • الشراء عبر Discord",
-        back: "العودة للمتجر",
+        home: "الرئيسية",
         title: "🔐 مُصدِّق Battle.net",
         desc: "ألصق Private Key لتوليد الرمز ثم انسخه إلى Battle.net.",
         secretLabel: "Private Key",
@@ -625,7 +697,7 @@
       if (sel) sel.value = lang;
 
       $("subText").textContent = t("sub");
-      $("backText").textContent = t("back");
+      $("homeText").textContent = t("home");
       $("titleText").textContent = t("title");
       $("descText").textContent = t("desc");
       $("secretLabel").textContent = t("secretLabel");
@@ -636,7 +708,6 @@
       $("footer").textContent = t("footer").replace("{year}", new Date().getFullYear());
     }
 
-    // lang init
     (function initLang(){
       applyLang(detectLang());
     })();
@@ -645,7 +716,6 @@
       const lang = e.target.value;
       applyLang(lang);
       localStorage.setItem(LANG_KEY, lang);
-      // refresh status message language (if any)
       if ($("status").classList.contains("err")) gen();
     });
 
@@ -826,7 +896,6 @@
       }
     });
 
-    // init: prefill from URL if any
     const urlKey = getKeyFromURL();
     if (urlKey) $("secret").value = urlKey;
 
