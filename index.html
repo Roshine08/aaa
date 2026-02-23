@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Roshine Account Store</title>
   <link rel="icon" href="/assets/logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 你原来的字体链接保留也行；实际生效字体已强制为 Helvetica -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800;900&display=swap">
-
-  <style>
+<style>
     :root{
       --bg:#05060b;
       --text:#e7efff;
@@ -628,7 +623,6 @@
       color: rgba(154,168,198,.72);
     }
 
-
     /* ===== Footer nav ===== */
     .footnav{
       margin: 14px auto 0;
@@ -660,7 +654,6 @@
         0 18px 48px rgba(0,0,0,.40),
         0 0 0 6px rgba(41,182,255,.06);
     }
-
 
     /* focus */
     .neon-border:focus-visible, .nav a:focus-visible{
@@ -753,7 +746,7 @@
       </div>
 
       <nav class="nav" aria-label="Primary">
-        <a href="#home" id="navHome">Home</a>
+        <a href="https://roshine.love/" id="navHome">Home</a>
         <a href="#services" id="navServices">Services</a>
         <a href="#warranty" id="navWarranty">Warranty</a>
         <a href="#faq" id="navFaq">FAQ</a>
@@ -791,11 +784,7 @@
 
         <div class="cta" id="heroCta">
           <a class="btn primary neon-border" href="#services" id="ctaExplore">View listings & order</a>
-
-          <a class="btn neon-border" href="/auth/" id="ctaAuth">
-            <span id="ctaAuthText">Authenticator</span>
-          </a>
-        </div>
+</div>
 
         <div class="scrollhint" aria-hidden="true">⌄</div>
       </div>
@@ -886,11 +875,7 @@
              id="btnOrder">
             Order via Discord
           </a>
-
-          <a class="btn neon-border" href="/auth/" id="btnAuthRight">
-            <span id="btnAuthRightText">Authenticator</span>
-          </a>
-        </div>
+</div>
       </div>
     </section>
 
@@ -920,7 +905,7 @@
       <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
 
       <nav class="footnav" aria-label="Footer navigation">
-        <a href="#home" id="footHome">Home</a>
+        <a href="https://roshine.love/" id="footHome">Home</a>
         <a href="#services" id="footServices">Services</a>
         <a href="#contact" id="footContact">Contact</a>
         <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
@@ -1224,7 +1209,8 @@
       document.getElementById("heroSubbrand").textContent = t.heroSubbrand || "Overwatch Account Store";
       document.getElementById("heroIntro").textContent = t.heroIntro;
       document.getElementById("ctaExplore").textContent = t.ctaExplore;
-      document.getElementById("ctaAuthText").textContent = t.auth;
+      const ctaAuthTextEl = document.getElementById("ctaAuthText");
+      if (ctaAuthTextEl) ctaAuthTextEl.textContent = t.auth;
 
       document.getElementById("servicesKicker").textContent = t.servicesKicker;
       document.getElementById("servicesTitle").textContent = t.servicesTitle;
@@ -1264,7 +1250,8 @@
 
       document.getElementById("btnStock").textContent = t.btnStock;
       document.getElementById("btnOrder").textContent = t.btnOrder;
-      document.getElementById("btnAuthRightText").textContent = t.auth;
+      const btnAuthRightTextEl = document.getElementById("btnAuthRightText");
+      if (btnAuthRightTextEl) btnAuthRightTextEl.textContent = t.auth;
 
       document.getElementById("contactKicker").textContent = t.contactKicker;
       document.getElementById("contactTitle").textContent = t.contactTitle;
@@ -1284,8 +1271,10 @@
 
       document.getElementById("btnEmail").href = LINKS.email;
 
-      document.getElementById("btnAuthRight").href = LINKS.auth;
-      document.getElementById("ctaAuth").href = LINKS.auth;
+      const btnAuthRightEl = document.getElementById("btnAuthRight");
+      if (btnAuthRightEl) btnAuthRightEl.href = LINKS.auth;
+      const ctaAuthEl = document.getElementById("ctaAuth");
+      if (ctaAuthEl) ctaAuthEl.href = LINKS.auth;
       document.getElementById("authBtn").href = LINKS.auth;
     }
 
