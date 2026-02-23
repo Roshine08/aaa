@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Roshine Account Store</title><meta content="Premium Overwatch accounts with secure delivery." name="description"/>
+<link href="/assets/logo.png" rel="icon"/>
+<style>
+    :root{
+      --bg:#05060b;
+      --text:#e7efff;
+      --muted:#9aa8c6;
+
+      /* esports neon */
+      --neon:#29b6ff;
+      --neon2:#b77cff;
+      --neon3:#33ffcc;
+
+      --glass: rgba(12, 16, 28, .42);
+      --glass2: rgba(10, 14, 22, .30);
+
+      --line2: rgba(255,255,255,.06);
+
+      --shadow: 0 26px 72px rgba(0,0,0,.62);
+      --shadow2: 0 10px 26px rgba(0,0,0,.42);
+
+      --r: 22px;
+      --r2: 999px;
+      --w: min(1100px, 92vw);
+
+      /* button tokens */
+      --btn-bg: rgba(255,255,255,.03);
+      --btn-border: rgba(255,255,255,.10);
+      --btn-hover-bg: rgba(255,255,255,.060);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* ===== Dynamic esports background (CSS only) ===== */
+    .bgfx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .bgfx::before{
+      content:"";
+      position:absolute; inset:-20%;
+      background:
+        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
+        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
+        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
+        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
+      filter: blur(0px);
+      animation: fogmove 10.5s ease-in-out infinite alternate;
+      opacity:.98;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes fogmove{
+      0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+      100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+    }
+
+    /* animated grid drift */
+    .bgfx::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
+        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
+        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
+      background-size: 58px 58px, 58px 58px, auto, auto;
+      mix-blend-mode: screen;
+      opacity:.26;
+      animation: griddrift 14s linear infinite;
+      will-change: background-position;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes griddrift{
+      0%{ background-position: 0 0, 0 0, center, center; }
+      100%{ background-position: 140px 140px, -140px 140px, center, center; }
+    }
+
+    /* scanlines */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.045) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+      opacity:.05;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 72px; position:relative; z-index:1; }
+
+    /* ===== Top nav ===== */
+    .top{
+      position:sticky;
+      top:14px;
+      z-index:50;
+      display:flex;
+      justify-content:center;
+      padding:0 0 14px;
+    }
+
+    .topbar{
+      width:var(--w);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      border-radius:var(--r2);
+
+      background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:
+        var(--shadow2),
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 0 28px rgba(41,182,255,.08),
+        0 0 26px rgba(183,124,255,.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position:relative;
+      overflow:hidden;
+    }
+    .topbar::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
+        radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      min-width:0;
+      flex:0 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      position:relative;
+      z-index:1;
+    }
+    .brand img{
+      width:22px; height:22px; border-radius:10px;
+      box-shadow:0 10px 20px rgba(0,0,0,.45);
+      flex:0 0 auto;
+    }
+    .brand .name{
+      font-weight:800;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      white-space:nowrap;
+      opacity:.92;
+    }
+
+    .nav{
+      flex:1 1 auto;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+      padding:0 10px;
+      min-width:0;
+      position:relative;
+      z-index:1;
+    }
+
+    .nav a{
+      font-weight:700;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(231,239,255,.78);
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+      background:transparent;
+      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+    }
+    .nav a:hover{
+      transform: translateY(-1px);
+      color:rgba(231,239,255,.96);
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.08);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 18px 48px rgba(0,0,0,.40),
+        0 0 0 6px rgba(41,182,255,.06);
+    }
+
+    .right{
+      display:flex; align-items:center; gap:10px;
+      flex:0 0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    /* ===== Neon gradient border hover (core) ===== */
+    .neon-border{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--btn-border);
+      background: var(--btn-bg);
+      box-shadow:
+        0 18px 48px rgba(0,0,0,.42),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    /* gradient stroke */
+    .neon-border::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      padding:1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    /* subtle highlight sweep */
+    .neon-border::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
+        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
+        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+
+    .neon-border:hover{
+      transform: translateY(-1px);
+      background: var(--btn-hover-bg);
+      border-color: rgba(255,255,255,.14);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 22px 56px rgba(0,0,0,.60),
+        0 0 38px rgba(41,182,255,.16),
+        0 0 30px rgba(183,124,255,.11);
+    }
+    .neon-border:hover::after{ opacity:1; }
+    .neon-border:hover::before{ opacity:1; }
+
+    .pill{
+      height:38px;
+      padding:0 14px;
+      border-radius:var(--r2);
+      color:rgba(231,239,255,.90);
+      font-weight:700;
+      letter-spacing:.10em;
+      font-size:11px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    select.pill{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      padding:0 16px;
+      text-align:center;
+    }
+    select.pill option{
+      background:#070a12;
+      color:#e7efff;
+    }
+
+    .auth-pill{
+      padding:0 16px;
+      gap:8px;
+    }
+
+    /* ===== Hero ===== */
+    .hero{
+      min-height: calc(100svh - 130px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 40px 0 30px;
+    }
+    .hero-inner{ width:100%; text-align:center; }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      color:rgba(231,239,255,.70);
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:11px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      margin-bottom:16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .title{
+      margin:0;
+      font-size: clamp(40px, 6.2vw, 78px);
+      font-weight:900;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      color:rgba(231,239,255,.92);
+      text-shadow:
+        0 30px 90px rgba(0,0,0,.78),
+        0 0 28px rgba(41,182,255,.12),
+        0 0 26px rgba(183,124,255,.10);
+    }
+
+    .hero-subbrand{
+      margin: 10px auto 0;
+      font-size: 12px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: rgba(231,239,255,.62);
+      font-weight: 700;
+      line-height: 1.2;
+      text-shadow:
+        0 20px 60px rgba(0,0,0,.55),
+        0 0 18px rgba(41,182,255,.10);
+
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding: 0 10px;
+    }
+    .hero-subbrand::before,
+    .hero-subbrand::after{
+      content:"";
+      height:1px;
+      width:48px;
+      background: linear-gradient(90deg, transparent, rgba(231,239,255,.55), transparent);
+      opacity:.85;
+      transform: translateY(.5px);
+    }
+
+    .subline{
+      margin:14px auto 0;
+      max-width: 74ch;
+      color: rgba(154,168,198,.92);
+      font-size: 15px;
+      line-height:1.75;
+    }
+
+    .cta{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      min-width: 220px;
+      height: 48px;
+      padding:0 18px;
+      border-radius:16px;
+      color:rgba(231,239,255,.92);
+      font-weight:700;
+      letter-spacing:.08em;
+      font-size:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .btn.primary{
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.22),
+          rgba(183,124,255,.16),
+          rgba(51,255,204,.12),
+          rgba(41,182,255,.22)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
+      background-blend-mode: screen, normal;
+
+      border:1px solid rgba(41,182,255,.34);
+      color: rgba(231,239,255,.95);
+      box-shadow:
+        0 18px 52px rgba(0,0,0,.44),
+        0 0 40px rgba(41,182,255,.20),
+        0 0 28px rgba(183,124,255,.12),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position:relative;
+      overflow:hidden;
+      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .btn.primary:hover{
+      transform: translateY(-1px);
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.30),
+          rgba(183,124,255,.22),
+          rgba(51,255,204,.16),
+          rgba(41,182,255,.30)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
+      background-blend-mode: screen, normal;
+
+      border-color: rgba(41,182,255,.50);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 26px 64px rgba(0,0,0,.62),
+        0 0 52px rgba(41,182,255,.28),
+        0 0 38px rgba(183,124,255,.16);
+    }
+
+    .btn.primary.neon-border::after{
+      opacity:.35;
+      background: linear-gradient(120deg,
+        rgba(41,182,255,.0),
+        rgba(41,182,255,.85),
+        rgba(183,124,255,.85),
+        rgba(51,255,204,.60),
+        rgba(41,182,255,.0)
+      );
+    }
+    .btn.primary.neon-border:hover::after{ opacity:1; }
+
+    .scrollhint{
+      margin: 26px auto 0;
+      width: auto;
+      height: auto;
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+
+      display: inline-block;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+
+      color: rgba(231,239,255,.72);
+      text-shadow:
+        0 14px 34px rgba(0,0,0,.65),
+        0 0 18px rgba(41,182,255,.14),
+        0 0 16px rgba(183,124,255,.10);
+
+      pointer-events: none;
+      user-select: none;
+
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(8px); }
+    }
+
+    /* ===== Sections ===== */
+    section{ padding: 84px 0 0; }
+
+    .section-head{
+      text-align:center;
+      margin:0 auto 20px;
+      width:min(900px, 92vw);
+    }
+
+    .section-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      color:rgba(231,239,255,.70);
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:11px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+    }
+
+    .section-title{
+      margin:14px 0 0;
+      font-size: clamp(30px, 4.0vw, 52px);
+      font-weight:900;
+      letter-spacing:.02em;
+      color:rgba(231,239,255,.86);
+      text-shadow: 0 0 18px rgba(41,182,255,.08);
+    }
+
+    .section-desc{
+      margin:10px auto 0;
+      max-width: 78ch;
+      color: rgba(154,168,198,.90);
+      font-size: 14px;
+      line-height:1.75;
+    }
+
+    .glass-block{
+      width: min(980px, 92vw);
+      margin: 26px auto 0;
+      padding: 22px 20px;
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px rgba(255,255,255,.035) inset,
+        0 0 34px rgba(41,182,255,.06),
+        0 0 26px rgba(183,124,255,.05);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      position:relative;
+      overflow:hidden;
+    }
+    .glass-block::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 240px at 20% 0%, rgba(41,182,255,.10), transparent 58%),
+        radial-gradient(900px 260px at 85% 12%, rgba(183,124,255,.09), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .list{
+      margin:0;
+      padding:0 0 0 18px;
+      text-align:left;
+      color: rgba(154,168,198,.92);
+      font-size: 14px;
+      line-height:1.8;
+      position:relative;
+      z-index:1;
+    }
+    .list li{ margin:10px 0; }
+
+    .section-actions{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* ===== Warranty: high-conversion cards ===== */
+    .warranty-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top: 2px;
+    }
+    .wcard{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.02) inset,
+        0 16px 42px rgba(0,0,0,.44);
+      padding: 14px 14px 12px;
+      overflow:hidden;
+      position:relative;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform .15s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .wcard::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      padding:1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.60), rgba(183,124,255,.55), rgba(51,255,204,.40), rgba(41,182,255,.0));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+    }
+    .wcard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 22px 56px rgba(0,0,0,.58),
+        0 0 34px rgba(41,182,255,.12);
+    }
+    .wcard:hover::after{ opacity:.9; }
+
+    .wtop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .wtitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color: rgba(231,239,255,.92);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+    .wicon{
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      flex: 0 0 auto;
+      font-size: 16px;
+    }
+    .wdesc{
+      margin:0;
+      color: rgba(154,168,198,.92);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .wbadge{
+      flex:0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 10px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(231,239,255,.86);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      white-space: nowrap;
+    }
+    .wbadge.primary{
+      border-color: rgba(41,182,255,.26);
+      background: rgba(41,182,255,.10);
+    }
+    .wbadge.paid{
+      border-color: rgba(183,124,255,.25);
+      background: rgba(183,124,255,.10);
+    }
+
+    @media (max-width: 980px){
+      .warranty-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px){
+      .warranty-grid{ grid-template-columns: 1fr; }
+    }
+
+    /* footer */
+    .footer{
+      margin-top: 86px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      text-align:center;
+      color: rgba(154,168,198,.78);
+    }
+    .footer .line1{
+      font-weight:700;
+      letter-spacing:.08em;
+      color: rgba(231,239,255,.72);
+      margin-bottom:8px;
+      font-size:12px;
+      text-transform: uppercase;
+    }
+    .footer .line2{
+      font-size:12px;
+      line-height:1.6;
+      color: rgba(154,168,198,.72);
+    }
+
+    /* ===== Footer nav ===== */
+    .footnav{
+      margin: 14px auto 0;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+    }
+    .footnav a{
+      font-weight:800;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(231,239,255,.70);
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+    }
+    .footnav a:hover{
+      transform: translateY(-1px);
+      color: rgba(231,239,255,.92);
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.10);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 18px 48px rgba(0,0,0,.40),
+        0 0 0 6px rgba(41,182,255,.06);
+    }
+
+    /* focus */
+    .neon-border:focus-visible, .nav a:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(41,182,255,.42),
+        0 0 0 6px rgba(41,182,255,.16);
+    }
+
+    /* ===== Performance knobs ===== */
+    @media (max-width: 900px){
+      .nav{ gap:10px; }
+      .nav a{ padding:10px 8px; }
+    }
+
+    @media (max-width: 760px){
+      .bgfx::after{ opacity:.12; }
+
+      .top{ top:10px; }
+      .topbar{
+        flex-wrap:wrap;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px;
+      }
+      .brand{ flex:1 1 auto; }
+      .nav{
+        order:3;
+        width:100%;
+        justify-content:space-between;
+        gap:6px;
+        padding:0;
+      }
+      .nav a{
+        flex:1 1 auto;
+        text-align:center;
+        font-size:10px;
+        padding:10px 6px;
+      }
+      .right{ order:2; margin-left:auto; }
+      .pill{ height:36px; }
+      .btn{ width:100%; min-width:0; }
+      section{ padding-top: 68px; }
+      .glass-block{ padding:18px 16px; }
+
+      .hero-subbrand::before,
+      .hero-subbrand::after{
+        width:34px;
+        opacity:.75;
+      }
+
+      .scrollhint{ font-size: 36px; }
+    }
+
+    @media (max-width: 380px){
+      .brand .name{ font-size:10px; }
+      .pill{ padding:0 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .bgfx::before, .bgfx::after{ animation:none !important; }
+      .scrollhint{ animation:none !important; }
+      body::before{ opacity:.03; }
+    }
+
+    body, button, input, select, textarea,
+    .brand .name, .nav a, .pill, .kicker, .title,
+    .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    }
+  </style>
+</head>
+<body>
+<div aria-hidden="true" class="bgfx"></div>
+
+<!-- Sticky Top -->
+<div class="top" id="home">
+  <div aria-label="Top navigation" class="topbar" role="navigation">
+    <div aria-label="Brand" class="brand">
+      <img alt="Logo" src="/assets/logo.png"/>
+      <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+    </div>
+    <nav aria-label="Primary" class="nav">
+      <a href="https://roshine.love/" id="navHome">Home</a>
+      <a href="#services" id="navServices">Services</a>
+      <a href="#warranty" id="navWarranty">Warranty</a>
+      <a href="#faq" id="navFaq">FAQ</a>
+      <a href="#contact" id="navContact">Contact</a>
+    </nav>
+    <div class="right">
+      <select aria-label="Language" class="pill neon-border" id="langSelect" title="Language">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="ar">AR</option>
+        <option value="zh">中文</option>
+      </select>
+      <a aria-label="Authenticator" class="pill neon-border auth-pill" href="/auth/" id="authBtn">
+        <span id="authBtnText">Authenticator</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- Fullscreen Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
+      <h1 class="title" id="heroTitle">ROSHINE</h1>
+      <div class="hero-subbrand" id="heroSubbrand">Overwatch Account Store</div>
+      <p class="subline" id="heroIntro">
+        Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
+        Five years in operation, built for consistency, clarity, and buyer confidence.
+      </p>
+      <div class="cta" id="heroCta">
+        <a class="btn primary neon-border" href="#services" id="ctaExplore">View Stock &amp; Purchase</a>
+      </div>
+      <div aria-hidden="true" class="scrollhint">⌄</div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="section-head">
+      <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
+      <h2 class="section-title" id="servicesTitle">Listings &amp; Ordering</h2>
+      <p class="section-desc" id="servicesDesc">
+        Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
+      </p>
+    </div>
+    <div class="glass-block">
+      <ol class="list" id="servicesList">
+        <li>📄 Open the listings and filter by price, rank, or skins.</li>
+        <li>🧾 Copy the account ID (or screenshot the row you want).</li>
+        <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
+        <li>✅ After payment, receive login info and the security handover package.</li>
+      </ol>
+      <div class="section-actions">
+        <a class="btn primary neon-border" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105" id="btnListings" rel="noopener" target="_blank">
+          View stock (Google Sheet)
+        </a>
+        <a class="btn neon-border" href="https://discord.gg/35GGuJwjVu" id="btnDiscord" rel="noopener" target="_blank">
+          Order via Discord
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warranty -->
+  <section id="warranty">
+    <div class="section-head">
+      <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
+      <h2 class="section-title" id="warrantyTitle">Warranty &amp; Security</h2>
+      <p class="section-desc" id="warrantyDesc">
+        Clear scope, transparent process, long-term protection.
+      </p>
+    </div>
+    <div class="glass-block">
+      <div class="warranty-grid" id="warrantyGrid"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-head">
+      <div class="section-kicker" id="faqKicker">❓ FAQ</div>
+      <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
+      <p class="section-desc" id="faqDesc">
+        Quick answers to the questions that most buyers ask before ordering.
+      </p>
+    </div>
+    <div class="glass-block">
+      <ol class="list" id="faqList">
+        <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
+        <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
+        <li id="faq3">How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.</li>
+        <li id="faq4">Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.</li>
+        <li id="faq5"></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-head">
+      <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
+      <h2 class="section-title" id="contactTitle">Reach us</h2>
+      <p class="section-desc" id="contactDesc">
+        For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
+      </p>
+    </div>
+    <div class="section-actions" style="margin-top:16px;">
+      <a class="btn primary neon-border" href="https://discord.gg/35GGuJwjVu" id="btnContact" rel="noopener" target="_blank">
+        Discord
+      </a>
+      <a class="btn neon-border" href="mailto:roshine_store@roshine.love" id="btnEmail">
+        Email
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer aria-label="Footer" class="footer">
+    <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
+    <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
+    <nav aria-label="Footer navigation" class="footnav">
+      <a href="https://roshine.love/" id="footHome">Home</a>
+      <a href="#services" id="footServices">Services</a>
+      <a href="#contact" id="footContact">Contact</a>
+      <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
+      <a href="https://roshine.love/terms" id="footTerms">Terms</a>
+    </nav>
+  </footer>
+
+</main>
+
+<script>
+    const LANG_KEY = "roshine_lang";
+    const LINKS = {
+      sheet: "https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105",
+      discord: "https://discord.gg/35GGuJwjVu",
+      email: "mailto:roshine_store@roshine.love",
+      auth: "/auth/"
+    };
+
+    const i18n = {
+      en: {
+        metaTitle:"Roshine Account Store",
+        metaDesc:"Premium Overwatch accounts with secure delivery.",
+        nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Trusted since 2021",
+        heroTitle:"ROSHINE",
+        heroSubbrand:"Overwatch Account Store",
+        heroIntro:"Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support. Five years in operation, built for consistency, clarity, and buyer confidence.",
+        ctaExplore:"View Stock & Purchase",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Listings & Ordering",
+        servicesDesc:"Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.",
+        servicesList:[
+          "📄 Open the listings and filter by price, rank, or skins.",
+          "🧾 Copy the account ID (or screenshot the row you want).",
+          "💬 Join Discord and send the ID/screenshot to confirm availability and total.",
+          "✅ After payment, receive login info and the security handover package."
+        ],
+        btnListings:"View stock (Google Sheet)",
+        btnDiscord:"Order via Discord",
+
+        warrantyKicker:"🛡️ WARRANTY",
+        warrantyTitle:"Warranty & Security",
+        warrantyDesc:"Clear scope, transparent process, long-term protection.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"PRIMARY", badgeType:"primary", title:"Lifetime Security Warranty",
+            desc:"If the account is reclaimed, hacked, or permanently lost due to previous owner issues, we provide a full replacement (equal value) or full compensation." },
+          { icon:"📂", badge:"PROOF", badgeType:"primary", title:"Verified Ownership Handover",
+            desc:"You receive the security handover package (as applicable): original email access, Battle.net/Steam, authenticator transfer support, account ID, and available recovery details." },
+          { icon:"⚡", badge:"FAST", badgeType:"primary", title:"Fast Delivery",
+            desc:"Most accounts are delivered within 5 minutes after confirmed payment (rare high-tier accounts may require extra preparation)." },
+          { icon:"♾️", badge:"FREE", badgeType:"primary", title:"Unlimited Free Unlock Support (OW2)",
+            desc:"If unlock-related issues occur on eligible Overwatch 2 accounts, we provide unlimited assistance." },
+          { icon:"🔄", badge:"PAID", badgeType:"paid", title:"Region Update Service",
+            desc:"Optional paid service. Region changes are handled only when supported by platform policy." },
+          { icon:"🚫", badge:"PAID", badgeType:"paid", title:"Unban Appeal Assistance",
+            desc:"Optional paid service. We help prepare and submit an appeal; approval is not guaranteed and depends on official review." }
+        ],
+
+        faqKicker:"❓ FAQ",
+        faqTitle:"Frequently Asked Questions",
+        faqDesc:"Quick answers to the questions that most buyers ask before ordering.",
+        faq1:"How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.",
+        faq2:"Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.",
+        faq3:"How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.",
+        faq4:"Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.",
+        faq5:"Authenticator? — A private tool for Battle.net Authenticator. Use the Authenticator, paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify.",
+        btnStock:"View stock",
+        btnOrder:"Order via Discord",
+
+        contactKicker:"💬 CONTACT",
+        contactTitle:"Reach us",
+        contactDesc:"For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.",
+        btnContact:"Discord",
+        btnEmail:"Email",
+        footerNav: { home:"Home", services:"Services", contact:"Contact", privacy:"Privacy", terms:"Terms" },
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"All rights reserved — your reliable account supplier."
+      },
+
+      fr: {
+        metaTitle:"Roshine Account Store",
+        metaDesc:"Comptes Overwatch premium avec livraison sécurisée.",
+        nav: { home:"Accueil", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Contact" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Fiable depuis 2021",
+        heroTitle:"ROSHINE",
+        heroSubbrand:"Boutique de comptes Overwatch",
+        heroIntro:"Depuis 2021, Roshine Account Store propose des comptes Overwatch sélectionnés, avec un processus d’achat simple et un support durable. Cinq ans d’activité, axés sur la clarté, la stabilité et la confiance.",
+        ctaExplore:"Voir le stock & acheter",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Liste & Commande",
+        servicesDesc:"Consultez l’inventaire en temps réel sur Google Sheet, puis commandez via Discord en envoyant l’ID ou une capture.",
+        servicesList:[
+          "📄 Ouvrez la liste et filtrez (prix, rang, skins).",
+          "🧾 Copiez l’ID du compte (ou capturez la ligne).",
+          "💬 Rejoignez Discord et envoyez l’ID/la capture pour confirmer.",
+          "✅ Après paiement, recevez les accès et le pack de sécurité."
+        ],
+        btnListings:"Voir le stock (Google Sheet)",
+        btnDiscord:"Commander via Discord",
+
+        warrantyKicker:"🛡️ GARANTIE",
+        warrantyTitle:"Garantie & Sécurité",
+        warrantyDesc:"Périmètre clair, processus transparent, protection durable.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"PRIORITÉ", badgeType:"primary", title:"Garantie sécurité à vie",
+            desc:"En cas de récupération par l’ancien propriétaire, piratage ou perte permanente liée au précédent propriétaire : remplacement équivalent ou remboursement complet." },
+          { icon:"📂", badge:"PREUVE", badgeType:"primary", title:"Transfert vérifié",
+            desc:"Pack de sécurité (si applicable) : accès e-mail d’origine, Battle.net/Steam, assistance Authenticator, ID du compte et infos de récupération disponibles." },
+          { icon:"⚡", badge:"RAPIDE", badgeType:"primary", title:"Livraison rapide",
+            desc:"La plupart des comptes sont livrés sous 5 minutes après confirmation du paiement (comptes premium : préparation possible)." },
+          { icon:"♾️", badge:"GRATUIT", badgeType:"primary", title:"Support unlock illimité (OW2)",
+            desc:"Pour les comptes Overwatch 2 éligibles : assistance illimitée en cas de problème de déverrouillage." },
+          { icon:"🔄", badge:"PAYANT", badgeType:"paid", title:"Changement de région",
+            desc:"Service payant optionnel. Uniquement si la politique de la plateforme le permet." },
+          { icon:"🚫", badge:"PAYANT", badgeType:"paid", title:"Assistance appel de bannissement",
+            desc:"Service payant optionnel. Aide à la soumission d’appel, sans garantie d’acceptation (décision officielle)." }
+        ],
+
+        faqKicker:"❓ FAQ",
+        faqTitle:"Questions fréquentes",
+        faqDesc:"Réponses rapides avant de passer commande.",
+        faq1:"Mise à jour de la liste ? — Google Sheet fait foi, et les comptes vendus sont marqués rapidement.",
+        faq2:"Paiement ? — Carte, PayPal, crypto et certaines cartes cadeaux. Disponibilité/frais à confirmer sur Discord.",
+        faq3:"Délai de livraison ? — La plupart des commandes sont livrées sous 5 minutes après paiement. Les comptes haut de gamme peuvent nécessiter un délai supplémentaire.",
+        faq4:"Les comptes sont-ils sûrs ? — Tous les comptes proviennent de vrais joueurs, pas de scripts ou productions de masse. Historique normal, sans restriction.",
+        faq5:"Authenticator ? — Outil privé pour Battle.net Authenticator. Utilisez la page Authenticator, collez votre Private Key, puis copiez le code dans l’app Battle.net pour valider.",
+        btnStock:"Voir le stock",
+        btnOrder:"Commander via Discord",
+
+        contactKicker:"💬 CONTACT",
+        contactTitle:"Nous contacter",
+        contactDesc:"Le plus rapide : Discord (envoyez l’ID ou une capture). Sinon, vous pouvez aussi nous écrire par e-mail.",
+        btnContact:"Discord",
+        btnEmail:"Email",
+        footerNav: { home:"Accueil", services:"Services", contact:"Contact", privacy:"Confidentialité", terms:"Conditions" },
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"Tous droits réservés — votre fournisseur fiable."
+      },
+
+      de: {
+        metaTitle:"Roshine Account Store",
+        metaDesc:"Premium-Overwatch-Konten mit sicherer Übergabe.",
+        nav: { home:"Home", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Kontakt" },
+        auth:"Authenticator",
+        heroKicker:"⚡ Vertrauenswürdig seit 2021",
+        heroTitle:"ROSHINE",
+        heroSubbrand:"Overwatch Account Store",
+        heroIntro:"Seit 2021 liefert Roshine Account Store kuratierte Overwatch-Accounts mit einem klaren Kaufprozess und langfristigem Support. Fünf Jahre Betrieb – für Beständigkeit, Transparenz und Vertrauen.",
+        ctaExplore:"Bestand ansehen & kaufen",
+        servicesKicker:"✨ SERVICES",
+        servicesTitle:"Listings & Bestellung",
+        servicesDesc:"Inventar live im Google Sheet ansehen und dann per Discord bestellen (ID oder Screenshot senden).",
+        servicesList:[
+          "📄 Listings öffnen und nach Preis, Rang oder Skins filtern.",
+          "🧾 Account-ID kopieren (oder Zeile screenshotten).",
+          "💬 Discord beitreten und ID/Screenshot zur Bestätigung senden.",
+          "✅ Nach Zahlung: Login-Daten und Sicherheits-Übergabepaket erhalten."
+        ],
+        btnListings:"Bestand ansehen (Google Sheet)",
+        btnDiscord:"Über Discord bestellen",
+
+        warrantyKicker:"🛡️ GARANTIE",
+        warrantyTitle:"Garantie & Sicherheit",
+        warrantyDesc:"Klare Regeln, transparenter Ablauf, langfristiger Schutz.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"TOP", badgeType:"primary", title:"Lebenslange Sicherheitsgarantie",
+            desc:"Bei Rückforderung, Hack oder dauerhaftem Verlust durch Vorbesitzer-Themen: gleichwertiger Ersatz oder volle Rückerstattung." },
+          { icon:"📂", badge:"NACHWEIS", badgeType:"primary", title:"Verifizierte Übergabe",
+            desc:"Sicherheits-Paket (falls zutreffend): Original-E-Mail, Battle.net/Steam, Authenticator-Unterstützung, Account-ID und verfügbare Recovery-Daten." },
+          { icon:"⚡", badge:"SCHNELL", badgeType:"primary", title:"Schnelle Lieferung",
+            desc:"Meist innerhalb von 5 Minuten nach Zahlungsbestätigung (seltene High-Tier-Accounts können mehr Zeit brauchen)." },
+          { icon:"♾️", badge:"KOSTENLOS", badgeType:"primary", title:"Unbegrenzter Unlock-Support (OW2)",
+            desc:"Für berechtigte Overwatch-2-Accounts: unbegrenzte Hilfe bei Unlock-Problemen." },
+          { icon:"🔄", badge:"PAID", badgeType:"paid", title:"Regionsänderung",
+            desc:"Optionaler Paid-Service. Nur wenn es die Plattform-Richtlinien zulassen." },
+          { icon:"🚫", badge:"PAID", badgeType:"paid", title:"Unban-Einspruch Hilfe",
+            desc:"Optionaler Paid-Service. Wir helfen beim Einreichen – keine Erfolgsgarantie (offizielle Entscheidung)." }
+        ],
+
+        faqKicker:"❓ FAQ",
+        faqTitle:"Häufige Fragen",
+        faqDesc:"Kurzantworten für den schnellen Kaufentscheid.",
+        faq1:"Wie oft wird aktualisiert? — Google Sheet ist maßgeblich, verkaufte Accounts werden schnell markiert.",
+        faq2:"Zahlung? — Karte, PayPal, Krypto und ausgewählte Geschenkkarten. Verfügbarkeit/Gebühren auf Discord bestätigen.",
+        faq3:"Wie schnell erfolgt die Lieferung? — Die meisten Bestellungen werden innerhalb von 5 Minuten nach Zahlung geliefert. Seltene High-Tier-Accounts können etwas mehr Zeit benötigen.",
+        faq4:"Sind die Accounts sicher? — Alle Accounts stammen von echten Spielern, nicht aus Script- oder Massenproduktion. Normale Nutzungshistorie, keine Einschränkungen.",
+        faq5:"Authenticator? — Privates Tool für Battle.net Authenticator. Öffne die Authenticator-Seite, füge den Private Key ein und kopiere den Code in die Battle.net App zur Verifizierung.",
+        btnStock:"Bestand ansehen",
+        btnOrder:"Über Discord bestellen",
+
+        contactKicker:"💬 KONTAKT",
+        contactTitle:"Kontakt",
+        contactDesc:"Am schnellsten über Discord (ID oder Screenshot senden). Alternativ per E-Mail erreichbar.",
+        btnContact:"Discord",
+        btnEmail:"Email",
+        footerNav: { home:"Home", services:"Services", contact:"Kontakt", privacy:"Datenschutz", terms:"AGB" },
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
+      },
+
+      ar: {
+        metaTitle:"Roshine Account Store",
+        metaDesc:"حسابات أوفرواتش مميزة مع تسليم آمن.",
+        nav: { home:"الرئيسية", services:"الخدمات", warranty:"الضمان", faq:"الأسئلة", contact:"تواصل" },
+        auth:"Authenticator",
+        heroKicker:"⚡ موثوق منذ 2021",
+        heroTitle:"ROSHINE",
+        heroSubbrand:"متجر حسابات Overwatch",
+        heroIntro:"منذ 2021 يقدّم Roshine Account Store حسابات Overwatch مختارة بعناية مع خطوات شراء واضحة ودعم طويل المدى. خمس سنوات تشغيل مبنية على الثبات والوضوح والثقة.",
+        ctaExplore:"عرض المخزون والشراء",
+        servicesKicker:"✨ الخدمات",
+        servicesTitle:"القائمة والطلب",
+        servicesDesc:"تصفّح المخزون المباشر في Google Sheet ثم اطلب عبر Discord بإرسال ID أو لقطة شاشة.",
+        servicesList:[
+          "📄 افتح القائمة وفلتر حسب السعر/الرتبة/الهيئات.",
+          "🧾 انسخ ID الحساب (أو التقط لقطة للصف).",
+          "💬 انضم إلى Discord وأرسل ID/اللقطة للتأكيد.",
+          "✅ بعد الدفع: استلام بيانات الدخول وحزمة التسليم الأمني."
+        ],
+        btnListings:"عرض المخزون (Google Sheet)",
+        btnDiscord:"اطلب عبر Discord",
+
+        warrantyKicker:"🛡️ الضمان",
+        warrantyTitle:"الضمان والأمان",
+        warrantyDesc:"نطاق واضح، عملية شفافة، حماية طويلة المدى.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"أساسي", badgeType:"primary", title:"ضمان أمني مدى الحياة",
+            desc:"في حال الاسترجاع من المالك السابق أو الاختراق أو الفقدان الدائم بسبب مشاكل المالك السابق: استبدال بقيمة مماثلة أو تعويض كامل." },
+          { icon:"📂", badge:"إثبات", badgeType:"primary", title:"تسليم موثّق",
+            desc:"حزمة أمان (حسب توفرها): وصول البريد الأصلي، Battle.net / Steam، دعم نقل Authenticator، رقم الحساب ومعلومات الاسترداد المتاحة." },
+          { icon:"⚡", badge:"سريع", badgeType:"primary", title:"تسليم سريع",
+            desc:"يتم تسليم معظم الطلبات خلال 5 دقائق بعد تأكيد الدفع (قد تتطلب الحسابات المميزة وقتاً إضافياً)." },
+          { icon:"♾️", badge:"مجاني", badgeType:"primary", title:"دعم Unlock مجاني غير محدود (OW2)",
+            desc:"للحسابات المؤهلة في Overwatch 2: مساعدة غير محدودة في مشاكل الفتح." },
+          { icon:"🔄", badge:"مدفوع", badgeType:"paid", title:"خدمة تغيير المنطقة",
+            desc:"خدمة مدفوعة اختيارياً. يتم التنفيذ فقط وفق سياسة المنصة." },
+          { icon:"🚫", badge:"مدفوع", badgeType:"paid", title:"مساعدة استئناف الحظر",
+            desc:"خدمة مدفوعة اختيارياً. نساعد في إعداد وتقديم الاستئناف دون ضمان القبول (قرار رسمي)." }
+        ],
+
+        faqKicker:"❓ الأسئلة",
+        faqTitle:"الأسئلة الشائعة",
+        faqDesc:"إجابات سريعة قبل الطلب.",
+        faq1:"كم يتم التحديث؟ — Google Sheet هو المرجع ويتم تمييز الحسابات المباعة بسرعة.",
+        faq2:"طرق الدفع؟ — بطاقة، PayPal، عملات رقمية وبعض بطاقات الهدايا. التأكيد على Discord.",
+        faq3:"ما سرعة التسليم؟ — يتم تسليم معظم الطلبات خلال 5 دقائق بعد الدفع. قد تتطلب الحسابات المميزة وقتًا إضافيًا للتحضير.",
+        faq4:"هل الحسابات آمنة؟ — جميع الحسابات من لاعبين حقيقيين، وليست ناتجة عن سكربتات أو إنتاج جماعي. سجل استخدام طبيعي بدون قيود.",
+        faq5:"Authenticator؟ — أداة خاصة لـ Battle.net Authenticator. استخدم صفحة Authenticator، ألصق Private Key ثم انسخ الرمز إلى تطبيق Battle.net للتحقق.",
+        btnStock:"عرض المخزون",
+        btnOrder:"اطلب عبر Discord",
+
+        contactKicker:"💬 تواصل",
+        contactTitle:"تواصل معنا",
+        contactDesc:"للرد الأسرع: Discord (أرسل ID أو لقطة). ويمكنك أيضًا مراسلتنا عبر البريد الإلكتروني.",
+        btnContact:"Discord",
+        btnEmail:"Email",
+        footerNav: { home:"الرئيسية", services:"الخدمات", contact:"تواصل", privacy:"الخصوصية", terms:"الشروط" },
+
+        footer1:"© 2021–2026 Roshine Account Store.",
+        footer2:"جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
+      },
+
+      zh: {
+        metaTitle:"Roshine 账号商店",
+        metaDesc:"高质量守望先锋账号，安全交付。",
+        nav: { home:"主页", services:"服务", warranty:"质保", faq:"FAQ", contact:"联系" },
+        auth:"Authenticator",
+        heroKicker:"⚡ 自 2021 年稳定运营",
+        heroTitle:"ROSHINE",
+        heroSubbrand:"守望先锋账号商店",
+        heroIntro:"Roshine Account Store 自 2021 年起持续提供精选 Overwatch 账号，流程清晰、交付稳定、支持长期售后。已稳定运行 5 年，专注于可靠性与买家信心。",
+        ctaExplore:"查看库存并购买",
+        servicesKicker:"✨ 服务",
+        servicesTitle:"库存与下单",
+        servicesDesc:"Google Sheet 实时展示库存；通过 Discord 发送账号 ID 或截图即可确认并购买。",
+        servicesList:[
+          "📄 打开列表，按价格/段位/皮肤筛选。",
+          "🧾 复制账号 ID（或截图对应行）。",
+          "💬 加入 Discord 发送 ID/截图，确认库存与总价。",
+          "✅ 付款后交付登录信息与安全资料包。"
+        ],
+        btnListings:"查看库存（Google Sheet）",
+        btnDiscord:"通过 Discord 下单",
+
+        warrantyKicker:"🛡️ 质保",
+        warrantyTitle:"质保与安全",
+        warrantyDesc:"范围明确、流程透明、长期保障更可控。",
+        warrantyCards:[
+          { icon:"🛡️", badge:"核心", badgeType:"primary", title:"终身安全质保",
+            desc:"若因原持有人找回/被盗/永久丢失等安全问题导致账号失效：提供等值替换或全额补偿。" },
+          { icon:"📂", badge:"凭证", badgeType:"primary", title:"完整资料交接",
+            desc:"安全资料包（按实际情况）：原邮箱权限、Battle.net / Steam、令牌转移协助、账号 ID 及可用恢复资料。" },
+          { icon:"⚡", badge:"极速", badgeType:"primary", title:"极速交付",
+            desc:"多数订单在确认付款后 5 分钟内完成交付（少数顶级账号可能需要额外整理时间）。" },
+          { icon:"♾️", badge:"免费", badgeType:"primary", title:"OW2 免费解锁支持（不限次）",
+            desc:"仅适用于守望先锋 2 账号：如出现解锁相关问题，提供不限次数协助。" },
+          { icon:"🔄", badge:"付费", badgeType:"paid", title:"区服变更服务",
+            desc:"可选付费服务。仅在平台政策允许范围内协助区服调整。" },
+          { icon:"🚫", badge:"付费", badgeType:"paid", title:"解封申诉协助",
+            desc:"可选付费服务。协助整理并提交申诉材料；最终结果以官方审核为准（不保证通过）。" }
+        ],
+
+        faqKicker:"❓ FAQ",
+        faqTitle:"常见问题",
+        faqDesc:"下单前最常问的几个点，直接看这里。",
+        faq1:"列表多久更新？— 以 Google Sheet 为准，售出会尽快标记。",
+        faq2:"支持什么支付方式？— 信用卡、PayPal、虚拟货币及部分礼品卡；可用性与手续费请 Discord 确认。",
+        faq3:"多久交付？— 大部分订单在付款后 5 分钟内完成交付；少数顶级账号可能需要额外整理时间。",
+        faq4:"账号是否安全？— 所有账号均来自真实玩家，并非脚本或工作室批量生产；均为正常使用记录，无任何限制。",
+        faq5:"Authenticator 是什么？— 这是 Battle.net Authenticator 的私人工具。打开 Authenticator 页面，粘贴你收到的账号信息中的 Private Key，然后把验证码复制到 Battle.net App 完成验证。",
+        btnStock:"查看库存",
+        btnOrder:"Discord 下单",
+
+        contactKicker:"💬 联系",
+        contactTitle:"联系我们",
+        contactDesc:"最快方式：Discord（发送账号 ID 或截图）。也可随时通过邮箱联系我们。",
+        btnContact:"Discord",
+        btnEmail:"Email",
+        footerNav: { home:"主页", services:"服务", contact:"联系", privacy:"隐私", terms:"条款" },
+
+        footer1:"© 2021–2026 Roshine Account Store。",
+        footer2:"All rights reserved — your reliable account supplier."
+      }
+    };
+
+    function detectLang(){
+      const urlLang = new URLSearchParams(window.location.search).get("lang");
+      if (urlLang && i18n[urlLang]) return urlLang;
+
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && i18n[saved]) return saved;
+
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("zh")) return "zh";
+      if (nav.startsWith("fr")) return "fr";
+      if (nav.startsWith("de")) return "de";
+      if (nav.startsWith("ar")) return "ar";
+      return "en";
+    }
+
+    function setList(elId, items){
+      const el = document.getElementById(elId);
+      el.innerHTML = "";
+      items.forEach(txt=>{
+        const li = document.createElement("li");
+        li.textContent = txt;
+        el.appendChild(li);
+      });
+    }
+
+    function setWarrantyCards(cards){
+      const grid = document.getElementById("warrantyGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      cards.forEach(c=>{
+        const card = document.createElement("div");
+        card.className = "wcard";
+
+        const top = document.createElement("div");
+        top.className = "wtop";
+
+        const titleWrap = document.createElement("div");
+        titleWrap.className = "wtitle";
+
+        const icon = document.createElement("span");
+        icon.className = "wicon";
+        icon.textContent = c.icon || "🛡️";
+
+        const title = document.createElement("span");
+        title.textContent = c.title || "";
+
+        titleWrap.appendChild(icon);
+        titleWrap.appendChild(title);
+
+        const badge = document.createElement("span");
+        badge.className = "wbadge" + (c.badgeType === "paid" ? " paid" : " primary");
+        badge.textContent = c.badge || "";
+
+        top.appendChild(titleWrap);
+        top.appendChild(badge);
+
+        const desc = document.createElement("p");
+        desc.className = "wdesc";
+        desc.textContent = c.desc || "";
+
+        card.appendChild(top);
+        card.appendChild(desc);
+        grid.appendChild(card);
+      });
+    }
+
+    function applyLang(lang){
+      if (!i18n[lang]) lang = "en";
+      const t = i18n[lang];
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+
+      // SEO/meta
+      if (t.metaTitle) document.title = t.metaTitle;
+      const md = document.querySelector('meta[name="description"]');
+      if (md && t.metaDesc) md.setAttribute("content", t.metaDesc);
+
+      const sel = document.getElementById("langSelect");
+      if (sel) sel.value = lang;
+
+      document.getElementById("navHome").textContent = t.nav.home;
+      document.getElementById("navServices").textContent = t.nav.services;
+      document.getElementById("navWarranty").textContent = t.nav.warranty;
+      document.getElementById("navFaq").textContent = t.nav.faq;
+      document.getElementById("navContact").textContent = t.nav.contact;
+
+      document.getElementById("authBtnText").textContent = t.auth;
+
+      document.getElementById("heroKicker").textContent = t.heroKicker;
+      document.getElementById("heroTitle").textContent = t.heroTitle;
+      document.getElementById("heroSubbrand").textContent = t.heroSubbrand || "Overwatch Account Store";
+      document.getElementById("heroIntro").textContent = t.heroIntro;
+      document.getElementById("ctaExplore").textContent = t.ctaExplore;
+
+      document.getElementById("servicesKicker").textContent = t.servicesKicker;
+      document.getElementById("servicesTitle").textContent = t.servicesTitle;
+      document.getElementById("servicesDesc").textContent = t.servicesDesc;
+      setList("servicesList", t.servicesList);
+      document.getElementById("btnListings").textContent = t.btnListings;
+      document.getElementById("btnDiscord").textContent = t.btnDiscord;
+
+      document.getElementById("warrantyKicker").textContent = t.warrantyKicker;
+      document.getElementById("warrantyTitle").textContent = t.warrantyTitle;
+      document.getElementById("warrantyDesc").textContent = t.warrantyDesc;
+      setWarrantyCards(t.warrantyCards || []);
+
+      document.getElementById("faqKicker").textContent = t.faqKicker;
+      document.getElementById("faqTitle").textContent = t.faqTitle;
+      document.getElementById("faqDesc").textContent = t.faqDesc;
+
+      document.getElementById("faq1").textContent = t.faq1;
+      document.getElementById("faq2").textContent = t.faq2;
+      document.getElementById("faq3").textContent = t.faq3;
+      document.getElementById("faq4").textContent = t.faq4;
+
+      const faq5 = document.getElementById("faq5");
+      faq5.textContent = "";
+      if (lang === "en"){
+        faq5.appendChild(document.createTextNode("Authenticator? — A private tool for Battle.net Authenticator. Use the "));
+        const a = document.createElement("a");
+        a.href = LINKS.auth;
+        a.id = "faqAuthLink";
+        a.style.fontWeight = "800";
+        a.style.color = "rgba(231,239,255,.92)";
+        a.style.borderBottom = "1px solid rgba(41,182,255,.28)";
+        a.style.paddingBottom = "1px";
+        a.textContent = "Authenticator";
+        faq5.appendChild(a);
+        faq5.appendChild(document.createTextNode(", paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify."));
+      } else {
+        faq5.textContent = t.faq5;
+      }
+
+      document.getElementById("contactKicker").textContent = t.contactKicker;
+      document.getElementById("contactTitle").textContent = t.contactTitle;
+      document.getElementById("contactDesc").textContent = t.contactDesc;
+      document.getElementById("btnContact").textContent = t.btnContact;
+      document.getElementById("btnEmail").textContent = t.btnEmail;
+
+      document.getElementById("footerLine1").textContent = t.footer1;
+      document.getElementById("footerLine2").textContent = t.footer2;
+
+      if (t.footerNav){
+        document.getElementById("footHome").textContent = t.footerNav.home;
+        document.getElementById("footServices").textContent = t.footerNav.services;
+        document.getElementById("footContact").textContent = t.footerNav.contact;
+        document.getElementById("footPrivacy").textContent = t.footerNav.privacy;
+        document.getElementById("footTerms").textContent = t.footerNav.terms;
+      }
+
+      document.getElementById("btnListings").href = LINKS.sheet;
+      document.getElementById("btnDiscord").href = LINKS.discord;
+      document.getElementById("btnContact").href = LINKS.discord;
+      document.getElementById("btnEmail").href = LINKS.email;
+      document.getElementById("authBtn").href = LINKS.auth;
+    }
+
+    applyLang(detectLang());
+    document.getElementById("langSelect").addEventListener("change", (e)=>{
+      const lang = e.target.value;
+      applyLang(lang);
+      localStorage.setItem(LANG_KEY, lang);
+    });
+  </script>
+</body>
+</html>
