@@ -1,79 +1,55 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Authenticator — Roshine Account Store</title>
-  <link rel="icon" href="/assets/logo.png" />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="./assets/base.css" />
-  <link rel="stylesheet" href="./assets/auth.css" />
-
-  <!-- Scripts -->
-  <script src="./assets/i18n-auth.js" defer></script>
-  <script src="./assets/auth.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authenticator — Roshine Account Store</title>
+<link rel="icon" href="/assets/logo.png">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/auth.css">
+<script src="/assets/i18n-auth.js" defer></script>
+<script src="/assets/auth.js" defer></script>
 </head>
 
 <body>
-  <div class="bgfx" aria-hidden="true"></div>
+<div class="bgfx" aria-hidden="true"></div>
 
-  <div class="top">
-    <div class="topbar">
-      <div class="brand">
-        <img src="/assets/logo.png" alt="Logo">
-        <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+<div class="top">
+  <div class="topbar">
+    <div class="brand">
+      <img src="/assets/logo.png" alt="Logo">
+      <div class="name">ROSHINE ACCOUNT STORE.</div>
+    </div>
+
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/auth/">Authenticator</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="page">
+    <div class="panel">
+      <div class="panel-title">Authenticator</div>
+      <div id="code" class="code">--------</div>
+      <div id="remain" class="hint"></div>
+      <div class="barwrap"><div id="bar" class="bar"></div></div>
+
+      <div class="field-label">Private Key</div>
+      <input id="secret" class="neon-border" placeholder="Private Key">
+
+      <div class="row">
+        <button id="copy" class="primary neon-border" type="button">Copy Code</button>
+        <button id="clear" class="neon-border" type="button">Clear Key</button>
       </div>
 
-      <nav class="nav" aria-label="Primary">
-        <a href="/#home" id="navHome">Home</a>
-        <a href="/#services" id="navServices">Services</a>
-        <a href="/#warranty" id="navWarranty">Warranty</a>
-        <a href="/#faq" id="navFaq">FAQ</a>
-        <a href="/#contact" id="navContact">Contact</a>
-      </nav>
-
-      <div class="right">
-        <select class="pill neon-border" id="langSelect" title="Language" aria-label="Language">
-          <option value="en">EN</option>
-          <option value="fr">FR</option>
-          <option value="de">DE</option>
-          <option value="ar">AR</option>
-          <option value="zh">中文</option>
-        </select>
-
-        <a class="pill neon-border" href="/" id="backBtn" aria-label="Back">
-          <span id="backBtnText">Back</span>
-        </a>
-      </div>
+      <div id="status" class="status"></div>
+      <div id="footer" class="foot"></div>
     </div>
   </div>
-
-  <main class="wrap">
-    <div class="page">
-      <div class="panel" role="region" aria-label="Authenticator panel">
-        <div class="panel-top">
-          <div class="panel-title">
-            <span id="panelTitleText">Authenticator</span>
-          </div>
-        </div>
-
-        <div class="code" id="code">--------</div>
-        <div class="hint" id="remain"></div>
-        <div class="barwrap"><div class="bar" id="bar"></div></div>
-
-        <div class="field-label" id="secretLabel">Please enter your Private Key</div>
-        <input id="secret" class="neon-border" placeholder="Private Key" autocomplete="off" spellcheck="false" />
-
-        <div class="row">
-          <button class="primary neon-border" id="copy" type="button">Copy Code</button>
-          <button class="neon-border" id="clear" type="button">Clear Key</button>
-        </div>
-
-        <div class="status" id="status"></div>
-        <div class="foot" id="footer"></div>
-      </div>
-    </div>
-  </main>
+</main>
 </body>
 </html>
