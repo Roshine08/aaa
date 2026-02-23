@@ -82,7 +82,7 @@
         radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
       background-size: 58px 58px, 58px 58px, auto, auto;
       mix-blend-mode: screen;
-      opacity:.26; /* 桌面端更“强”一点 */
+      opacity:.26;
       animation: griddrift 14s linear infinite;
       will-change: background-position;
       transform: translate3d(0,0,0);
@@ -361,7 +361,6 @@
         0 20px 60px rgba(0,0,0,.55),
         0 0 18px rgba(41,182,255,.10);
 
-      /* HUD lines */
       position:relative;
       display:inline-flex;
       align-items:center;
@@ -410,9 +409,7 @@
       gap:10px;
     }
 
-    /* ===== Primary button: 电竞层级更明显（conic 内光 + 更硬的霓虹描边） ===== */
     .btn.primary{
-      /* conic 内光（不占用伪元素，避免和 neon-border 冲突） */
       background:
         conic-gradient(
           from 210deg,
@@ -458,7 +455,6 @@
         0 0 38px rgba(183,124,255,.16);
     }
 
-    /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
     .btn.primary.neon-border::after{
       opacity:.35;
       background: linear-gradient(120deg,
@@ -471,12 +467,8 @@
     }
     .btn.primary.neon-border:hover::after{ opacity:1; }
 
-    /* =========================
-       ✅ 修改点：去掉圆圈 + 放大向下箭头
-       ========================= */
     .scrollhint{
       margin: 26px auto 0;
-      /* 去除圆圈：不再固定宽高，不要背景/边框/圆角/阴影/毛玻璃 */
       width: auto;
       height: auto;
       border: 0;
@@ -486,9 +478,8 @@
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
 
-      /* 放大指示符号 */
       display: inline-block;
-      font-size: 34px;         /* 你要更大可以改 38/42 */
+      font-size: 34px;
       line-height: 1;
       font-weight: 900;
       letter-spacing: 0;
@@ -506,7 +497,7 @@
     }
     @keyframes bob{
       0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(8px); } /* 稍微更明显一点 */
+      50%{ transform: translateY(8px); }
     }
 
     /* ===== Sections ===== */
@@ -602,6 +593,122 @@
       z-index:1;
     }
 
+    /* ===== Warranty: high-conversion cards ===== */
+    .warranty-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top: 2px;
+    }
+    .wcard{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.02) inset,
+        0 16px 42px rgba(0,0,0,.44);
+      padding: 14px 14px 12px;
+      overflow:hidden;
+      position:relative;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform .15s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .wcard::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      padding:1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.60), rgba(183,124,255,.55), rgba(51,255,204,.40), rgba(41,182,255,.0));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+    }
+    .wcard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 22px 56px rgba(0,0,0,.58),
+        0 0 34px rgba(41,182,255,.12);
+    }
+    .wcard:hover::after{ opacity:.9; }
+
+    .wtop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .wtitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color: rgba(231,239,255,.92);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+    .wicon{
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      flex: 0 0 auto;
+      font-size: 16px;
+    }
+    .wdesc{
+      margin:0;
+      color: rgba(154,168,198,.92);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .wbadge{
+      flex:0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 10px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(231,239,255,.86);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      white-space: nowrap;
+    }
+    .wbadge.primary{
+      border-color: rgba(41,182,255,.26);
+      background: rgba(41,182,255,.10);
+    }
+    .wbadge.paid{
+      border-color: rgba(183,124,255,.25);
+      background: rgba(183,124,255,.10);
+    }
+
+    @media (max-width: 980px){
+      .warranty-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px){
+      .warranty-grid{ grid-template-columns: 1fr; }
+    }
+
     /* footer */
     .footer{
       margin-top: 86px;
@@ -670,7 +777,6 @@
       .nav a{ padding:10px 8px; }
     }
 
-    /* ✅ 要求 1：移动端降低网格层 opacity，防止掉帧 */
     @media (max-width: 760px){
       .bgfx::after{ opacity:.12; }
 
@@ -701,17 +807,13 @@
       section{ padding-top: 68px; }
       .glass-block{ padding:18px 16px; }
 
-      /* HUD lines shorter on small screens */
       .hero-subbrand::before,
       .hero-subbrand::after{
         width:34px;
         opacity:.75;
       }
 
-      /* 移动端也让箭头显眼一点（可选） */
-      .scrollhint{
-        font-size: 36px;
-      }
+      .scrollhint{ font-size: 36px; }
     }
 
     @media (max-width: 380px){
@@ -719,14 +821,12 @@
       .pill{ padding:0 12px; }
     }
 
-    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
     @media (prefers-reduced-motion: reduce){
       .bgfx::before, .bgfx::after{ animation:none !important; }
       .scrollhint{ animation:none !important; }
       body::before{ opacity:.03; }
     }
 
-    /* ✅ 全站字体强制 Helvetica（覆盖你原来所有 Orbitron/Inter 的局部规则） */
     body, button, input, select, textarea,
     .brand .name, .nav a, .pill, .kicker, .title,
     .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
@@ -736,143 +836,150 @@
 </head>
 <body>
 <div aria-hidden="true" class="bgfx"></div>
+
 <!-- Sticky Top -->
 <div class="top" id="home">
-<div aria-label="Top navigation" class="topbar" role="navigation">
-<div aria-label="Brand" class="brand">
-<img alt="Logo" src="/assets/logo.png"/>
-<div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+  <div aria-label="Top navigation" class="topbar" role="navigation">
+    <div aria-label="Brand" class="brand">
+      <img alt="Logo" src="/assets/logo.png"/>
+      <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+    </div>
+    <nav aria-label="Primary" class="nav">
+      <a href="https://roshine.love/" id="navHome">Home</a>
+      <a href="#services" id="navServices">Services</a>
+      <a href="#warranty" id="navWarranty">Warranty</a>
+      <a href="#faq" id="navFaq">FAQ</a>
+      <a href="#contact" id="navContact">Contact</a>
+    </nav>
+    <div class="right">
+      <select aria-label="Language" class="pill neon-border" id="langSelect" title="Language">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="ar">AR</option>
+        <option value="zh">中文</option>
+      </select>
+      <a aria-label="Authenticator" class="pill neon-border auth-pill" href="/auth/" id="authBtn">
+        <span id="authBtnText">Authenticator</span>
+      </a>
+    </div>
+  </div>
 </div>
-<nav aria-label="Primary" class="nav">
-<a href="https://roshine.love/" id="navHome">Home</a>
-<a href="#services" id="navServices">Services</a>
-<a href="#warranty" id="navWarranty">Warranty</a>
-<a href="#faq" id="navFaq">FAQ</a>
-<a href="#contact" id="navContact">Contact</a>
-</nav>
-<div class="right">
-<select aria-label="Language" class="pill neon-border" id="langSelect" title="Language">
-<option value="en">EN</option>
-<option value="fr">FR</option>
-<option value="de">DE</option>
-<option value="ar">AR</option>
-<option value="zh">中文</option>
-</select>
-<a aria-label="Authenticator" class="pill neon-border auth-pill" href="/auth/" id="authBtn">
-<span id="authBtnText">Authenticator</span>
-</a>
-</div>
-</div>
-</div>
+
 <main class="wrap">
-<!-- Fullscreen Hero -->
-<div class="hero">
-<div class="hero-inner">
-<div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
-<h1 class="title" id="heroTitle">ROSHINE</h1>
-<div class="hero-subbrand" id="heroSubbrand">Overwatch Account Store</div>
-<p class="subline" id="heroIntro">
-          Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
-          Five years in operation, built for consistency, clarity, and buyer confidence.
-        </p>
-<div class="cta" id="heroCta">
-<a class="btn primary neon-border" href="#services" id="ctaExplore">View Stock &amp; Purchase</a>
-</div>
-<div aria-hidden="true" class="scrollhint">⌄</div>
-</div>
-</div>
-<!-- Services -->
-<section id="services">
-<div class="section-head">
-<div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
-<h2 class="section-title" id="servicesTitle">Listings &amp; Ordering</h2>
-<p class="section-desc" id="servicesDesc">
-          Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
-        </p>
-</div>
-<div class="glass-block">
-<ol class="list" id="servicesList">
-<li>📄 Open the listings and filter by price, rank, or skins.</li>
-<li>🧾 Copy the account ID (or screenshot the row you want).</li>
-<li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
-<li>✅ After payment, receive login info and the security handover package.</li>
-</ol>
-<div class="section-actions">
-<a class="btn primary neon-border" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105" id="btnListings" rel="noopener" target="_blank">
-            View stock (Google Sheet)
-          </a>
-<a class="btn neon-border" href="https://discord.gg/35GGuJwjVu" id="btnDiscord" rel="noopener" target="_blank">
-            Order via Discord
-          </a>
-</div>
-</div>
-</section>
-<!-- Warranty -->
-<section id="warranty">
-<div class="section-head">
-<div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
-<h2 class="section-title" id="warrantyTitle">Warranty &amp; Security</h2>
-<p class="section-desc" id="warrantyDesc">
-          Designed to reduce long-term risk and keep your purchase protected.
-        </p>
-</div>
-<div class="glass-block">
-<ul class="list" id="warrantyList">
-<li>🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.</li>
-<li>📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net &amp; Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more.</li>
-</ul>
-</div>
-</section>
-<!-- FAQ -->
-<section id="faq">
-<div class="section-head">
-<div class="section-kicker" id="faqKicker">❓ FAQ</div>
-<h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
-<p class="section-desc" id="faqDesc">
-          Quick answers to the questions that most buyers ask before ordering.
-        </p>
-</div>
-<div class="glass-block">
-<ol class="list" id="faqList">
-<li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
-<li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
-<li id="faq3">How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.</li>
-<li id="faq4">Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.</li>
-<li id="faq5"></li>
-</ol>
-</div>
-</section>
-<!-- Contact -->
-<section id="contact">
-<div class="section-head">
-<div class="section-kicker" id="contactKicker">💬 CONTACT</div>
-<h2 class="section-title" id="contactTitle">Reach us</h2>
-<p class="section-desc" id="contactDesc">
-          For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
-        </p>
-</div>
-<div class="section-actions" style="margin-top:16px;">
-<a class="btn primary neon-border" href="https://discord.gg/35GGuJwjVu" id="btnContact" rel="noopener" target="_blank">
-          Discord
+
+  <!-- Fullscreen Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
+      <h1 class="title" id="heroTitle">ROSHINE</h1>
+      <div class="hero-subbrand" id="heroSubbrand">Overwatch Account Store</div>
+      <p class="subline" id="heroIntro">
+        Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
+        Five years in operation, built for consistency, clarity, and buyer confidence.
+      </p>
+      <div class="cta" id="heroCta">
+        <a class="btn primary neon-border" href="#services" id="ctaExplore">View Stock &amp; Purchase</a>
+      </div>
+      <div aria-hidden="true" class="scrollhint">⌄</div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="section-head">
+      <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
+      <h2 class="section-title" id="servicesTitle">Listings &amp; Ordering</h2>
+      <p class="section-desc" id="servicesDesc">
+        Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
+      </p>
+    </div>
+    <div class="glass-block">
+      <ol class="list" id="servicesList">
+        <li>📄 Open the listings and filter by price, rank, or skins.</li>
+        <li>🧾 Copy the account ID (or screenshot the row you want).</li>
+        <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
+        <li>✅ After payment, receive login info and the security handover package.</li>
+      </ol>
+      <div class="section-actions">
+        <a class="btn primary neon-border" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105" id="btnListings" rel="noopener" target="_blank">
+          View stock (Google Sheet)
         </a>
-<a class="btn neon-border" href="mailto:roshine_store@roshine.love" id="btnEmail">
-          Email
+        <a class="btn neon-border" href="https://discord.gg/35GGuJwjVu" id="btnDiscord" rel="noopener" target="_blank">
+          Order via Discord
         </a>
-</div>
-</section>
-<!-- Footer -->
-<footer aria-label="Footer" class="footer">
-<div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
-<div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
-<nav aria-label="Footer navigation" class="footnav">
-<a href="https://roshine.love/" id="footHome">Home</a>
-<a href="#services" id="footServices">Services</a>
-<a href="#contact" id="footContact">Contact</a>
-<a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
-<a href="https://roshine.love/terms" id="footTerms">Terms</a>
-</nav>
-</footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warranty -->
+  <section id="warranty">
+    <div class="section-head">
+      <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
+      <h2 class="section-title" id="warrantyTitle">Warranty &amp; Security</h2>
+      <p class="section-desc" id="warrantyDesc">
+        Clear scope, transparent process, long-term protection.
+      </p>
+    </div>
+    <div class="glass-block">
+      <div class="warranty-grid" id="warrantyGrid"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-head">
+      <div class="section-kicker" id="faqKicker">❓ FAQ</div>
+      <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
+      <p class="section-desc" id="faqDesc">
+        Quick answers to the questions that most buyers ask before ordering.
+      </p>
+    </div>
+    <div class="glass-block">
+      <ol class="list" id="faqList">
+        <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
+        <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
+        <li id="faq3">How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.</li>
+        <li id="faq4">Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.</li>
+        <li id="faq5"></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-head">
+      <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
+      <h2 class="section-title" id="contactTitle">Reach us</h2>
+      <p class="section-desc" id="contactDesc">
+        For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
+      </p>
+    </div>
+    <div class="section-actions" style="margin-top:16px;">
+      <a class="btn primary neon-border" href="https://discord.gg/35GGuJwjVu" id="btnContact" rel="noopener" target="_blank">
+        Discord
+      </a>
+      <a class="btn neon-border" href="mailto:roshine_store@roshine.love" id="btnEmail">
+        Email
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer aria-label="Footer" class="footer">
+    <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
+    <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
+    <nav aria-label="Footer navigation" class="footnav">
+      <a href="https://roshine.love/" id="footHome">Home</a>
+      <a href="#services" id="footServices">Services</a>
+      <a href="#contact" id="footContact">Contact</a>
+      <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
+      <a href="https://roshine.love/terms" id="footTerms">Terms</a>
+    </nav>
+  </footer>
+
 </main>
+
 <script>
     const LANG_KEY = "roshine_lang";
     const LINKS = {
@@ -907,10 +1014,20 @@
 
         warrantyKicker:"🛡️ WARRANTY",
         warrantyTitle:"Warranty & Security",
-        warrantyDesc:"Designed to reduce long-term risk and keep your purchase protected.",
-        warrantyList:[
-          "🛡️ Lifetime warranty for any security issue (hacked / stolen / reclaimed): full replacement or full compensation.",
-          "📦 After payment, you receive a security handover package (as applicable): Email access, Battle.net & Steam, Authenticator, Account ID, phone number, orders/receipts, creation details, address, and more."
+        warrantyDesc:"Clear scope, transparent process, long-term protection.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"PRIMARY", badgeType:"primary", title:"Lifetime Security Warranty",
+            desc:"If the account is reclaimed, hacked, or permanently lost due to previous owner issues, we provide a full replacement (equal value) or full compensation." },
+          { icon:"📂", badge:"PROOF", badgeType:"primary", title:"Verified Ownership Handover",
+            desc:"You receive the security handover package (as applicable): original email access, Battle.net/Steam, authenticator transfer support, account ID, and available recovery details." },
+          { icon:"⚡", badge:"FAST", badgeType:"primary", title:"Fast Delivery",
+            desc:"Most accounts are delivered within 5 minutes after confirmed payment (rare high-tier accounts may require extra preparation)." },
+          { icon:"♾️", badge:"FREE", badgeType:"primary", title:"Unlimited Free Unlock Support (OW2)",
+            desc:"If unlock-related issues occur on eligible Overwatch 2 accounts, we provide unlimited assistance." },
+          { icon:"🔄", badge:"PAID", badgeType:"paid", title:"Region Update Service",
+            desc:"Optional paid service. Region changes are handled only when supported by platform policy." },
+          { icon:"🚫", badge:"PAID", badgeType:"paid", title:"Unban Appeal Assistance",
+            desc:"Optional paid service. We help prepare and submit an appeal; approval is not guaranteed and depends on official review." }
         ],
 
         faqKicker:"❓ FAQ",
@@ -959,10 +1076,20 @@
 
         warrantyKicker:"🛡️ GARANTIE",
         warrantyTitle:"Garantie & Sécurité",
-        warrantyDesc:"Pensé pour limiter le risque et protéger votre achat sur le long terme.",
-        warrantyList:[
-          "🛡️ Garantie à vie pour tout problème de sécurité (piraté / volé / récupéré) : remplacement complet ou remboursement intégral.",
-          "📦 Après paiement : remise d’un pack de sécurité (si applicable) : accès e-mail, Battle.net & Steam, Authenticator, ID du compte, téléphone, reçus, détails de création, adresse, etc."
+        warrantyDesc:"Périmètre clair, processus transparent, protection durable.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"PRIORITÉ", badgeType:"primary", title:"Garantie sécurité à vie",
+            desc:"En cas de récupération par l’ancien propriétaire, piratage ou perte permanente liée au précédent propriétaire : remplacement équivalent ou remboursement complet." },
+          { icon:"📂", badge:"PREUVE", badgeType:"primary", title:"Transfert vérifié",
+            desc:"Pack de sécurité (si applicable) : accès e-mail d’origine, Battle.net/Steam, assistance Authenticator, ID du compte et infos de récupération disponibles." },
+          { icon:"⚡", badge:"RAPIDE", badgeType:"primary", title:"Livraison rapide",
+            desc:"La plupart des comptes sont livrés sous 5 minutes après confirmation du paiement (comptes premium : préparation possible)." },
+          { icon:"♾️", badge:"GRATUIT", badgeType:"primary", title:"Support unlock illimité (OW2)",
+            desc:"Pour les comptes Overwatch 2 éligibles : assistance illimitée en cas de problème de déverrouillage." },
+          { icon:"🔄", badge:"PAYANT", badgeType:"paid", title:"Changement de région",
+            desc:"Service payant optionnel. Uniquement si la politique de la plateforme le permet." },
+          { icon:"🚫", badge:"PAYANT", badgeType:"paid", title:"Assistance appel de bannissement",
+            desc:"Service payant optionnel. Aide à la soumission d’appel, sans garantie d’acceptation (décision officielle)." }
         ],
 
         faqKicker:"❓ FAQ",
@@ -1011,10 +1138,20 @@
 
         warrantyKicker:"🛡️ GARANTIE",
         warrantyTitle:"Garantie & Sicherheit",
-        warrantyDesc:"Konzipiert, um Risiken zu reduzieren und deinen Kauf zu schützen.",
-        warrantyList:[
-          "🛡️ Lebenslange Garantie bei Sicherheitsproblemen (gehackt / gestohlen / reclaimed): voller Ersatz oder volle Erstattung.",
-          "📦 Nach Zahlung erhältst du ein Sicherheits-Paket (falls zutreffend): E-Mail-Zugriff, Battle.net & Steam, Authenticator, Account-ID, Telefonnummer, Belege, Erstellungsdetails, Adresse u.v.m."
+        warrantyDesc:"Klare Regeln, transparenter Ablauf, langfristiger Schutz.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"TOP", badgeType:"primary", title:"Lebenslange Sicherheitsgarantie",
+            desc:"Bei Rückforderung, Hack oder dauerhaftem Verlust durch Vorbesitzer-Themen: gleichwertiger Ersatz oder volle Rückerstattung." },
+          { icon:"📂", badge:"NACHWEIS", badgeType:"primary", title:"Verifizierte Übergabe",
+            desc:"Sicherheits-Paket (falls zutreffend): Original-E-Mail, Battle.net/Steam, Authenticator-Unterstützung, Account-ID und verfügbare Recovery-Daten." },
+          { icon:"⚡", badge:"SCHNELL", badgeType:"primary", title:"Schnelle Lieferung",
+            desc:"Meist innerhalb von 5 Minuten nach Zahlungsbestätigung (seltene High-Tier-Accounts können mehr Zeit brauchen)." },
+          { icon:"♾️", badge:"KOSTENLOS", badgeType:"primary", title:"Unbegrenzter Unlock-Support (OW2)",
+            desc:"Für berechtigte Overwatch-2-Accounts: unbegrenzte Hilfe bei Unlock-Problemen." },
+          { icon:"🔄", badge:"PAID", badgeType:"paid", title:"Regionsänderung",
+            desc:"Optionaler Paid-Service. Nur wenn es die Plattform-Richtlinien zulassen." },
+          { icon:"🚫", badge:"PAID", badgeType:"paid", title:"Unban-Einspruch Hilfe",
+            desc:"Optionaler Paid-Service. Wir helfen beim Einreichen – keine Erfolgsgarantie (offizielle Entscheidung)." }
         ],
 
         faqKicker:"❓ FAQ",
@@ -1063,10 +1200,20 @@
 
         warrantyKicker:"🛡️ الضمان",
         warrantyTitle:"الضمان والأمان",
-        warrantyDesc:"مصمم لتقليل المخاطر وحماية عملية الشراء على المدى الطويل.",
-        warrantyList:[
-          "🛡️ ضمان مدى الحياة لأي مشكلة أمنية (اختراق / سرقة / reclaimed): استبدال كامل أو تعويض كامل.",
-          "📦 بعد الدفع: تستلم حزمة تسليم أمني (حسب الحساب): وصول البريد، Battle.net وSteam، Authenticator، ID الحساب، رقم الهاتف، الطلبات/الإيصالات، تفاصيل الإنشاء، العنوان والمزيد."
+        warrantyDesc:"نطاق واضح، عملية شفافة، حماية طويلة المدى.",
+        warrantyCards:[
+          { icon:"🛡️", badge:"أساسي", badgeType:"primary", title:"ضمان أمني مدى الحياة",
+            desc:"في حال الاسترجاع من المالك السابق أو الاختراق أو الفقدان الدائم بسبب مشاكل المالك السابق: استبدال بقيمة مماثلة أو تعويض كامل." },
+          { icon:"📂", badge:"إثبات", badgeType:"primary", title:"تسليم موثّق",
+            desc:"حزمة أمان (حسب توفرها): وصول البريد الأصلي، Battle.net / Steam، دعم نقل Authenticator، رقم الحساب ومعلومات الاسترداد المتاحة." },
+          { icon:"⚡", badge:"سريع", badgeType:"primary", title:"تسليم سريع",
+            desc:"يتم تسليم معظم الطلبات خلال 5 دقائق بعد تأكيد الدفع (قد تتطلب الحسابات المميزة وقتاً إضافياً)." },
+          { icon:"♾️", badge:"مجاني", badgeType:"primary", title:"دعم Unlock مجاني غير محدود (OW2)",
+            desc:"للحسابات المؤهلة في Overwatch 2: مساعدة غير محدودة في مشاكل الفتح." },
+          { icon:"🔄", badge:"مدفوع", badgeType:"paid", title:"خدمة تغيير المنطقة",
+            desc:"خدمة مدفوعة اختيارياً. يتم التنفيذ فقط وفق سياسة المنصة." },
+          { icon:"🚫", badge:"مدفوع", badgeType:"paid", title:"مساعدة استئناف الحظر",
+            desc:"خدمة مدفوعة اختيارياً. نساعد في إعداد وتقديم الاستئناف دون ضمان القبول (قرار رسمي)." }
         ],
 
         faqKicker:"❓ الأسئلة",
@@ -1115,10 +1262,20 @@
 
         warrantyKicker:"🛡️ 质保",
         warrantyTitle:"质保与安全",
-        warrantyDesc:"降低长期风险，让交易更可控。",
-        warrantyList:[
-          "🛡️ 终身安全质保：被盗 / 被黑 / 找回（reclaimed）→ 全额补偿或同等替换。",
-          "📦 付款后交付安全资料包（按账号实际情况）：邮箱权限、Battle.net & Steam、安全令、账号 ID、手机号、订单/收据、创建信息、地址等。"
+        warrantyDesc:"范围明确、流程透明、长期保障更可控。",
+        warrantyCards:[
+          { icon:"🛡️", badge:"核心", badgeType:"primary", title:"终身安全质保",
+            desc:"若因原持有人找回/被盗/永久丢失等安全问题导致账号失效：提供等值替换或全额补偿。" },
+          { icon:"📂", badge:"凭证", badgeType:"primary", title:"完整资料交接",
+            desc:"安全资料包（按实际情况）：原邮箱权限、Battle.net / Steam、令牌转移协助、账号 ID 及可用恢复资料。" },
+          { icon:"⚡", badge:"极速", badgeType:"primary", title:"极速交付",
+            desc:"多数订单在确认付款后 5 分钟内完成交付（少数顶级账号可能需要额外整理时间）。" },
+          { icon:"♾️", badge:"免费", badgeType:"primary", title:"OW2 免费解锁支持（不限次）",
+            desc:"仅适用于守望先锋 2 账号：如出现解锁相关问题，提供不限次数协助。" },
+          { icon:"🔄", badge:"付费", badgeType:"paid", title:"区服变更服务",
+            desc:"可选付费服务。仅在平台政策允许范围内协助区服调整。" },
+          { icon:"🚫", badge:"付费", badgeType:"paid", title:"解封申诉协助",
+            desc:"可选付费服务。协助整理并提交申诉材料；最终结果以官方审核为准（不保证通过）。" }
         ],
 
         faqKicker:"❓ FAQ",
@@ -1169,6 +1326,48 @@
       });
     }
 
+    function setWarrantyCards(cards){
+      const grid = document.getElementById("warrantyGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      cards.forEach(c=>{
+        const card = document.createElement("div");
+        card.className = "wcard";
+
+        const top = document.createElement("div");
+        top.className = "wtop";
+
+        const titleWrap = document.createElement("div");
+        titleWrap.className = "wtitle";
+
+        const icon = document.createElement("span");
+        icon.className = "wicon";
+        icon.textContent = c.icon || "🛡️";
+
+        const title = document.createElement("span");
+        title.textContent = c.title || "";
+
+        titleWrap.appendChild(icon);
+        titleWrap.appendChild(title);
+
+        const badge = document.createElement("span");
+        badge.className = "wbadge" + (c.badgeType === "paid" ? " paid" : " primary");
+        badge.textContent = c.badge || "";
+
+        top.appendChild(titleWrap);
+        top.appendChild(badge);
+
+        const desc = document.createElement("p");
+        desc.className = "wdesc";
+        desc.textContent = c.desc || "";
+
+        card.appendChild(top);
+        card.appendChild(desc);
+        grid.appendChild(card);
+      });
+    }
+
     function applyLang(lang){
       if (!i18n[lang]) lang = "en";
       const t = i18n[lang];
@@ -1180,7 +1379,6 @@
       if (t.metaTitle) document.title = t.metaTitle;
       const md = document.querySelector('meta[name="description"]');
       if (md && t.metaDesc) md.setAttribute("content", t.metaDesc);
-
 
       const sel = document.getElementById("langSelect");
       if (sel) sel.value = lang;
@@ -1198,8 +1396,6 @@
       document.getElementById("heroSubbrand").textContent = t.heroSubbrand || "Overwatch Account Store";
       document.getElementById("heroIntro").textContent = t.heroIntro;
       document.getElementById("ctaExplore").textContent = t.ctaExplore;
-      const ctaAuthTextEl = document.getElementById("ctaAuthText");
-      if (ctaAuthTextEl) ctaAuthTextEl.textContent = t.auth;
 
       document.getElementById("servicesKicker").textContent = t.servicesKicker;
       document.getElementById("servicesTitle").textContent = t.servicesTitle;
@@ -1211,12 +1407,12 @@
       document.getElementById("warrantyKicker").textContent = t.warrantyKicker;
       document.getElementById("warrantyTitle").textContent = t.warrantyTitle;
       document.getElementById("warrantyDesc").textContent = t.warrantyDesc;
-      setList("warrantyList", t.warrantyList);
+      setWarrantyCards(t.warrantyCards || []);
 
       document.getElementById("faqKicker").textContent = t.faqKicker;
       document.getElementById("faqTitle").textContent = t.faqTitle;
       document.getElementById("faqDesc").textContent = t.faqDesc;
-      
+
       document.getElementById("faq1").textContent = t.faq1;
       document.getElementById("faq2").textContent = t.faq2;
       document.getElementById("faq3").textContent = t.faq3;
@@ -1240,13 +1436,6 @@
         faq5.textContent = t.faq5;
       }
 
-      const btnStockEl = document.getElementById("btnStock");
-      if (btnStockEl) btnStockEl.textContent = t.btnStock;
-      const btnOrderEl = document.getElementById("btnOrder");
-      if (btnOrderEl) btnOrderEl.textContent = t.btnOrder;
-      const btnAuthRightTextEl = document.getElementById("btnAuthRightText");
-      if (btnAuthRightTextEl) btnAuthRightTextEl.textContent = t.auth;
-
       document.getElementById("contactKicker").textContent = t.contactKicker;
       document.getElementById("contactTitle").textContent = t.contactTitle;
       document.getElementById("contactDesc").textContent = t.contactDesc;
@@ -1264,22 +1453,10 @@
         document.getElementById("footTerms").textContent = t.footerNav.terms;
       }
 
-
       document.getElementById("btnListings").href = LINKS.sheet;
-      const btnStockHrefEl = document.getElementById("btnStock");
-      if (btnStockHrefEl) btnStockHrefEl.href = LINKS.sheet;
-
       document.getElementById("btnDiscord").href = LINKS.discord;
-      const btnOrderHrefEl = document.getElementById("btnOrder");
-      if (btnOrderHrefEl) btnOrderHrefEl.href = LINKS.discord;
       document.getElementById("btnContact").href = LINKS.discord;
-
       document.getElementById("btnEmail").href = LINKS.email;
-
-      const btnAuthRightEl = document.getElementById("btnAuthRight");
-      if (btnAuthRightEl) btnAuthRightEl.href = LINKS.auth;
-      const ctaAuthEl = document.getElementById("ctaAuth");
-      if (ctaAuthEl) ctaAuthEl.href = LINKS.auth;
       document.getElementById("authBtn").href = LINKS.auth;
     }
 
