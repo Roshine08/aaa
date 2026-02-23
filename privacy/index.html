@@ -33,9 +33,8 @@
 
       --r: 22px;
       --r2: 999px;
-      --w: min(1440px, 94vw);
-
-      /* button tokens */
+      --w: min(1100px, 92vw);
+/* button tokens */
       --btn-bg: rgba(255,255,255,.03);
       --btn-border: rgba(255,255,255,.10);
       --btn-hover-bg: rgba(255,255,255,.060);
@@ -115,7 +114,7 @@
     }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{ width:var(--w); margin:0 auto; padding:18px 0 72px; position:relative; z-index:1; }
+    .wrap{ width:var(--w); margin:0 auto; padding: 22px 0 72px; position:relative; z-index:1; }
 
     /* ===== Top nav ===== */
     .top{
@@ -724,8 +723,8 @@
    (hero + hierarchy + density)
    ========================= */
 :root{
-  --w: min(1440px, 94vw);
-  --legalTitle: rgba(255,255,255,.96);
+  --w: min(1100px, 92vw);
+--legalTitle: rgba(255,255,255,.96);
   --legalMeta: rgba(255, 140, 175, .78);
   --divider: rgba(255,255,255,.10);
   --divider2: rgba(255,255,255,.14);
@@ -1003,1437 +1002,1442 @@
 
 </style>
 </head>
+
 <body>
   <a id="top" class="sr-only" href="#top" aria-hidden="true">top</a>
-  <div class="bgfx" aria-hidden="true"></div>
-  <div class="wrap">
-    <header class="top">
+    <div class="bgfx" aria-hidden="true"></div>
+
+  <!-- Sticky Top -->
+  <div class="top" id="home">
       <div class="topbar" role="navigation" aria-label="Top navigation">
-        <a class="brand" href="/" aria-label="Roshine home">
-          <img src="/assets/logo.png" alt="Roshine logo" />
-          <div class="name">ROSHINE</div>
-        </a>
-
-        <nav class="nav" aria-label="Primary navigation">
-          <a href="/#home" id="navHome">Home</a>
-          <a href="/#services" id="navServices">Services</a>
-          <a href="/#warranty" id="navWarranty">Warranty</a>
-          <a href="/#faq" id="navFaq">FAQ</a>
-          <a href="/#contact" id="navContact">Contact</a>
+        <div class="brand" aria-label="Brand">
+          <img src="/assets/logo.png" alt="Logo">
+          <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+        </div>
+  
+        <nav class="nav" aria-label="Primary">
+          <a href="https://roshine.love/" id="navHome">Home</a>
+          <a href="https://roshine.love/#services" id="navServices">Services</a>
+          <a href="https://roshine.love/#warranty" id="navWarranty">Warranty</a>
+          <a href="https://roshine.love/#faq" id="navFaq">FAQ</a>
+          <a href="https://roshine.love/#contact" id="navContact">Contact</a>
         </nav>
-
+  
         <div class="right">
-          <a class="pill neon-border auth-pill" href="/auth/" id="authBtn" aria-label="Authenticator">
-            <span aria-hidden="true">🔐</span>
-            <span id="authBtnText">Authenticator</span>
-          </a>
-
-          <select class="pill neon-border" id="langSelect" aria-label="Language">
+          <select class="pill neon-border" id="langSelect" title="Language" aria-label="Language">
             <option value="en">EN</option>
             <option value="fr">FR</option>
             <option value="de">DE</option>
             <option value="ar">AR</option>
             <option value="zh">中文</option>
           </select>
+  
+          <a class="pill neon-border auth-pill" href="/auth/" id="authBtn" aria-label="Authenticator">
+            <span id="authBtnText">Authenticator</span>
+          </a>
         </div>
       </div>
-    </header>
+    </div>
 
-    <main class="main">
+  <main class="wrap">
+    <div class="main">
       <section class="hero heroRef" id="top">
-        <h1 class="title" id="pageTitle">Privacy Policy</h1>
-        <div class="updated" id="effectiveDate"></div>
-        <div class="heroRule" aria-hidden="true"></div>
-        <p class="lead" id="pageIntro"></p>
-      </section>
+              <h1 class="title" id="pageTitle">Privacy Policy</h1>
+              <div class="updated" id="effectiveDate"></div>
+              <div class="heroRule" aria-hidden="true"></div>
+              <p class="lead" id="pageIntro"></p>
+            </section>
+      
+            <section class="section">
+              <div class="legal-grid">
+      <div class="legal-body">
+                  <div class="policyWrap"><div id="policyBody" class="policy"></div></div>
+                </div>
+              </div>
+            </section>
+    </div>
 
-      <section class="section">
-        <div class="legal-grid">
-<div class="legal-body">
-            <div class="policyWrap"><div id="policyBody" class="policy"></div></div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <!-- Footer -->
+    <footer class="footer" aria-label="Footer">
+          <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
+          <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
+    
+          <nav class="footnav" aria-label="Footer navigation">
+            <a href="https://roshine.love/" id="footHome">Home</a>
+            <a href="https://roshine.love/#services" id="footServices">Services</a>
+            <a href="https://roshine.love/#contact" id="footContact">Contact</a>
+            <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
+            <a href="https://roshine.love/terms" id="footTerms">Terms</a>
+          </nav>
+        </footer>
+  </main>
 
-    <footer class="footer">
-      <div class="line1" id="footerLine1">ROSHINE ACCOUNT STORE</div>
-      <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
-      <nav class="footnav" aria-label="Footer navigation">
-        <a href="/#home" id="footHome">Home</a>
-        <a href="/#services" id="footServices">Services</a>
-        <a href="/#contact" id="footContact">Contact</a>
-        <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
-        <a href="https://roshine.love/terms" id="footTerms">Terms</a>
-      </nav>
-    </footer>
   </div>
-
-  <script>
-    const LINKS = {
-      privacy: "https://roshine.love/privacy",
-      terms: "https://roshine.love/terms"
-    };
-
-    const i18n = {
-      en: {
-        nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
-        auth:"Authenticator",
-        brandSub:"Overwatch Account Store",
-        footer1:"ROSHINE ACCOUNT STORE",
-        footer2:"All rights reserved — your reliable account supplier.",
-        footerNav: { home:"Home", services:"Services", contact:"Contact", privacy:"Privacy", terms:"Terms" },
-        page: {}
-      },
-      fr: {
-        nav: { home:"Accueil", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Contact" },
-        auth:"Authentificateur",
-        brandSub:"Boutique de comptes Overwatch",
-        footer1:"ROSHINE ACCOUNT STORE",
-        footer2:"Tous droits réservés — votre fournisseur de comptes fiable.",
-        footerNav: { home:"Accueil", services:"Services", contact:"Contact", privacy:"Confidentialité", terms:"Conditions" },
-        page: {}
-      },
-      de: {
-        nav: { home:"Home", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Kontakt" },
-        auth:"Authenticator",
-        brandSub:"Overwatch-Account-Shop",
-        footer1:"ROSHINE ACCOUNT STORE",
-        footer2:"Alle Rechte vorbehalten — dein zuverlässiger Account-Anbieter.",
-        footerNav: { home:"Home", services:"Services", contact:"Kontakt", privacy:"Datenschutz", terms:"AGB" },
-        page: {}
-      },
-      ar: {
-        nav: { home:"الرئيسية", services:"الخدمات", warranty:"الضمان", faq:"الأسئلة", contact:"تواصل" },
-        auth:"المصادِق",
-        brandSub:"متجر حسابات أوفرواتش",
-        footer1:"ROSHINE ACCOUNT STORE",
-        footer2:"جميع الحقوق محفوظة — مزود حسابات موثوق.",
-        footerNav: { home:"الرئيسية", services:"الخدمات", contact:"تواصل", privacy:"الخصوصية", terms:"الشروط" },
-        page: {}
-      },
-      zh: {
-        nav: { home:"主页", services:"服务", warranty:"保障", faq:"常见问题", contact:"联系" },
-        auth:"验证器",
-        brandSub:"守望先锋账号商店",
-        footer1:"ROSHINE ACCOUNT STORE",
-        footer2:"版权所有 — 可信赖的账号供应商。",
-        footerNav: { home:"主页", services:"服务", contact:"联系", privacy:"隐私", terms:"条款" },
-        page: {}
-      }
-    };
-
-    // page copy
-    i18n.en.page = {
-      kicker: "PRIVACY",
-      title: "Privacy Policy",
-      intro: "Explains what information we collect, how we use it, and the choices you have when using roshine.love.",
-      effective: "LAST UPDATED • 2026-02-23",
-      bodyHtml: ``
-    };
-    i18n.fr.page = {
-      kicker: "CONFIDENTIALITÉ",
-      title: "Politique de confidentialité",
-      intro: "Explique quelles informations nous collectons, comment nous les utilisons et les choix dont vous disposez en utilisant roshine.love.",
-      effective: "MISE À JOUR • 2026-02-23",
-      bodyHtml: ``
-    };
-    i18n.de.page = {
-      kicker: "DATENSCHUTZ",
-      title: "Datenschutzerklärung",
-      intro: "Erläutert, welche Informationen wir erfassen, wie wir sie verwenden und welche Wahlmöglichkeiten Sie bei der Nutzung von roshine.love haben.",
-      effective: "AKTUALISIERT • 2026-02-23",
-      bodyHtml: ``
-    };
-    i18n.ar.page = {
-      kicker: "الخصوصية",
-      title: "سياسة الخصوصية",
-      intro: "يشرح ما البيانات التي نجمعها وكيف نستخدمها والخيارات المتاحة لك عند استخدام roshine.love.",
-      effective: "آخر تحديث • 2026-02-23",
-      bodyHtml: ``
-    };
-    i18n.zh.page = {
-      kicker: "隐私",
-      title: "隐私政策",
-      intro: "说明我们收集哪些信息、如何使用这些信息，以及你在使用 roshine.love 时拥有的选择。",
-      effective: "最近更新 • 2026-02-23",
-      bodyHtml: ``
-    };
-
-    const PRIVACY_BODIES = {
-      en: `<h2>1. Scope</h2>
-        <p>This Privacy Policy explains how ROSHINE. ("Roshine", "we", "us") handles information when you visit <a href="https://roshine.love/">roshine.love</a>, communicate with us (Discord/email), and purchase digital services such as Overwatch accounts.</p>
-
-        <h2>2. Information we collect</h2>
-        <ul>
-          <li><b>Contact & messages</b>: email/Discord handle and message content you send for ordering, delivery, verification, and support.</li>
-          <li><b>Order data</b>: product identifier (account ID), timestamps, delivery status, support history, and dispute notes.</li>
-          <li><b>Technical data</b>: IP address, user agent, and basic access logs for security, fraud prevention, and debugging.</li>
-          <li><b>Payment</b>: payments are processed by third‑party providers; we do not intentionally store full card details.</li>
-        </ul>
-
-        <h2>3. How we use information</h2>
-        <ul>
-          <li>Fulfill orders and provide after‑sales support.</li>
-          <li>Verify identity/ownership when handling disputes or security issues.</li>
-          <li>Detect and prevent fraud, abuse, or unauthorized access.</li>
-          <li>Maintain the reliability, performance, and security of our website.</li>
-          <li>Comply with legal obligations where applicable.</li>
-        </ul>
-
-        <h2>4. Sharing & disclosures</h2>
-        <p>We may share the minimum necessary information with service providers (hosting/CDN, analytics, payment processors) to operate the service. We do not sell personal information for third‑party advertising.</p>
-
-        <h2>5. Cookies & local storage</h2>
-        <p>We may use cookies/local storage for essential functions such as language preferences and basic security. You can control cookies via your browser settings, but some features may not work properly.</p>
-
-        <h2>6. Data retention</h2>
-        <p>We keep order and support records for a reasonable period to handle delivery confirmation, after‑sales support, and disputes. Security logs are typically kept for shorter periods and then deleted or anonymized.</p>
-
-        <h2>7. Your rights</h2>
-        <ul>
-          <li>You can request access, correction, or deletion where legally permitted.</li>
-          <li>You can object to certain processing or withdraw consent where applicable.</li>
-        </ul>
-
-        <h2>8. Third‑party links</h2>
-        <p>Our site may link to third‑party services (Discord, Google Sheets, payment providers). Their privacy practices are governed by their own policies.</p>
-
-        <h2>9. Children</h2>
-        <p>Our services are not intended for children. If you believe a child has provided us personal information, contact us to request deletion.</p>
-
-        <h2>10. Contact</h2>
-        <p>For privacy requests, email <a href="mailto:roshine_store@roshine.love">roshine_store@roshine.love</a> or contact us via the <a href="/#contact">Contact</a> section.</p>
-
-        <div class="note"><b>Note:</b> This policy is provided for general informational purposes and does not constitute legal advice.</div>`,
-      zh: `<h2>1. 适用范围</h2>
-        <p>本隐私政策说明 ROSHINE.（“Roshine / 我们”）在你访问 <a href="https://roshine.love/">roshine.love</a>、通过 Discord/邮箱与我们沟通、以及购买守望先锋账号等数字服务时，如何收集与处理信息。</p>
-
-        <h2>2. 我们收集哪些信息</h2>
-        <ul>
-          <li><b>联系信息与沟通内容</b>：你提供的邮箱/Discord 账号以及消息内容，用于下单、交付、验证与售后支持。</li>
-          <li><b>订单信息</b>：商品标识（账号 ID）、时间戳、交付状态、售后记录、争议处理备注等。</li>
-          <li><b>技术与日志信息</b>：IP、浏览器标识（UA）、访问日志等，用于安全防护、反欺诈与排障。</li>
-          <li><b>支付信息</b>：由第三方支付平台处理；我们不会主动保存完整的银行卡号等敏感信息。</li>
-        </ul>
-
-        <h2>3. 我们如何使用信息</h2>
-        <ul>
-          <li>完成订单交付，并提供售后支持。</li>
-          <li>在争议/安全事件中进行必要的身份或归属验证。</li>
-          <li>防止欺诈、滥用与未授权访问，保障交易与账号安全。</li>
-          <li>维护网站稳定性、安全性与性能。</li>
-          <li>在适用情况下遵守法律义务。</li>
-        </ul>
-
-        <h2>4. 信息共享</h2>
-        <p>为提供服务，我们可能与托管/CDN、统计分析、支付处理等第三方服务商共享“最小必要”信息。我们不会出售你的个人信息用于第三方广告营销。</p>
-
-        <h2>5. Cookies 与本地存储</h2>
-        <p>我们可能使用 Cookies/本地存储用于语言偏好与基础安全功能。你可在浏览器中管理 Cookies，但禁用后可能导致部分功能不可用。</p>
-
-        <h2>6. 信息保存期限</h2>
-        <p>我们会在合理期限内保留订单与售后记录，用于交付确认、售后支持与争议处理；安全日志通常保存更短周期，之后删除或匿名化。</p>
-
-        <h2>7. 你的权利</h2>
-        <ul>
-          <li>在法律允许范围内，你可请求访问、更正或删除信息。</li>
-          <li>在适用情况下，你可对特定处理提出异议或撤回同意。</li>
-        </ul>
-
-        <h2>8. 第三方链接</h2>
-        <p>我们可能链接到第三方服务（Discord、Google 表格、支付平台等）。其隐私规则以其自身政策为准。</p>
-
-        <h2>9. 未成年人</h2>
-        <p>我们的服务不面向未成年人。如你认为未成年人向我们提供了个人信息，请联系删除。</p>
-
-        <h2>10. 联系方式</h2>
-        <p>隐私相关请求请邮件联系 <a href="mailto:roshine_store@roshine.love">roshine_store@roshine.love</a>，或通过 <a href="/#contact">联系页面</a> 与我们沟通。</p>
-
-        <div class="note"><b>提示：</b>本页面内容仅供一般性信息参考，不构成法律意见。</div>`
-    };
-
-    const TERMS_BODIES = {
-      en: `
-        <h2>1. Refunds</h2>
-        <p><b>Digital/virtual assets are non‑refundable</b> except:</p>
-        <ul>
-          <li><b>Incorrect credentials on first login</b> (wrong provided info prevents first login).</li>
-          <li><b>Abnormal account status at delivery</b> that prevents normal use.</li>
-        </ul>
-        <h2>2. Delivery acceptance</h2>
-        <ul>
-          <li>After receiving the account, the buyer must verify and confirm the order within <b>30 minutes</b>.</li>
-          <li>If special circumstances prevent timely verification, the buyer must notify us promptly; otherwise, it may be treated as accepted.</li>
-        </ul>
-        <h2>3. Disputes & liability</h2>
-        <p>After delivery and buyer confirmation with no issues, <b>all subsequent account risks and responsibilities belong to the buyer</b>.</p>
-        <h2>4. Account custody</h2>
-        <ul>
-          <li>After confirmation, the buyer must safeguard the account and bears loss risks (leaks, sharing, mishandling), <b>except</b> where the account is recovered by the previous owner.</li>
-        </ul>
-        <h2>5. Risk disclosure (Blizzard)</h2>
-        <p>Account trading is <b>not officially supported by Blizzard</b>. There is a small chance of platform risk controls detecting unusual login environment (e.g., location/device/IP changes), which may cause an <b>account‑level restriction</b> (not an in‑game ban).</p>
-        <ul>
-          <li>To reduce risk: use the <b>same device + stable IP</b> for about <b>7 days</b> before changing account details.</li>
-        </ul>
-      `,
-      zh: `
-        <h2>1. 退款政策</h2>
-        <p><b>虚拟资产原则上不接受退款</b>，仅以下情况除外：</p>
-        <ul>
-          <li><b>买家首次登录时账号信息有误</b>：因我们交付的信息错误导致无法完成首次登录。</li>
-          <li><b>交付时账号状态异常无法正常使用</b>：交付时即存在影响正常使用的异常状态。</li>
-        </ul>
-        <h2>2. 交付验收</h2>
-        <ul>
-          <li>买家收到账号后，应在 <b>30 分钟</b>内完成验收并确认订单。</li>
-          <li>如有特殊情况无法按时验收，请<b>及时告知并沟通</b>；否则可能视为已完成验收。</li>
-        </ul>
-        <h2>3. 争议处理与责任</h2>
-        <p>账号在交付并由买家确认无异常后，<b>后续任何账号风险责任由买家承担</b>。</p>
-        <h2>4. 账号归属与保管</h2>
-        <ul>
-          <li>买家确认账号无误后，应妥善保管账号并自行承担丢失风险（泄露、共享、误操作等），<b>除非</b>账号被前号主找回。</li>
-        </ul>
-        <h2>5. 风险提示（暴雪）</h2>
-        <p>账号交易<b>不被暴雪官方支持</b>。存在极小概率触发平台风控（如异地/设备/IP 变化），导致<b>整个账号</b>被限制（非游戏内封禁）。</p>
-        <ul>
-          <li>降低风险建议：保持<b>同一设备 + 稳定 IP</b>使用约 <b>7 天</b>后，再逐步更改信息与安全设置。</li>
-        </ul>
-      `
-    };
-
-    function injectBodies(pageKey){
-      for (const lang of Object.keys(i18n)){
-        if (pageKey === "privacy") {
-          i18n[lang].page.bodyHtml = (PRIVACY_BODIES[lang] || PRIVACY_BODIES.en);
-        } else {
-          i18n[lang].page.bodyHtml = (TERMS_BODIES[lang] || TERMS_BODIES.en);
+  
+    <script>
+      const LINKS = {
+        privacy: "https://roshine.love/privacy",
+        terms: "https://roshine.love/terms"
+      };
+  
+      const i18n = {
+        en: {
+          nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
+          auth:"Authenticator",
+          brandSub:"Overwatch Account Store",
+          footer1:"ROSHINE ACCOUNT STORE",
+          footer2:"All rights reserved — your reliable account supplier.",
+          footerNav: { home:"Home", services:"Services", contact:"Contact", privacy:"Privacy", terms:"Terms" },
+          page: {}
+        },
+        fr: {
+          nav: { home:"Accueil", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Contact" },
+          auth:"Authentificateur",
+          brandSub:"Boutique de comptes Overwatch",
+          footer1:"ROSHINE ACCOUNT STORE",
+          footer2:"Tous droits réservés — votre fournisseur de comptes fiable.",
+          footerNav: { home:"Accueil", services:"Services", contact:"Contact", privacy:"Confidentialité", terms:"Conditions" },
+          page: {}
+        },
+        de: {
+          nav: { home:"Home", services:"Services", warranty:"Garantie", faq:"FAQ", contact:"Kontakt" },
+          auth:"Authenticator",
+          brandSub:"Overwatch-Account-Shop",
+          footer1:"ROSHINE ACCOUNT STORE",
+          footer2:"Alle Rechte vorbehalten — dein zuverlässiger Account-Anbieter.",
+          footerNav: { home:"Home", services:"Services", contact:"Kontakt", privacy:"Datenschutz", terms:"AGB" },
+          page: {}
+        },
+        ar: {
+          nav: { home:"الرئيسية", services:"الخدمات", warranty:"الضمان", faq:"الأسئلة", contact:"تواصل" },
+          auth:"المصادِق",
+          brandSub:"متجر حسابات أوفرواتش",
+          footer1:"ROSHINE ACCOUNT STORE",
+          footer2:"جميع الحقوق محفوظة — مزود حسابات موثوق.",
+          footerNav: { home:"الرئيسية", services:"الخدمات", contact:"تواصل", privacy:"الخصوصية", terms:"الشروط" },
+          page: {}
+        },
+        zh: {
+          nav: { home:"主页", services:"服务", warranty:"保障", faq:"常见问题", contact:"联系" },
+          auth:"验证器",
+          brandSub:"守望先锋账号商店",
+          footer1:"ROSHINE ACCOUNT STORE",
+          footer2:"版权所有 — 可信赖的账号供应商。",
+          footerNav: { home:"主页", services:"服务", contact:"联系", privacy:"隐私", terms:"条款" },
+          page: {}
         }
-      }
-    }
-
-    function setText(id, value){ const el = document.getElementById(id); if (el) el.textContent = value; }
-    function setHTML(id, value){ const el = document.getElementById(id); if (el) el.innerHTML = value; }
-
-    function slugify(text){
-      return String(text).toLowerCase()
-        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, 80) || "section";
-    }
-
-    function buildTOC(){
-      const root = document.getElementById("policyBody");
-      const toc = document.getElementById("toc");
-      if (!root || !toc) return;
-
-      const headings = Array.from(root.querySelectorAll("h2, h3"));
-      if (!headings.length){ toc.innerHTML = ""; return; }
-
-      // Assign IDs if missing
-      const used = new Set();
-      headings.forEach(h=>{
-        if (!h.id){
-          let id = slugify(h.textContent);
-          let base = id, i = 2;
-          while (used.has(id) || document.getElementById(id)) { id = base + "-" + i++; }
-          h.id = id;
-        }
-        used.add(h.id);
-      });
-
-      toc.innerHTML = headings.map(h=>{
-        const cls = h.tagName === "H3" ? "sub" : "";
-        return `<a href="#${h.id}" class="${cls}" data-id="${h.id}">${h.textContent}</a>`;
-      }).join("");
-
-      // Active section highlight on scroll
-      const links = Array.from(toc.querySelectorAll("a[data-id]"));
-      const map = new Map(links.map(a=>[a.getAttribute("data-id"), a]));
-
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          const id = e.target.id;
-          const a = map.get(id);
-          if (!a) return;
-          if (e.isIntersecting){
-            links.forEach(x=>x.classList.remove("active"));
-            a.classList.add("active");
+      };
+  
+      // page copy
+      i18n.en.page = {
+        kicker: "PRIVACY",
+        title: "Privacy Policy",
+        intro: "Explains what information we collect, how we use it, and the choices you have when using roshine.love.",
+        effective: "LAST UPDATED • 2026-02-23",
+        bodyHtml: ``
+      };
+      i18n.fr.page = {
+        kicker: "CONFIDENTIALITÉ",
+        title: "Politique de confidentialité",
+        intro: "Explique quelles informations nous collectons, comment nous les utilisons et les choix dont vous disposez en utilisant roshine.love.",
+        effective: "MISE À JOUR • 2026-02-23",
+        bodyHtml: ``
+      };
+      i18n.de.page = {
+        kicker: "DATENSCHUTZ",
+        title: "Datenschutzerklärung",
+        intro: "Erläutert, welche Informationen wir erfassen, wie wir sie verwenden und welche Wahlmöglichkeiten Sie bei der Nutzung von roshine.love haben.",
+        effective: "AKTUALISIERT • 2026-02-23",
+        bodyHtml: ``
+      };
+      i18n.ar.page = {
+        kicker: "الخصوصية",
+        title: "سياسة الخصوصية",
+        intro: "يشرح ما البيانات التي نجمعها وكيف نستخدمها والخيارات المتاحة لك عند استخدام roshine.love.",
+        effective: "آخر تحديث • 2026-02-23",
+        bodyHtml: ``
+      };
+      i18n.zh.page = {
+        kicker: "隐私",
+        title: "隐私政策",
+        intro: "说明我们收集哪些信息、如何使用这些信息，以及你在使用 roshine.love 时拥有的选择。",
+        effective: "最近更新 • 2026-02-23",
+        bodyHtml: ``
+      };
+  
+      const PRIVACY_BODIES = {
+        en: `<h2>1. Scope</h2>
+          <p>This Privacy Policy explains how ROSHINE. ("Roshine", "we", "us") handles information when you visit <a href="https://roshine.love/">roshine.love</a>, communicate with us (Discord/email), and purchase digital services such as Overwatch accounts.</p>
+  
+          <h2>2. Information we collect</h2>
+          <ul>
+            <li><b>Contact & messages</b>: email/Discord handle and message content you send for ordering, delivery, verification, and support.</li>
+            <li><b>Order data</b>: product identifier (account ID), timestamps, delivery status, support history, and dispute notes.</li>
+            <li><b>Technical data</b>: IP address, user agent, and basic access logs for security, fraud prevention, and debugging.</li>
+            <li><b>Payment</b>: payments are processed by third‑party providers; we do not intentionally store full card details.</li>
+          </ul>
+  
+          <h2>3. How we use information</h2>
+          <ul>
+            <li>Fulfill orders and provide after‑sales support.</li>
+            <li>Verify identity/ownership when handling disputes or security issues.</li>
+            <li>Detect and prevent fraud, abuse, or unauthorized access.</li>
+            <li>Maintain the reliability, performance, and security of our website.</li>
+            <li>Comply with legal obligations where applicable.</li>
+          </ul>
+  
+          <h2>4. Sharing & disclosures</h2>
+          <p>We may share the minimum necessary information with service providers (hosting/CDN, analytics, payment processors) to operate the service. We do not sell personal information for third‑party advertising.</p>
+  
+          <h2>5. Cookies & local storage</h2>
+          <p>We may use cookies/local storage for essential functions such as language preferences and basic security. You can control cookies via your browser settings, but some features may not work properly.</p>
+  
+          <h2>6. Data retention</h2>
+          <p>We keep order and support records for a reasonable period to handle delivery confirmation, after‑sales support, and disputes. Security logs are typically kept for shorter periods and then deleted or anonymized.</p>
+  
+          <h2>7. Your rights</h2>
+          <ul>
+            <li>You can request access, correction, or deletion where legally permitted.</li>
+            <li>You can object to certain processing or withdraw consent where applicable.</li>
+          </ul>
+  
+          <h2>8. Third‑party links</h2>
+          <p>Our site may link to third‑party services (Discord, Google Sheets, payment providers). Their privacy practices are governed by their own policies.</p>
+  
+          <h2>9. Children</h2>
+          <p>Our services are not intended for children. If you believe a child has provided us personal information, contact us to request deletion.</p>
+  
+          <h2>10. Contact</h2>
+          <p>For privacy requests, email <a href="mailto:roshine_store@roshine.love">roshine_store@roshine.love</a> or contact us via the <a href="/#contact">Contact</a> section.</p>
+  
+          <div class="note"><b>Note:</b> This policy is provided for general informational purposes and does not constitute legal advice.</div>`,
+        zh: `<h2>1. 适用范围</h2>
+          <p>本隐私政策说明 ROSHINE.（“Roshine / 我们”）在你访问 <a href="https://roshine.love/">roshine.love</a>、通过 Discord/邮箱与我们沟通、以及购买守望先锋账号等数字服务时，如何收集与处理信息。</p>
+  
+          <h2>2. 我们收集哪些信息</h2>
+          <ul>
+            <li><b>联系信息与沟通内容</b>：你提供的邮箱/Discord 账号以及消息内容，用于下单、交付、验证与售后支持。</li>
+            <li><b>订单信息</b>：商品标识（账号 ID）、时间戳、交付状态、售后记录、争议处理备注等。</li>
+            <li><b>技术与日志信息</b>：IP、浏览器标识（UA）、访问日志等，用于安全防护、反欺诈与排障。</li>
+            <li><b>支付信息</b>：由第三方支付平台处理；我们不会主动保存完整的银行卡号等敏感信息。</li>
+          </ul>
+  
+          <h2>3. 我们如何使用信息</h2>
+          <ul>
+            <li>完成订单交付，并提供售后支持。</li>
+            <li>在争议/安全事件中进行必要的身份或归属验证。</li>
+            <li>防止欺诈、滥用与未授权访问，保障交易与账号安全。</li>
+            <li>维护网站稳定性、安全性与性能。</li>
+            <li>在适用情况下遵守法律义务。</li>
+          </ul>
+  
+          <h2>4. 信息共享</h2>
+          <p>为提供服务，我们可能与托管/CDN、统计分析、支付处理等第三方服务商共享“最小必要”信息。我们不会出售你的个人信息用于第三方广告营销。</p>
+  
+          <h2>5. Cookies 与本地存储</h2>
+          <p>我们可能使用 Cookies/本地存储用于语言偏好与基础安全功能。你可在浏览器中管理 Cookies，但禁用后可能导致部分功能不可用。</p>
+  
+          <h2>6. 信息保存期限</h2>
+          <p>我们会在合理期限内保留订单与售后记录，用于交付确认、售后支持与争议处理；安全日志通常保存更短周期，之后删除或匿名化。</p>
+  
+          <h2>7. 你的权利</h2>
+          <ul>
+            <li>在法律允许范围内，你可请求访问、更正或删除信息。</li>
+            <li>在适用情况下，你可对特定处理提出异议或撤回同意。</li>
+          </ul>
+  
+          <h2>8. 第三方链接</h2>
+          <p>我们可能链接到第三方服务（Discord、Google 表格、支付平台等）。其隐私规则以其自身政策为准。</p>
+  
+          <h2>9. 未成年人</h2>
+          <p>我们的服务不面向未成年人。如你认为未成年人向我们提供了个人信息，请联系删除。</p>
+  
+          <h2>10. 联系方式</h2>
+          <p>隐私相关请求请邮件联系 <a href="mailto:roshine_store@roshine.love">roshine_store@roshine.love</a>，或通过 <a href="/#contact">联系页面</a> 与我们沟通。</p>
+  
+          <div class="note"><b>提示：</b>本页面内容仅供一般性信息参考，不构成法律意见。</div>`
+      };
+  
+      const TERMS_BODIES = {
+        en: `
+          <h2>1. Refunds</h2>
+          <p><b>Digital/virtual assets are non‑refundable</b> except:</p>
+          <ul>
+            <li><b>Incorrect credentials on first login</b> (wrong provided info prevents first login).</li>
+            <li><b>Abnormal account status at delivery</b> that prevents normal use.</li>
+          </ul>
+          <h2>2. Delivery acceptance</h2>
+          <ul>
+            <li>After receiving the account, the buyer must verify and confirm the order within <b>30 minutes</b>.</li>
+            <li>If special circumstances prevent timely verification, the buyer must notify us promptly; otherwise, it may be treated as accepted.</li>
+          </ul>
+          <h2>3. Disputes & liability</h2>
+          <p>After delivery and buyer confirmation with no issues, <b>all subsequent account risks and responsibilities belong to the buyer</b>.</p>
+          <h2>4. Account custody</h2>
+          <ul>
+            <li>After confirmation, the buyer must safeguard the account and bears loss risks (leaks, sharing, mishandling), <b>except</b> where the account is recovered by the previous owner.</li>
+          </ul>
+          <h2>5. Risk disclosure (Blizzard)</h2>
+          <p>Account trading is <b>not officially supported by Blizzard</b>. There is a small chance of platform risk controls detecting unusual login environment (e.g., location/device/IP changes), which may cause an <b>account‑level restriction</b> (not an in‑game ban).</p>
+          <ul>
+            <li>To reduce risk: use the <b>same device + stable IP</b> for about <b>7 days</b> before changing account details.</li>
+          </ul>
+        `,
+        zh: `
+          <h2>1. 退款政策</h2>
+          <p><b>虚拟资产原则上不接受退款</b>，仅以下情况除外：</p>
+          <ul>
+            <li><b>买家首次登录时账号信息有误</b>：因我们交付的信息错误导致无法完成首次登录。</li>
+            <li><b>交付时账号状态异常无法正常使用</b>：交付时即存在影响正常使用的异常状态。</li>
+          </ul>
+          <h2>2. 交付验收</h2>
+          <ul>
+            <li>买家收到账号后，应在 <b>30 分钟</b>内完成验收并确认订单。</li>
+            <li>如有特殊情况无法按时验收，请<b>及时告知并沟通</b>；否则可能视为已完成验收。</li>
+          </ul>
+          <h2>3. 争议处理与责任</h2>
+          <p>账号在交付并由买家确认无异常后，<b>后续任何账号风险责任由买家承担</b>。</p>
+          <h2>4. 账号归属与保管</h2>
+          <ul>
+            <li>买家确认账号无误后，应妥善保管账号并自行承担丢失风险（泄露、共享、误操作等），<b>除非</b>账号被前号主找回。</li>
+          </ul>
+          <h2>5. 风险提示（暴雪）</h2>
+          <p>账号交易<b>不被暴雪官方支持</b>。存在极小概率触发平台风控（如异地/设备/IP 变化），导致<b>整个账号</b>被限制（非游戏内封禁）。</p>
+          <ul>
+            <li>降低风险建议：保持<b>同一设备 + 稳定 IP</b>使用约 <b>7 天</b>后，再逐步更改信息与安全设置。</li>
+          </ul>
+        `
+      };
+  
+      function injectBodies(pageKey){
+        for (const lang of Object.keys(i18n)){
+          if (pageKey === "privacy") {
+            i18n[lang].page.bodyHtml = (PRIVACY_BODIES[lang] || PRIVACY_BODIES.en);
+          } else {
+            i18n[lang].page.bodyHtml = (TERMS_BODIES[lang] || TERMS_BODIES.en);
           }
+        }
+      }
+  
+      function setText(id, value){ const el = document.getElementById(id); if (el) el.textContent = value; }
+      function setHTML(id, value){ const el = document.getElementById(id); if (el) el.innerHTML = value; }
+  
+      function slugify(text){
+        return String(text).toLowerCase()
+          .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 80) || "section";
+      }
+  
+      function buildTOC(){
+        const root = document.getElementById("policyBody");
+        const toc = document.getElementById("toc");
+        if (!root || !toc) return;
+  
+        const headings = Array.from(root.querySelectorAll("h2, h3"));
+        if (!headings.length){ toc.innerHTML = ""; return; }
+  
+        // Assign IDs if missing
+        const used = new Set();
+        headings.forEach(h=>{
+          if (!h.id){
+            let id = slugify(h.textContent);
+            let base = id, i = 2;
+            while (used.has(id) || document.getElementById(id)) { id = base + "-" + i++; }
+            h.id = id;
+          }
+          used.add(h.id);
         });
-      }, { rootMargin: "-30% 0px -65% 0px", threshold: [0, 1] });
-
-      headings.filter(h=>h.tagName==="H2").forEach(h=>obs.observe(h));
-    }
-
-
-    function applyLang(lang){
-      if (!i18n[lang]) lang = "en";
-      const t = i18n[lang];
-
-      document.documentElement.lang = lang;
-      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
-
+  
+        toc.innerHTML = headings.map(h=>{
+          const cls = h.tagName === "H3" ? "sub" : "";
+          return `<a href="#${h.id}" class="${cls}" data-id="${h.id}">${h.textContent}</a>`;
+        }).join("");
+  
+        // Active section highlight on scroll
+        const links = Array.from(toc.querySelectorAll("a[data-id]"));
+        const map = new Map(links.map(a=>[a.getAttribute("data-id"), a]));
+  
+        const obs = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            const id = e.target.id;
+            const a = map.get(id);
+            if (!a) return;
+            if (e.isIntersecting){
+              links.forEach(x=>x.classList.remove("active"));
+              a.classList.add("active");
+            }
+          });
+        }, { rootMargin: "-30% 0px -65% 0px", threshold: [0, 1] });
+  
+        headings.filter(h=>h.tagName==="H2").forEach(h=>obs.observe(h));
+      }
+  
+  
+      function applyLang(lang){
+        if (!i18n[lang]) lang = "en";
+        const t = i18n[lang];
+  
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+  
+        const sel = document.getElementById("langSelect");
+        if (sel) sel.value = lang;
+  
+        setText("navHome", t.nav.home);
+        setText("navServices", t.nav.services);
+        setText("navWarranty", t.nav.warranty);
+        setText("navFaq", t.nav.faq);
+        setText("navContact", t.nav.contact);
+  
+        setText("authBtnText", t.auth);
+  
+        setText("footerLine1", t.footer1);
+        setText("footerLine2", t.footer2);
+  
+        if (t.footerNav){
+          setText("footHome", t.footerNav.home);
+          setText("footServices", t.footerNav.services);
+          setText("footContact", t.footerNav.contact);
+          setText("footPrivacy", t.footerNav.privacy);
+          setText("footTerms", t.footerNav.terms);
+        }
+  
+        setText("pageKicker", t.page.kicker);
+        setText("pageTitle", t.page.title);
+        setText("pageIntro", t.page.intro);
+        setText("effectiveDate", t.page.effective);
+        setHTML("policyBody", t.page.bodyHtml);
+        buildTOC();
+  
+        setText("tocTitle", (t.page.tocTitle || (lang==="zh"?"本页目录":"On this page")));
+        setText("tocTop", (t.page.tocTop || (lang==="zh"?"返回顶部":"Back to top")));
+  
+        const cp = document.getElementById("chipPrivacy");
+        const ct = document.getElementById("chipTerms");
+        if (cp) cp.href = LINKS.privacy;
+        if (ct) ct.href = LINKS.terms;
+  
+        const current = "privacy";
+        if (current === "privacy" && cp) cp.classList.add("chipActive");
+        if (current === "terms" && ct) ct.classList.add("chipActive");
+      }
+  
+      injectBodies("privacy");
+      const saved = localStorage.getItem("roshine_lang") || "en";
+      applyLang(saved);
+  
       const sel = document.getElementById("langSelect");
-      if (sel) sel.value = lang;
-
-      setText("navHome", t.nav.home);
-      setText("navServices", t.nav.services);
-      setText("navWarranty", t.nav.warranty);
-      setText("navFaq", t.nav.faq);
-      setText("navContact", t.nav.contact);
-
-      setText("authBtnText", t.auth);
-
-      setText("footerLine1", t.footer1);
-      setText("footerLine2", t.footer2);
-
-      if (t.footerNav){
-        setText("footHome", t.footerNav.home);
-        setText("footServices", t.footerNav.services);
-        setText("footContact", t.footerNav.contact);
-        setText("footPrivacy", t.footerNav.privacy);
-        setText("footTerms", t.footerNav.terms);
+      if (sel){
+        sel.addEventListener("change", (e)=>{
+          const v = e.target.value;
+          localStorage.setItem("roshine_lang", v);
+          applyLang(v);
+        });
       }
-
-      setText("pageKicker", t.page.kicker);
-      setText("pageTitle", t.page.title);
-      setText("pageIntro", t.page.intro);
-      setText("effectiveDate", t.page.effective);
-      setHTML("policyBody", t.page.bodyHtml);
-      buildTOC();
-
-      setText("tocTitle", (t.page.tocTitle || (lang==="zh"?"本页目录":"On this page")));
-      setText("tocTop", (t.page.tocTop || (lang==="zh"?"返回顶部":"Back to top")));
-
-      const cp = document.getElementById("chipPrivacy");
-      const ct = document.getElementById("chipTerms");
-      if (cp) cp.href = LINKS.privacy;
-      if (ct) ct.href = LINKS.terms;
-
-      const current = "privacy";
-      if (current === "privacy" && cp) cp.classList.add("chipActive");
-      if (current === "terms" && ct) ct.classList.add("chipActive");
-    }
-
-    injectBodies("privacy");
-    const saved = localStorage.getItem("roshine_lang") || "en";
-    applyLang(saved);
-
-    const sel = document.getElementById("langSelect");
-    if (sel){
-      sel.addEventListener("change", (e)=>{
-        const v = e.target.value;
-        localStorage.setItem("roshine_lang", v);
-        applyLang(v);
-      });
-    }
-  </script>
-
-  <style>
-    :root{
-      --bg:#05060b;
-      --text:#e7efff;
-      --muted:#9aa8c6;
-
-      /* esports neon */
-      --neon:#29b6ff;
-      --neon2:#b77cff;
-      --neon3:#33ffcc;
-
-      --glass: rgba(12, 16, 28, .42);
-      --glass2: rgba(10, 14, 22, .30);
-
-      --line2: rgba(255,255,255,.06);
-
-      --shadow: 0 26px 72px rgba(0,0,0,.62);
-      --shadow2: 0 10px 26px rgba(0,0,0,.42);
-
-      --r: 22px;
-      --r2: 999px;
-      --w: min(1440px, 94vw);
-
-      /* button tokens */
-      --btn-bg: rgba(255,255,255,.03);
-      --btn-border: rgba(255,255,255,.10);
-      --btn-hover-bg: rgba(255,255,255,.060);
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      color:var(--text);
-      background: var(--bg);
-      overflow-x:hidden;
-    }
-
-    /* ===== Dynamic esports background (CSS only) ===== */
-    .bgfx{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      overflow:hidden;
-    }
-    .bgfx::before{
-      content:"";
-      position:absolute; inset:-20%;
-      background:
-        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
-        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
-        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
-        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
-      filter: blur(0px);
-      animation: fogmove 10.5s ease-in-out infinite alternate;
-      opacity:.98;
-      will-change: transform;
-      transform: translate3d(0,0,0);
-    }
-    @keyframes fogmove{
-      0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
-      100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
-    }
-
-    /* animated grid drift */
-    .bgfx::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
-        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
-        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
-      background-size: 58px 58px, 58px 58px, auto, auto;
-      mix-blend-mode: screen;
-      opacity:.26; /* 桌面端更“强”一点 */
-      animation: griddrift 14s linear infinite;
-      will-change: background-position;
-      transform: translate3d(0,0,0);
-    }
-    @keyframes griddrift{
-      0%{ background-position: 0 0, 0 0, center, center; }
-      100%{ background-position: 140px 140px, -140px 140px, center, center; }
-    }
-
-    /* scanlines */
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.045),
-        rgba(255,255,255,.045) 1px,
-        transparent 1px,
-        transparent 12px
-      );
-      opacity:.05;
-    }
-
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ width:var(--w); margin:0 auto; padding:18px 0 72px; position:relative; z-index:1; }
-
-    /* ===== Top nav ===== */
-    .top{
-      position:sticky;
-      top:14px;
-      z-index:50;
-      display:flex;
-      justify-content:center;
-      padding:0 0 14px;
-    }
-
-    .topbar{
-      width:var(--w);
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:var(--r2);
-
-      background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
-      border:1px solid rgba(255,255,255,.07);
-      box-shadow:
-        var(--shadow2),
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 0 28px rgba(41,182,255,.08),
-        0 0 26px rgba(183,124,255,.06);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      position:relative;
-      overflow:hidden;
-    }
-    .topbar::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
-        radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
-      opacity:.55;
-      pointer-events:none;
-    }
-
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      min-width:0;
-      flex:0 0 auto;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-      position:relative;
-      z-index:1;
-    }
-    .brand img{
-      width:22px; height:22px; border-radius:10px;
-      box-shadow:0 10px 20px rgba(0,0,0,.45);
-      flex:0 0 auto;
-    }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-      opacity:.92;
-    }
-
-    .nav{
-      flex:1 1 auto;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-      padding:0 10px;
-      min-width:0;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav a{
-      font-weight:700;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:rgba(231,239,255,.78);
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid transparent;
-      background:transparent;
-      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
-    }
-    .nav a:hover{
-      transform: translateY(-1px);
-      color:rgba(231,239,255,.96);
-      background: rgba(255,255,255,.045);
-      border-color: rgba(255,255,255,.08);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 18px 48px rgba(0,0,0,.40),
-        0 0 0 6px rgba(41,182,255,.06);
-    }
-
-    .right{
-      display:flex; align-items:center; gap:10px;
-      flex:0 0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    /* ===== Neon gradient border hover (core) ===== */
-    .neon-border{
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--btn-border);
-      background: var(--btn-bg);
-      box-shadow:
-        0 18px 48px rgba(0,0,0,.42),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    /* gradient stroke */
-    .neon-border::after{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      padding:1px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-    /* subtle highlight sweep */
-    .neon-border::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
-        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
-        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-
-    .neon-border:hover{
-      transform: translateY(-1px);
-      background: var(--btn-hover-bg);
-      border-color: rgba(255,255,255,.14);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.05) inset,
-        0 22px 56px rgba(0,0,0,.60),
-        0 0 38px rgba(41,182,255,.16),
-        0 0 30px rgba(183,124,255,.11);
-    }
-    .neon-border:hover::after{ opacity:1; }
-    .neon-border:hover::before{ opacity:1; }
-
-    .pill{
-      height:38px;
-      padding:0 14px;
-      border-radius:var(--r2);
-      color:rgba(231,239,255,.90);
-      font-weight:700;
-      letter-spacing:.10em;
-      font-size:11px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
-    }
-    select.pill{
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-      padding:0 16px;
-      text-align:center;
-    }
-    select.pill option{
-      background:#070a12;
-      color:#e7efff;
-    }
-
-    .auth-pill{
-      padding:0 16px;
-      gap:8px;
-    }
-
-    /* ===== Hero ===== */
-.hero{
-  min-height:auto;
-  display:block;
-  padding: 34px 0 18px;
-}
-.hero.heroTight{ padding-top: 34px; padding-bottom: 16px; }
-
-.hero-inner{ width:100%; text-align:left; }
-
-.heroHead{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding:0;
-  margin:0;
-  background:transparent;
-  border:none;
-  border-radius:0;
-  box-shadow:none;
-  text-align:left;
-  align-items:flex-start;
-}
-
-.title{
-  margin:0;
-  font-weight:900;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-size: clamp(38px, 5.2vw, 66px);
-  line-height:1.06;
-}
-
-.updated{
-  margin:0;
-  font-size:12px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color: rgba(231,239,255,.78);
-}
-
-.lead{
-  margin: 16px 0 0;
-  max-width: 74ch;
-  font-size: 17px;
-  line-height: 1.75;
-  color: rgba(231,239,255,.86);
-}
-
-@media (max-width: 720px){
-  .hero{ padding-top: 26px; padding-bottom: 14px; }
-  .title{ letter-spacing:.05em; font-size: clamp(32px, 8vw, 48px); }
-  .lead{ font-size:16px; }
-}
-
-    /* ===== Primary button: 电竞层级更明显（conic 内光 + 更硬的霓虹描边） ===== */
-    .btn.primary{
-      /* conic 内光（不占用伪元素，避免和 neon-border 冲突） */
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.22),
-          rgba(183,124,255,.16),
-          rgba(51,255,204,.12),
-          rgba(41,182,255,.22)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
-      background-blend-mode: screen, normal;
-
-      border:1px solid rgba(41,182,255,.34);
-      color: rgba(231,239,255,.95);
-      box-shadow:
-        0 18px 52px rgba(0,0,0,.44),
-        0 0 40px rgba(41,182,255,.20),
-        0 0 28px rgba(183,124,255,.12),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position:relative;
-      overflow:hidden;
-      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
-    }
-    .btn.primary:hover{
-      transform: translateY(-1px);
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.30),
-          rgba(183,124,255,.22),
-          rgba(51,255,204,.16),
-          rgba(41,182,255,.30)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
-      background-blend-mode: screen, normal;
-
-      border-color: rgba(41,182,255,.50);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.06) inset,
-        0 26px 64px rgba(0,0,0,.62),
-        0 0 52px rgba(41,182,255,.28),
-        0 0 38px rgba(183,124,255,.16);
-    }
-
-    /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
-    .btn.primary.neon-border::after{
-      opacity:.35;
-      background: linear-gradient(120deg,
-        rgba(41,182,255,.0),
-        rgba(41,182,255,.85),
-        rgba(183,124,255,.85),
-        rgba(51,255,204,.60),
-        rgba(41,182,255,.0)
-      );
-    }
-    .btn.primary.neon-border:hover::after{ opacity:1; }
-
-    /* =========================
-       ✅ 修改点：去掉圆圈 + 放大向下箭头
-       ========================= */
-    .scrollhint{
-      margin: 26px auto 0;
-      /* 去除圆圈：不再固定宽高，不要背景/边框/圆角/阴影/毛玻璃 */
-      width: auto;
-      height: auto;
-      border: 0;
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-
-      /* 放大指示符号 */
-      display: inline-block;
-      font-size: 34px;         /* 你要更大可以改 38/42 */
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: 0;
-
-      color: rgba(231,239,255,.72);
-      text-shadow:
-        0 14px 34px rgba(0,0,0,.65),
-        0 0 18px rgba(41,182,255,.14),
-        0 0 16px rgba(183,124,255,.10);
-
-      pointer-events: none;
-      user-select: none;
-
-      animation: bob 2.4s ease-in-out infinite;
-    }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(8px); } /* 稍微更明显一点 */
-    }
-
-    /* ===== Sections ===== */
-    section{ padding: 84px 0 0; }
-
-    .section-head{
-      text-align:center;
-      margin:0 auto 20px;
-      width:min(900px, 92vw);
-    }
-
-    .section-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      color:rgba(231,239,255,.70);
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-    }
-
-    .section-title{
-      margin:14px 0 0;
-      font-size: clamp(30px, 4.0vw, 52px);
-      font-weight:900;
-      letter-spacing:.02em;
-      color:rgba(231,239,255,.86);
-      text-shadow: 0 0 18px rgba(41,182,255,.08);
-    }
-
-    .section-desc{
-      margin:10px auto 0;
-      max-width: 78ch;
-      color: rgba(154,168,198,.90);
-      font-size: 14px;
-      line-height:1.75;
-    }
-
-    .glass-block{
-      width: min(980px, 92vw);
-      margin: 26px auto 0;
-      padding: 22px 20px;
-      border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      border: 1px solid rgba(255,255,255,.06);
-      box-shadow:
-        var(--shadow),
-        0 0 0 1px rgba(255,255,255,.035) inset,
-        0 0 34px rgba(41,182,255,.06),
-        0 0 26px rgba(183,124,255,.05);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      position:relative;
-      overflow:hidden;
-    }
-    .glass-block::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(900px 240px at 20% 0%, rgba(41,182,255,.10), transparent 58%),
-        radial-gradient(900px 260px at 85% 12%, rgba(183,124,255,.09), transparent 60%);
-      opacity:.55;
-      pointer-events:none;
-    }
-
-    .list{
-      margin:0;
-      padding:0 0 0 18px;
-      text-align:left;
-      color: rgba(154,168,198,.92);
-      font-size: 14px;
-      line-height:1.8;
-      position:relative;
-      z-index:1;
-    }
-    .list li{ margin:10px 0; }
-
-    .section-actions{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:18px;
-      position:relative;
-      z-index:1;
-    }
-
-    /* footer */
-    .footer{
-      margin-top: 86px;
-      padding-top: 26px;
-      border-top: 1px solid rgba(255,255,255,.06);
-      text-align:center;
-      color: rgba(154,168,198,.78);
-    }
-    .footer .line1{
-      font-weight:700;
-      letter-spacing:.08em;
-      color: rgba(231,239,255,.72);
-      margin-bottom:8px;
-      font-size:12px;
-      text-transform: uppercase;
-    }
-    .footer .line2{
-      font-size:12px;
-      line-height:1.6;
-      color: rgba(154,168,198,.72);
-    }
-
-
-    /* ===== Footer nav ===== */
-    .footnav{
-      margin: 14px auto 0;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:10px;
-    }
-    .footnav a{
-      font-weight:800;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color: rgba(231,239,255,.70);
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.06);
-      background: rgba(255,255,255,.02);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
-      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
-    }
-    .footnav a:hover{
-      transform: translateY(-1px);
-      color: rgba(231,239,255,.92);
-      background: rgba(255,255,255,.045);
-      border-color: rgba(255,255,255,.10);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 18px 48px rgba(0,0,0,.40),
-        0 0 0 6px rgba(41,182,255,.06);
-    }
-
-
-    /* focus */
-    .neon-border:focus-visible, .nav a:focus-visible{
-      outline:none;
-      box-shadow:
-        0 0 0 2px rgba(41,182,255,.42),
-        0 0 0 6px rgba(41,182,255,.16);
-    }
-
-    /* ===== Performance knobs ===== */
-    @media (max-width: 900px){
-      .nav{ gap:10px; }
-      .nav a{ padding:10px 8px; }
-    }
-
-    /* ✅ 要求 1：移动端降低网格层 opacity，防止掉帧 */
-    @media (max-width: 760px){
-      .bgfx::after{ opacity:.12; }
-
-      .top{ top:10px; }
+    </script>
+  
+    <style>
+      :root{
+        --bg:#05060b;
+        --text:#e7efff;
+        --muted:#9aa8c6;
+  
+        /* esports neon */
+        --neon:#29b6ff;
+        --neon2:#b77cff;
+        --neon3:#33ffcc;
+  
+        --glass: rgba(12, 16, 28, .42);
+        --glass2: rgba(10, 14, 22, .30);
+  
+        --line2: rgba(255,255,255,.06);
+  
+        --shadow: 0 26px 72px rgba(0,0,0,.62);
+        --shadow2: 0 10px 26px rgba(0,0,0,.42);
+  
+        --r: 22px;
+        --r2: 999px;
+        --w: min(1100px, 92vw);
+  /* button tokens */
+        --btn-bg: rgba(255,255,255,.03);
+        --btn-border: rgba(255,255,255,.10);
+        --btn-hover-bg: rgba(255,255,255,.060);
+      }
+  
+      *{ box-sizing:border-box; }
+      html,body{ height:100%; }
+      body{
+        margin:0;
+        font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color:var(--text);
+        background: var(--bg);
+        overflow-x:hidden;
+      }
+  
+      /* ===== Dynamic esports background (CSS only) ===== */
+      .bgfx{
+        position:fixed; inset:0;
+        pointer-events:none;
+        z-index:0;
+        overflow:hidden;
+      }
+      .bgfx::before{
+        content:"";
+        position:absolute; inset:-20%;
+        background:
+          radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
+          radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
+          radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
+          radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
+        filter: blur(0px);
+        animation: fogmove 10.5s ease-in-out infinite alternate;
+        opacity:.98;
+        will-change: transform;
+        transform: translate3d(0,0,0);
+      }
+      @keyframes fogmove{
+        0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+        100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+      }
+  
+      /* animated grid drift */
+      .bgfx::after{
+        content:"";
+        position:absolute; inset:0;
+        background:
+          linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
+          radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
+          radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
+        background-size: 58px 58px, 58px 58px, auto, auto;
+        mix-blend-mode: screen;
+        opacity:.26; /* 桌面端更“强”一点 */
+        animation: griddrift 14s linear infinite;
+        will-change: background-position;
+        transform: translate3d(0,0,0);
+      }
+      @keyframes griddrift{
+        0%{ background-position: 0 0, 0 0, center, center; }
+        100%{ background-position: 140px 140px, -140px 140px, center, center; }
+      }
+  
+      /* scanlines */
+      body::before{
+        content:"";
+        position:fixed; inset:0;
+        pointer-events:none;
+        z-index:0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.045),
+          rgba(255,255,255,.045) 1px,
+          transparent 1px,
+          transparent 12px
+        );
+        opacity:.05;
+      }
+  
+      a{ color:inherit; text-decoration:none; }
+      .wrap{ width:var(--w); margin:0 auto; padding:18px 0 72px; position:relative; z-index:1; }
+  
+      /* ===== Top nav ===== */
+      .top{
+        position:sticky;
+        top:14px;
+        z-index:50;
+        display:flex;
+        justify-content:center;
+        padding:0 0 14px;
+      }
+  
       .topbar{
-        flex-wrap:wrap;
-        justify-content:space-between;
-        gap:10px;
-        padding:10px;
+        width:var(--w);
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:10px 12px;
+        border-radius:var(--r2);
+  
+        background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
+        border:1px solid rgba(255,255,255,.07);
+        box-shadow:
+          var(--shadow2),
+          0 0 0 1px rgba(255,255,255,.03) inset,
+          0 0 28px rgba(41,182,255,.08),
+          0 0 26px rgba(183,124,255,.06);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        position:relative;
+        overflow:hidden;
       }
-      .brand{ flex:1 1 auto; }
+      .topbar::before{
+        content:"";
+        position:absolute; inset:-2px;
+        background:
+          radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
+          radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
+        opacity:.55;
+        pointer-events:none;
+      }
+  
+      .brand{
+        display:flex; align-items:center; gap:10px;
+        padding:8px 12px;
+        border-radius:var(--r2);
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(255,255,255,.06);
+        min-width:0;
+        flex:0 0 auto;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+        position:relative;
+        z-index:1;
+      }
+      .brand img{
+        width:22px; height:22px; border-radius:10px;
+        box-shadow:0 10px 20px rgba(0,0,0,.45);
+        flex:0 0 auto;
+      }
+      .brand .name{
+        font-weight:800;
+        letter-spacing:.10em;
+        text-transform:uppercase;
+        font-size:11px;
+        white-space:nowrap;
+        opacity:.92;
+      }
+  
       .nav{
-        order:3;
-        width:100%;
-        justify-content:space-between;
-        gap:6px;
-        padding:0;
-      }
-      .nav a{
         flex:1 1 auto;
+        display:flex;
+        justify-content:center;
+        gap:22px;
+        padding:0 10px;
+        min-width:0;
+        position:relative;
+        z-index:1;
+      }
+  
+      .nav a{
+        font-weight:700;
+        font-size:11px;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:rgba(231,239,255,.78);
+        padding:10px 10px;
+        border-radius:12px;
+        border:1px solid transparent;
+        background:transparent;
+        transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+      }
+      .nav a:hover{
+        transform: translateY(-1px);
+        color:rgba(231,239,255,.96);
+        background: rgba(255,255,255,.045);
+        border-color: rgba(255,255,255,.08);
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,.03) inset,
+          0 18px 48px rgba(0,0,0,.40),
+          0 0 0 6px rgba(41,182,255,.06);
+      }
+  
+      .right{
+        display:flex; align-items:center; gap:10px;
+        flex:0 0 auto;
+        position:relative;
+        z-index:1;
+      }
+  
+      /* ===== Neon gradient border hover (core) ===== */
+      .neon-border{
+        position:relative;
+        overflow:hidden;
+        border:1px solid var(--btn-border);
+        background: var(--btn-bg);
+        box-shadow:
+          0 18px 48px rgba(0,0,0,.42),
+          0 0 0 1px rgba(255,255,255,.03) inset;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+      }
+      /* gradient stroke */
+      .neon-border::after{
+        content:"";
+        position:absolute;
+        inset:-1px;
+        padding:1px;
+        border-radius: inherit;
+        background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity:0;
+        transition: opacity .18s ease;
+        pointer-events:none;
+      }
+      /* subtle highlight sweep */
+      .neon-border::before{
+        content:"";
+        position:absolute;
+        inset:-2px;
+        background:
+          radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
+          radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
+          radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
+        opacity:0;
+        transition: opacity .18s ease;
+        pointer-events:none;
+      }
+  
+      .neon-border:hover{
+        transform: translateY(-1px);
+        background: var(--btn-hover-bg);
+        border-color: rgba(255,255,255,.14);
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,.05) inset,
+          0 22px 56px rgba(0,0,0,.60),
+          0 0 38px rgba(41,182,255,.16),
+          0 0 30px rgba(183,124,255,.11);
+      }
+      .neon-border:hover::after{ opacity:1; }
+      .neon-border:hover::before{ opacity:1; }
+  
+      .pill{
+        height:38px;
+        padding:0 14px;
+        border-radius:var(--r2);
+        color:rgba(231,239,255,.90);
+        font-weight:700;
+        letter-spacing:.10em;
+        font-size:11px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        user-select:none;
+        white-space:nowrap;
+      }
+      select.pill{
+        appearance:none;
+        -webkit-appearance:none;
+        -moz-appearance:none;
+        padding:0 16px;
         text-align:center;
-        font-size:10px;
-        padding:10px 6px;
       }
-      .right{ order:2; margin-left:auto; }
-      .pill{ height:36px; }
-      .btn{ width:100%; min-width:0; }
-      section{ padding-top: 68px; }
-      .glass-block{ padding:18px 16px; }
-
-      /* HUD lines shorter on small screens */
-      .hero-subbrand::before,
-      .hero-subbrand::after{
-        width:34px;
-        opacity:.75;
+      select.pill option{
+        background:#070a12;
+        color:#e7efff;
       }
-
-      /* 移动端也让箭头显眼一点（可选） */
+  
+      .auth-pill{
+        padding:0 16px;
+        gap:8px;
+      }
+  
+      /* ===== Hero ===== */
+  .hero{
+    min-height:auto;
+    display:block;
+    padding: 34px 0 18px;
+  }
+  .hero.heroTight{ padding-top: 34px; padding-bottom: 16px; }
+  
+  .hero-inner{ width:100%; text-align:left; }
+  
+  .heroHead{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:0;
+    margin:0;
+    background:transparent;
+    border:none;
+    border-radius:0;
+    box-shadow:none;
+    text-align:left;
+    align-items:flex-start;
+  }
+  
+  .title{
+    margin:0;
+    font-weight:900;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    font-size: clamp(38px, 5.2vw, 66px);
+    line-height:1.06;
+  }
+  
+  .updated{
+    margin:0;
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color: rgba(231,239,255,.78);
+  }
+  
+  .lead{
+    margin: 16px 0 0;
+    max-width: 74ch;
+    font-size: 17px;
+    line-height: 1.75;
+    color: rgba(231,239,255,.86);
+  }
+  
+  @media (max-width: 720px){
+    .hero{ padding-top: 26px; padding-bottom: 14px; }
+    .title{ letter-spacing:.05em; font-size: clamp(32px, 8vw, 48px); }
+    .lead{ font-size:16px; }
+  }
+  
+      /* ===== Primary button: 电竞层级更明显（conic 内光 + 更硬的霓虹描边） ===== */
+      .btn.primary{
+        /* conic 内光（不占用伪元素，避免和 neon-border 冲突） */
+        background:
+          conic-gradient(
+            from 210deg,
+            rgba(41,182,255,.22),
+            rgba(183,124,255,.16),
+            rgba(51,255,204,.12),
+            rgba(41,182,255,.22)
+          ),
+          linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
+        background-blend-mode: screen, normal;
+  
+        border:1px solid rgba(41,182,255,.34);
+        color: rgba(231,239,255,.95);
+        box-shadow:
+          0 18px 52px rgba(0,0,0,.44),
+          0 0 40px rgba(41,182,255,.20),
+          0 0 28px rgba(183,124,255,.12),
+          0 0 0 1px rgba(255,255,255,.03) inset;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        position:relative;
+        overflow:hidden;
+        transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+      }
+      .btn.primary:hover{
+        transform: translateY(-1px);
+        background:
+          conic-gradient(
+            from 210deg,
+            rgba(41,182,255,.30),
+            rgba(183,124,255,.22),
+            rgba(51,255,204,.16),
+            rgba(41,182,255,.30)
+          ),
+          linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
+        background-blend-mode: screen, normal;
+  
+        border-color: rgba(41,182,255,.50);
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,.06) inset,
+          0 26px 64px rgba(0,0,0,.62),
+          0 0 52px rgba(41,182,255,.28),
+          0 0 38px rgba(183,124,255,.16);
+      }
+  
+      /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
+      .btn.primary.neon-border::after{
+        opacity:.35;
+        background: linear-gradient(120deg,
+          rgba(41,182,255,.0),
+          rgba(41,182,255,.85),
+          rgba(183,124,255,.85),
+          rgba(51,255,204,.60),
+          rgba(41,182,255,.0)
+        );
+      }
+      .btn.primary.neon-border:hover::after{ opacity:1; }
+  
+      /* =========================
+         ✅ 修改点：去掉圆圈 + 放大向下箭头
+         ========================= */
       .scrollhint{
-        font-size: 36px;
+        margin: 26px auto 0;
+        /* 去除圆圈：不再固定宽高，不要背景/边框/圆角/阴影/毛玻璃 */
+        width: auto;
+        height: auto;
+        border: 0;
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+  
+        /* 放大指示符号 */
+        display: inline-block;
+        font-size: 34px;         /* 你要更大可以改 38/42 */
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: 0;
+  
+        color: rgba(231,239,255,.72);
+        text-shadow:
+          0 14px 34px rgba(0,0,0,.65),
+          0 0 18px rgba(41,182,255,.14),
+          0 0 16px rgba(183,124,255,.10);
+  
+        pointer-events: none;
+        user-select: none;
+  
+        animation: bob 2.4s ease-in-out infinite;
       }
-    }
-
-    @media (max-width: 380px){
-      .brand .name{ font-size:10px; }
-      .pill{ padding:0 12px; }
-    }
-
-    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
-    @media (prefers-reduced-motion: reduce){
-      .bgfx::before, .bgfx::after{ animation:none !important; }
-      .scrollhint{ animation:none !important; }
-      body::before{ opacity:.03; }
-    }
-
-    /* ✅ 全站字体强制 Helvetica（覆盖你原来所有 Orbitron/Inter 的局部规则） */
-    body, button, input, select, textarea,
-    .brand .name, .nav a, .pill, .kicker, .title,
-    .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
-    }
+      @keyframes bob{
+        0%,100%{ transform: translateY(0); }
+        50%{ transform: translateY(8px); } /* 稍微更明显一点 */
+      }
   
-    .heroHead{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .heroHead .title{ margin:0; }
-    .updated{
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted);
-      padding:10px 14px;
-      border-radius: var(--r2);
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 10px 26px rgba(0,0,0,.28);
-      white-space:nowrap;
-    }
-    @media (max-width: 560px){
-      .updated{ padding:8px 12px; font-size:11px; }
-    }
-
+      /* ===== Sections ===== */
+      section{ padding: 84px 0 0; }
   
-/* =========================
-   v5 — reference-like legal page styling
-   (hero + hierarchy + density)
-   ========================= */
-:root{
-  --w: min(1440px, 94vw);
+      .section-head{
+        text-align:center;
+        margin:0 auto 20px;
+        width:min(900px, 92vw);
+      }
+  
+      .section-kicker{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:8px 12px;
+        border-radius:var(--r2);
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(255,255,255,.06);
+        color:rgba(231,239,255,.70);
+        font-weight:700;
+        letter-spacing:.12em;
+        text-transform:uppercase;
+        font-size:11px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      }
+  
+      .section-title{
+        margin:14px 0 0;
+        font-size: clamp(30px, 4.0vw, 52px);
+        font-weight:900;
+        letter-spacing:.02em;
+        color:rgba(231,239,255,.86);
+        text-shadow: 0 0 18px rgba(41,182,255,.08);
+      }
+  
+      .section-desc{
+        margin:10px auto 0;
+        max-width: 78ch;
+        color: rgba(154,168,198,.90);
+        font-size: 14px;
+        line-height:1.75;
+      }
+  
+      .glass-block{
+        width: min(980px, 92vw);
+        margin: 26px auto 0;
+        padding: 22px 20px;
+        border-radius: var(--r);
+        background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+        border: 1px solid rgba(255,255,255,.06);
+        box-shadow:
+          var(--shadow),
+          0 0 0 1px rgba(255,255,255,.035) inset,
+          0 0 34px rgba(41,182,255,.06),
+          0 0 26px rgba(183,124,255,.05);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        position:relative;
+        overflow:hidden;
+      }
+      .glass-block::before{
+        content:"";
+        position:absolute; inset:-2px;
+        background:
+          radial-gradient(900px 240px at 20% 0%, rgba(41,182,255,.10), transparent 58%),
+          radial-gradient(900px 260px at 85% 12%, rgba(183,124,255,.09), transparent 60%);
+        opacity:.55;
+        pointer-events:none;
+      }
+  
+      .list{
+        margin:0;
+        padding:0 0 0 18px;
+        text-align:left;
+        color: rgba(154,168,198,.92);
+        font-size: 14px;
+        line-height:1.8;
+        position:relative;
+        z-index:1;
+      }
+      .list li{ margin:10px 0; }
+  
+      .section-actions{
+        display:flex;
+        gap:14px;
+        justify-content:center;
+        flex-wrap:wrap;
+        margin-top:18px;
+        position:relative;
+        z-index:1;
+      }
+  
+      /* footer */
+      .footer{
+        margin-top: 86px;
+        padding-top: 26px;
+        border-top: 1px solid rgba(255,255,255,.06);
+        text-align:center;
+        color: rgba(154,168,198,.78);
+      }
+      .footer .line1{
+        font-weight:700;
+        letter-spacing:.08em;
+        color: rgba(231,239,255,.72);
+        margin-bottom:8px;
+        font-size:12px;
+        text-transform: uppercase;
+      }
+      .footer .line2{
+        font-size:12px;
+        line-height:1.6;
+        color: rgba(154,168,198,.72);
+      }
+  
+  
+      /* ===== Footer nav ===== */
+      .footnav{
+        margin: 14px auto 0;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:10px;
+      }
+      .footnav a{
+        font-weight:800;
+        font-size:11px;
+        letter-spacing:.12em;
+        text-transform:uppercase;
+        color: rgba(231,239,255,.70);
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,.06);
+        background: rgba(255,255,255,.02);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+        transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+      }
+      .footnav a:hover{
+        transform: translateY(-1px);
+        color: rgba(231,239,255,.92);
+        background: rgba(255,255,255,.045);
+        border-color: rgba(255,255,255,.10);
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,.03) inset,
+          0 18px 48px rgba(0,0,0,.40),
+          0 0 0 6px rgba(41,182,255,.06);
+      }
+  
+  
+      /* focus */
+      .neon-border:focus-visible, .nav a:focus-visible{
+        outline:none;
+        box-shadow:
+          0 0 0 2px rgba(41,182,255,.42),
+          0 0 0 6px rgba(41,182,255,.16);
+      }
+  
+      /* ===== Performance knobs ===== */
+      @media (max-width: 900px){
+        .nav{ gap:10px; }
+        .nav a{ padding:10px 8px; }
+      }
+  
+      /* ✅ 要求 1：移动端降低网格层 opacity，防止掉帧 */
+      @media (max-width: 760px){
+        .bgfx::after{ opacity:.12; }
+  
+        .top{ top:10px; }
+        .topbar{
+          flex-wrap:wrap;
+          justify-content:space-between;
+          gap:10px;
+          padding:10px;
+        }
+        .brand{ flex:1 1 auto; }
+        .nav{
+          order:3;
+          width:100%;
+          justify-content:space-between;
+          gap:6px;
+          padding:0;
+        }
+        .nav a{
+          flex:1 1 auto;
+          text-align:center;
+          font-size:10px;
+          padding:10px 6px;
+        }
+        .right{ order:2; margin-left:auto; }
+        .pill{ height:36px; }
+        .btn{ width:100%; min-width:0; }
+        section{ padding-top: 68px; }
+        .glass-block{ padding:18px 16px; }
+  
+        /* HUD lines shorter on small screens */
+        .hero-subbrand::before,
+        .hero-subbrand::after{
+          width:34px;
+          opacity:.75;
+        }
+  
+        /* 移动端也让箭头显眼一点（可选） */
+        .scrollhint{
+          font-size: 36px;
+        }
+      }
+  
+      @media (max-width: 380px){
+        .brand .name{ font-size:10px; }
+        .pill{ padding:0 12px; }
+      }
+  
+      /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
+      @media (prefers-reduced-motion: reduce){
+        .bgfx::before, .bgfx::after{ animation:none !important; }
+        .scrollhint{ animation:none !important; }
+        body::before{ opacity:.03; }
+      }
+  
+      /* ✅ 全站字体强制 Helvetica（覆盖你原来所有 Orbitron/Inter 的局部规则） */
+      body, button, input, select, textarea,
+      .brand .name, .nav a, .pill, .kicker, .title,
+      .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
+        font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+      }
+    
+      .heroHead{
+        display:flex;
+        align-items:baseline;
+        justify-content:space-between;
+        gap:14px;
+        flex-wrap:wrap;
+        margin-bottom:10px;
+      }
+      .heroHead .title{ margin:0; }
+      .updated{
+        font-size:12px;
+        letter-spacing:.12em;
+        text-transform:uppercase;
+        color:var(--muted);
+        padding:10px 14px;
+        border-radius: var(--r2);
+        background: rgba(255,255,255,.03);
+        border:1px solid rgba(255,255,255,.10);
+        box-shadow: 0 10px 26px rgba(0,0,0,.28);
+        white-space:nowrap;
+      }
+      @media (max-width: 560px){
+        .updated{ padding:8px 12px; font-size:11px; }
+      }
+  
+    
+  /* =========================
+     v5 — reference-like legal page styling
+     (hero + hierarchy + density)
+     ========================= */
+  :root{
+    --w: min(1100px, 92vw);
   --legalTitle: rgba(255,255,255,.96);
-  --legalMeta: rgba(255, 140, 175, .78);
-  --divider: rgba(255,255,255,.10);
-  --divider2: rgba(255,255,255,.14);
-}
-
-.hero.heroRef{
-  padding: clamp(44px, 6.2vw, 84px) 0 18px;
-  text-align: left;
-}
-.hero.heroRef .title{
-  margin: 0;
-  font-weight: 700;
-  font-size: clamp(42px, 4.4vw, 58px);
-  letter-spacing: .01em;
-  color: var(--legalTitle);
-  text-transform: none;
-}
-.hero.heroRef .updated{
-  margin-top: 12px;
-  font-size: 13px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--legalMeta);
-}
-.heroRule{
-  margin-top: 18px;
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--divider2), var(--divider), transparent);
-}
-
-.section{ padding-top: 22px; }
-
-.legal-body.card{
-  background: rgba(0,0,0,.36);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 22px 60px rgba(0,0,0,.55);
-}
-
-.policy{
-  max-width: 90ch;
-}
-
-.policy p{
-  line-height: 1.78;
-  margin: 12px 0 0;
-}
-
-.policy ul, .policy ol{ margin: 12px 0 0 18px; }
-.policy li{ margin: 10px 0 0; line-height: 1.72; }
-
-.policy h2{
-  margin: 34px 0 0;
-  font-size: 13px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.policy h2::after{
-  content: "";
-  display: block;
-  height: 1px;
-  background: var(--divider);
-  margin: 14px 0 18px;
-}
-
-.policy h3{
-  margin: 18px 0 0;
-  font-size: 14px;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  opacity: .92;
-}
-
-.policy blockquote{
-  margin: 16px 0 0;
-  padding: 14px 16px;
-  border-left: 2px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.03);
-}
-
-@media (max-width: 980px){
-  .hero.heroRef{ padding: 40px 0 14px; }
-  .policy{ max-width: 100%; }
-}
-
-
-
-/* ===== v6 reading-layout overrides (reference-style full page) ===== */
-:root{
-  --divider: rgba(255,255,255,.10);
-  --divider2: rgba(255,255,255,.06);
-  --legalMeta: rgba(255,255,255,.55);
-}
-
-.main{ padding-bottom: 48px; }
-
-/* Wider, left-aligned reading canvas */
-.section{ padding-top: 10px; }
-.legal-grid{
-  display:grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  gap: 34px;
-  align-items:start;
-}
-
-/* TOC as a slim rail (not a card) */
-.legal-toc{
-  position: sticky;
-  top: 18px;
-  padding: 14px 0 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-.toc-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  padding: 0 0 12px;
-  border-bottom: 1px solid var(--divider2);
-}
-.toc-title{
-  font-size: 12px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.72);
-}
-.toc-top{
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.10);
-}
-.toc{
-  margin-top: 12px;
-  padding-left: 0;
-}
-.toc a{
-  display:block;
-  padding: 9px 10px;
-  margin: 6px 0;
-  border-radius: 12px;
-  color: rgba(231,239,255,.86);
-  text-decoration:none;
-  border: 1px solid transparent;
-  background: transparent;
-}
-.toc a:hover{
-  background: rgba(255,255,255,.04);
-  border-color: rgba(255,255,255,.10);
-}
-.toc a.active{
-  background: rgba(41,182,255,.08);
-  border-color: rgba(41,182,255,.28);
-}
-
-/* Body is not a card; it's a structured document */
-.legal-body{
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-.policyWrap{
-  padding: 0;
-}
-
-/* Typography + rhythm */
-.policy{
-  max-width: 92ch;
-  font-size: 15.5px;
-  line-height: 1.85;
-  color: rgba(231,239,255,.92);
-}
-.policy p{
-  margin: 14px 0 0;
-  color: rgba(231,239,255,.90);
-}
-.policy ul, .policy ol{ margin: 14px 0 0 20px; }
-.policy li{ margin: 10px 0 0; line-height: 1.78; }
-
-/* Section headers like the reference: divider line, then small caps heading */
-.policy h2{
-  margin: 40px 0 0;
-  font-size: 12.5px;
-  letter-spacing: .20em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.92);
-}
-.policy h2::before{
-  content:"";
-  display:block;
-  height:1px;
-  background: linear-gradient(90deg, var(--divider), var(--divider2), transparent);
-  margin: 0 0 18px;
-}
-.policy h2:first-of-type{
-  margin-top: 22px;
-}
-.policy h2:first-of-type::before{
-  display:none;
-}
-/* remove prior after-divider if present */
-.policy h2::after{ content:none !important; }
-
-.policy h3{
-  margin: 18px 0 0;
-  font-size: 13px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.82);
-}
-
-.policy blockquote{
-  margin: 16px 0 0;
-  padding: 14px 16px;
-  border-left: 2px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.03);
-  border-radius: 12px;
-}
-
-/* Hero tweaks: closer coupling */
-.hero.heroRef{
-  padding: 46px 0 14px;
-}
-.hero.heroRef .title{
-  margin: 0;
-  font-size: clamp(34px, 4.2vw, 54px);
-  letter-spacing: .02em;
-}
-.hero.heroRef .updated{
-  margin-top: 10px;
-  font-size: 13px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--legalMeta);
-}
-.hero.heroRef .lead{
-  margin-top: 14px;
-  max-width: 90ch;
-  line-height: 1.75;
-  color: rgba(231,239,255,.86);
-}
-
-/* Responsive: collapse TOC */
-@media (max-width: 980px){
-  .legal-grid{ grid-template-columns: 1fr; gap: 18px; }
-  .legal-toc{ position: relative; top: auto; padding-top: 0; }
-  .policy{ max-width: 100%; font-size: 15.5px; }
-}
-
-
-
-/* ===== v7 overrides: remove side TOC, centered hero, tighter meta pill ===== */
-.hero.heroRef{ padding: 28px 0 14px; }
-.hero-inner{ text-align:center; }
-.heroRef .title{ text-align:center; margin-left:auto; margin-right:auto; }
-.heroRef .lead{ margin-left:auto; margin-right:auto; text-align:center; max-width: 72ch; }
-.updated{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap: 8px;
-  padding: 7px 12px;
-  width: auto;
-  max-width: 100%;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.05);
-  white-space: nowrap;
-}
-
-/* collapse layout to single column */
-.legal-grid{ display:block; }
-.legal-body{
-  max-width: 92ch;
-  margin: 0 auto;
-}
-.section{ padding-top: 4px; }
-
-/* optional: slightly stronger section rhythm */
-.policy h2{
-  margin-top: 34px;
-}
-.policy p{ margin: 12px 0; }
-.policy ul, .policy ol{ margin: 12px 0 16px; }
-
-</style>
+    --legalMeta: rgba(255, 140, 175, .78);
+    --divider: rgba(255,255,255,.10);
+    --divider2: rgba(255,255,255,.14);
+  }
+  
+  .hero.heroRef{
+    padding: clamp(44px, 6.2vw, 84px) 0 18px;
+    text-align: left;
+  }
+  .hero.heroRef .title{
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(42px, 4.4vw, 58px);
+    letter-spacing: .01em;
+    color: var(--legalTitle);
+    text-transform: none;
+  }
+  .hero.heroRef .updated{
+    margin-top: 12px;
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--legalMeta);
+  }
+  .heroRule{
+    margin-top: 18px;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--divider2), var(--divider), transparent);
+  }
+  
+  .section{ padding-top: 22px; }
+  
+  .legal-body.card{
+    background: rgba(0,0,0,.36);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 22px 60px rgba(0,0,0,.55);
+  }
+  
+  .policy{
+    max-width: 90ch;
+  }
+  
+  .policy p{
+    line-height: 1.78;
+    margin: 12px 0 0;
+  }
+  
+  .policy ul, .policy ol{ margin: 12px 0 0 18px; }
+  .policy li{ margin: 10px 0 0; line-height: 1.72; }
+  
+  .policy h2{
+    margin: 34px 0 0;
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  .policy h2::after{
+    content: "";
+    display: block;
+    height: 1px;
+    background: var(--divider);
+    margin: 14px 0 18px;
+  }
+  
+  .policy h3{
+    margin: 18px 0 0;
+    font-size: 14px;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    opacity: .92;
+  }
+  
+  .policy blockquote{
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border-left: 2px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.03);
+  }
+  
+  @media (max-width: 980px){
+    .hero.heroRef{ padding: 40px 0 14px; }
+    .policy{ max-width: 100%; }
+  }
+  
+  
+  
+  /* ===== v6 reading-layout overrides (reference-style full page) ===== */
+  :root{
+    --divider: rgba(255,255,255,.10);
+    --divider2: rgba(255,255,255,.06);
+    --legalMeta: rgba(255,255,255,.55);
+  }
+  
+  .main{ padding-bottom: 48px; }
+  
+  /* Wider, left-aligned reading canvas */
+  .section{ padding-top: 10px; }
+  .legal-grid{
+    display:grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 34px;
+    align-items:start;
+  }
+  
+  /* TOC as a slim rail (not a card) */
+  .legal-toc{
+    position: sticky;
+    top: 18px;
+    padding: 14px 0 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .toc-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--divider2);
+  }
+  .toc-title{
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.72);
+  }
+  .toc-top{
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.10);
+  }
+  .toc{
+    margin-top: 12px;
+    padding-left: 0;
+  }
+  .toc a{
+    display:block;
+    padding: 9px 10px;
+    margin: 6px 0;
+    border-radius: 12px;
+    color: rgba(231,239,255,.86);
+    text-decoration:none;
+    border: 1px solid transparent;
+    background: transparent;
+  }
+  .toc a:hover{
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.10);
+  }
+  .toc a.active{
+    background: rgba(41,182,255,.08);
+    border-color: rgba(41,182,255,.28);
+  }
+  
+  /* Body is not a card; it's a structured document */
+  .legal-body{
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .policyWrap{
+    padding: 0;
+  }
+  
+  /* Typography + rhythm */
+  .policy{
+    max-width: 92ch;
+    font-size: 15.5px;
+    line-height: 1.85;
+    color: rgba(231,239,255,.92);
+  }
+  .policy p{
+    margin: 14px 0 0;
+    color: rgba(231,239,255,.90);
+  }
+  .policy ul, .policy ol{ margin: 14px 0 0 20px; }
+  .policy li{ margin: 10px 0 0; line-height: 1.78; }
+  
+  /* Section headers like the reference: divider line, then small caps heading */
+  .policy h2{
+    margin: 40px 0 0;
+    font-size: 12.5px;
+    letter-spacing: .20em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.92);
+  }
+  .policy h2::before{
+    content:"";
+    display:block;
+    height:1px;
+    background: linear-gradient(90deg, var(--divider), var(--divider2), transparent);
+    margin: 0 0 18px;
+  }
+  .policy h2:first-of-type{
+    margin-top: 22px;
+  }
+  .policy h2:first-of-type::before{
+    display:none;
+  }
+  /* remove prior after-divider if present */
+  .policy h2::after{ content:none !important; }
+  
+  .policy h3{
+    margin: 18px 0 0;
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.82);
+  }
+  
+  .policy blockquote{
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border-left: 2px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.03);
+    border-radius: 12px;
+  }
+  
+  /* Hero tweaks: closer coupling */
+  .hero.heroRef{
+    padding: 46px 0 14px;
+  }
+  .hero.heroRef .title{
+    margin: 0;
+    font-size: clamp(34px, 4.2vw, 54px);
+    letter-spacing: .02em;
+  }
+  .hero.heroRef .updated{
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--legalMeta);
+  }
+  .hero.heroRef .lead{
+    margin-top: 14px;
+    max-width: 90ch;
+    line-height: 1.75;
+    color: rgba(231,239,255,.86);
+  }
+  
+  /* Responsive: collapse TOC */
+  @media (max-width: 980px){
+    .legal-grid{ grid-template-columns: 1fr; gap: 18px; }
+    .legal-toc{ position: relative; top: auto; padding-top: 0; }
+    .policy{ max-width: 100%; font-size: 15.5px; }
+  }
+  
+  
+  
+  /* ===== v7 overrides: remove side TOC, centered hero, tighter meta pill ===== */
+  .hero.heroRef{ padding: 28px 0 14px; }
+  .hero-inner{ text-align:center; }
+  .heroRef .title{ text-align:center; margin-left:auto; margin-right:auto; }
+  .heroRef .lead{ margin-left:auto; margin-right:auto; text-align:center; max-width: 72ch; }
+  .updated{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap: 8px;
+    padding: 7px 12px;
+    width: auto;
+    max-width: 100%;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.05);
+    white-space: nowrap;
+  }
+  
+  /* collapse layout to single column */
+  .legal-grid{ display:block; }
+  .legal-body{
+    max-width: 92ch;
+    margin: 0 auto;
+  }
+  .section{ padding-top: 4px; }
+  
+  /* optional: slightly stronger section rhythm */
+  .policy h2{
+    margin-top: 34px;
+  }
+  .policy p{ margin: 12px 0; }
+  .policy ul, .policy ol{ margin: 12px 0 16px; }
+  
+  </style>
 </body>
 </html>
