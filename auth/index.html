@@ -1,55 +1,915 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Authenticator — Roshine Account Store</title>
-<link rel="icon" href="/assets/logo.png">
-<link rel="stylesheet" href="/assets/base.css">
-<link rel="stylesheet" href="/assets/auth.css">
-<script src="/assets/i18n-auth.js" defer></script>
-<script src="/assets/auth.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Authenticator — Roshine Account Store</title>
+  <link rel="icon" href="/assets/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 你原来的字体链接保留；实际生效字体已强制为 Helvetica -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800;900&display=swap">
+
+  <style>
+    :root{
+      --bg:#05060b;
+      --text:#e7efff;
+      --muted:#9aa8c6;
+
+      --neon:#29b6ff;
+      --neon2:#b77cff;
+      --neon3:#33ffcc;
+
+      --shadow: 0 26px 72px rgba(0,0,0,.62);
+      --shadow2: 0 10px 26px rgba(0,0,0,.42);
+
+      --r: 22px;
+      --r2: 999px;
+      --w: min(1100px, 92vw);
+
+      --btn-bg: rgba(255,255,255,.03);
+      --btn-border: rgba(255,255,255,.10);
+      --btn-hover-bg: rgba(255,255,255,.060);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* ===== Dynamic esports background (synced with Page A) ===== */
+    .bgfx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .bgfx::before{
+      content:"";
+      position:absolute; inset:-20%;
+      background:
+        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
+        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
+        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
+        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
+      animation: fogmove 10.5s ease-in-out infinite alternate;
+      opacity:.98;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes fogmove{
+      0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+      100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+    }
+
+    /* animated grid drift + glow layers */
+    .bgfx::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
+        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
+        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
+      background-size: 58px 58px, 58px 58px, auto, auto;
+      mix-blend-mode: screen;
+      opacity:.26;
+      animation: griddrift 14s linear infinite;
+      will-change: background-position;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes griddrift{
+      0%{ background-position: 0 0, 0 0, center, center; }
+      100%{ background-position: 140px 140px, -140px 140px, center, center; }
+    }
+
+    /* scanlines */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.045) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+      opacity:.05;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 70px; position:relative; z-index:1; }
+
+    /* ===== Neon gradient border hover (core) ===== */
+    .neon-border{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--btn-border);
+      background: var(--btn-bg);
+      box-shadow:
+        0 18px 48px rgba(0,0,0,.42),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .neon-border::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      padding:1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .neon-border::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
+        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
+        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .neon-border:hover{
+      transform: translateY(-1px);
+      background: var(--btn-hover-bg);
+      border-color: rgba(255,255,255,.14);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 22px 56px rgba(0,0,0,.60),
+        0 0 38px rgba(41,182,255,.16),
+        0 0 30px rgba(183,124,255,.11);
+    }
+    .neon-border:hover::after{ opacity:1; }
+    .neon-border:hover::before{ opacity:1; }
+
+    /* ===== Top nav (synced) ===== */
+    .top{
+      position:sticky;
+      top:14px;
+      z-index:50;
+      display:flex;
+      justify-content:center;
+      padding:0 0 14px;
+    }
+    .topbar{
+      width:var(--w);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      border-radius:var(--r2);
+
+      background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:
+        var(--shadow2),
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 0 28px rgba(41,182,255,.08),
+        0 0 26px rgba(183,124,255,.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position:relative;
+      overflow:hidden;
+    }
+    .topbar::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
+        radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:var(--r2);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      min-width:0;
+      flex:0 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      position:relative;
+      z-index:1;
+    }
+    .brand img{
+      width:22px; height:22px; border-radius:10px;
+      box-shadow:0 10px 20px rgba(0,0,0,.45);
+      flex:0 0 auto;
+    }
+    .brand .name{
+      font-weight:800;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      white-space:nowrap;
+      opacity:.92;
+    }
+
+    .nav{
+      flex:1 1 auto;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+      padding:0 10px;
+      min-width:0;
+      position:relative;
+      z-index:1;
+    }
+    .nav a{
+      font-weight:700;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(231,239,255,.78);
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+      background:transparent;
+      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+    }
+    .nav a:hover{
+      transform: translateY(-1px);
+      color:rgba(231,239,255,.96);
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.08);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.03) inset,
+        0 18px 48px rgba(0,0,0,.40),
+        0 0 0 6px rgba(41,182,255,.06);
+    }
+
+    .right{
+      display:flex; align-items:center; gap:10px;
+      flex:0 0 auto;
+      position:relative;
+      z-index:1;
+    }
+    .pill{
+      height:38px;
+      padding:0 14px;
+      border-radius:var(--r2);
+      color:rgba(231,239,255,.90);
+      font-weight:700;
+      letter-spacing:.10em;
+      font-size:11px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    select.pill{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      padding:0 16px;
+      text-align:center;
+    }
+    select.pill option{
+      background:#070a12;
+      color:#e7efff;
+    }
+
+    /* ===== Page ===== */
+    .page{
+      min-height: calc(100svh - 130px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 34px 0 0;
+    }
+
+    .panel{
+      width:min(720px, 92vw);
+      padding: 26px 20px;
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px rgba(255,255,255,.035) inset,
+        0 0 34px rgba(41,182,255,.06),
+        0 0 26px rgba(183,124,255,.05);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      position:relative;
+      overflow:hidden;
+      z-index:1;
+    }
+    .panel::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 240px at 20% 0%, rgba(41,182,255,.10), transparent 58%),
+        radial-gradient(900px 260px at 85% 12%, rgba(183,124,255,.09), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(41,182,255,.14), transparent);
+      transform:rotate(12deg);
+      animation:sweep 7.2s linear infinite;
+      opacity:.26;
+      pointer-events:none;
+    }
+    @keyframes sweep{
+      0%{ transform:translateX(-35%) rotate(12deg); opacity:0; }
+      12%{ opacity:.26; }
+      70%{ opacity:.14; }
+      100%{ transform:translateX(35%) rotate(12deg); opacity:0; }
+    }
+
+    .panel-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+      position:relative;
+      z-index:1;
+    }
+    .panel-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:rgba(231,239,255,.82);
+    }
+
+    .code{
+      text-align:center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(42px, 7.6vw, 78px);
+      font-weight:900;
+      letter-spacing:.18em;
+      margin: 18px 0 10px;
+      color:rgba(231,239,255,.92);
+      text-shadow:
+        0 0 24px rgba(41,182,255,.10),
+        0 0 20px rgba(183,124,255,.08);
+      position:relative;
+      z-index:1;
+    }
+
+    .hint{
+      text-align:center;
+      color: rgba(154,168,198,.82);
+      font-size: 13px;
+      margin-bottom:14px;
+      position:relative;
+      z-index:1;
+    }
+
+    .barwrap{
+      height:12px;
+      background: rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
+      position:relative;
+      z-index:1;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(41,182,255,.45), rgba(41,182,255,.95), rgba(183,124,255,.55));
+      background-size:200% 100%;
+      animation: stripe 1.3s linear infinite;
+      transition:width .15s linear;
+    }
+    @keyframes stripe{
+      0%{ background-position:0% 0; }
+      100%{ background-position:200% 0; }
+    }
+
+    .field-label{
+      margin-top:20px;
+      font-size:13px;
+      color: rgba(231,239,255,.78);
+      font-weight:700;
+      letter-spacing:.04em;
+      position:relative;
+      z-index:1;
+    }
+    input{
+      width:100%;
+      margin-top:10px;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(231,239,255,.92);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      outline:none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.03),
+        0 0 0 1px rgba(41,182,255,.10);
+      transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+      position:relative;
+      z-index:1;
+    }
+    input::placeholder{ color: rgba(154,168,198,.65); }
+    input:focus{
+      border-color: rgba(41,182,255,.38);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.04),
+        0 0 0 2px rgba(41,182,255,.24),
+        0 0 34px rgba(41,182,255,.12);
+      background: rgba(255,255,255,.045);
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    button{
+      flex:1 1 180px;
+      height:44px;
+      border-radius:16px;
+      color: rgba(231,239,255,.92);
+      font-weight:700;
+      letter-spacing:.08em;
+      font-size:12px;
+      cursor:pointer;
+      background: transparent;
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    /* ===== Primary button synced with Page A ===== */
+    button.primary{
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.22),
+          rgba(183,124,255,.16),
+          rgba(51,255,204,.12),
+          rgba(41,182,255,.22)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
+      background-blend-mode: screen, normal;
+      border:1px solid rgba(41,182,255,.34);
+      box-shadow:
+        0 18px 52px rgba(0,0,0,.44),
+        0 0 40px rgba(41,182,255,.20),
+        0 0 28px rgba(183,124,255,.12),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position:relative;
+      overflow:hidden;
+      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    }
+    button.primary:hover{
+      transform: translateY(-1px);
+      background:
+        conic-gradient(
+          from 210deg,
+          rgba(41,182,255,.30),
+          rgba(183,124,255,.22),
+          rgba(51,255,204,.16),
+          rgba(41,182,255,.30)
+        ),
+        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
+      background-blend-mode: screen, normal;
+      border-color: rgba(41,182,255,.50);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 26px 64px rgba(0,0,0,.62),
+        0 0 52px rgba(41,182,255,.28),
+        0 0 38px rgba(183,124,255,.16);
+    }
+
+    /* Primary 的霓虹描边更明显（默认就有一点，hover 直接拉满） */
+    button.primary.neon-border::after{
+      opacity:.35;
+      background: linear-gradient(120deg,
+        rgba(41,182,255,.0),
+        rgba(41,182,255,.85),
+        rgba(183,124,255,.85),
+        rgba(51,255,204,.60),
+        rgba(41,182,255,.0)
+      );
+    }
+    button.primary.neon-border:hover::after{ opacity:1; }
+
+    .status{
+      margin-top:10px;
+      text-align:center;
+      font-size:12px;
+      min-height:18px;
+      position:relative;
+      z-index:1;
+    }
+    .status.ok{ color:#4cd18c; }
+    .status.err{ color:#ff6b6b; }
+
+    .foot{
+      margin-top:18px;
+      text-align:center;
+      color: rgba(154,168,198,.70);
+      font-size: 12px;
+      line-height:1.6;
+      position:relative;
+      z-index:1;
+    }
+
+    .neon-border:focus-visible, .nav a:focus-visible, input:focus-visible, button:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(41,182,255,.42),
+        0 0 0 6px rgba(41,182,255,.16);
+    }
+
+    /* ===== Mobile (synced) ===== */
+    @media (max-width:760px){
+      .bgfx::after{ opacity:.12; } /* ✅ A 的移动端掉帧保护 */
+
+      .top{ top:10px; }
+      .topbar{
+        flex-wrap:wrap;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px;
+      }
+      .brand{ flex:1 1 auto; }
+      .nav{
+        order:3;
+        width:100%;
+        justify-content:space-between;
+        gap:6px;
+        padding:0;
+      }
+      .nav a{
+        flex:1 1 auto;
+        text-align:center;
+        font-size:10px;
+        padding:10px 6px;
+      }
+      .right{ order:2; margin-left:auto; }
+      .pill{ height:36px; }
+      .panel{ padding:20px 16px; }
+      .row{ gap:10px; }
+      button{ flex:1 1 100%; }
+    }
+
+    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
+    @media (prefers-reduced-motion: reduce){
+      .bgfx::before, .bgfx::after{ animation:none !important; }
+      .panel::after{ animation:none !important; opacity:.10 !important; }
+      body::before{ opacity:.03 !important; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="bgfx" aria-hidden="true"></div>
+  <div class="bgfx" aria-hidden="true"></div>
 
-<div class="top">
-  <div class="topbar">
-    <div class="brand">
-      <img src="/assets/logo.png" alt="Logo">
-      <div class="name">ROSHINE ACCOUNT STORE.</div>
-    </div>
-
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="/auth/">Authenticator</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/terms/">Terms</a>
-    </nav>
-  </div>
-</div>
-
-<main class="wrap">
-  <div class="page">
-    <div class="panel">
-      <div class="panel-title">Authenticator</div>
-      <div id="code" class="code">--------</div>
-      <div id="remain" class="hint"></div>
-      <div class="barwrap"><div id="bar" class="bar"></div></div>
-
-      <div class="field-label">Private Key</div>
-      <input id="secret" class="neon-border" placeholder="Private Key">
-
-      <div class="row">
-        <button id="copy" class="primary neon-border" type="button">Copy Code</button>
-        <button id="clear" class="neon-border" type="button">Clear Key</button>
+  <div class="top">
+    <div class="topbar">
+      <div class="brand">
+        <img src="/assets/logo.png" alt="Logo">
+        <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
       </div>
 
-      <div id="status" class="status"></div>
-      <div id="footer" class="foot"></div>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#home" id="navHome">Home</a>
+        <a href="/#services" id="navServices">Services</a>
+        <a href="/#warranty" id="navWarranty">Warranty</a>
+        <a href="/#faq" id="navFaq">FAQ</a>
+        <a href="/#contact" id="navContact">Contact</a>
+      </nav>
+
+      <div class="right">
+        <select class="pill neon-border" id="langSelect" title="Language" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+          <option value="de">DE</option>
+          <option value="ar">AR</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <!-- Synced with Page A right-side action -->
+        <a class="pill neon-border" href="/" id="backBtn" aria-label="Back">
+          <span id="backBtnText">Back</span>
+        </a>
+      </div>
     </div>
   </div>
-</main>
+
+  <main class="wrap">
+    <div class="page">
+      <div class="panel" role="region" aria-label="Authenticator panel">
+        <div class="panel-top">
+          <div class="panel-title">
+            <span id="panelTitleText">Authenticator</span>
+          </div>
+        </div>
+
+        <div class="code" id="code">--------</div>
+        <div class="hint" id="remain"></div>
+        <div class="barwrap"><div class="bar" id="bar"></div></div>
+
+        <div class="field-label" id="secretLabel">Please enter your Private Key</div>
+        <input id="secret" class="neon-border" placeholder="Private Key" autocomplete="off" spellcheck="false" />
+
+        <div class="row">
+          <button class="primary neon-border" id="copy">Copy Code</button>
+          <button class="neon-border" id="clear">Clear Key</button>
+        </div>
+
+        <div class="status" id="status"></div>
+        <div class="foot" id="footer"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const DIGITS = 8;
+    const PERIOD = 30;
+    const LANG_KEY = "locale-choice";
+
+    const i18n = {
+      en: {
+        nav:{home:"Home",services:"Services",warranty:"Warranty",faq:"FAQ",contact:"Contact"},
+        back:"Back",
+        panelTitle:"Authenticator",
+        secretLabel:"Please enter your Private Key",
+        placeholder:"Private Key",
+        copy:"Copy Code",
+        clear:"Clear Key",
+        copied:"Copied",
+        copyBlocked:"Copy blocked",
+        enterKeyError:"Enter your Private Key",
+        invalidKey:"Invalid Private Key",
+        footer:"© 2021–2026 Roshine Account Store. All rights reserved — your reliable account supplier."
+      },
+      fr: {
+        nav:{home:"Accueil",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Contact"},
+        back:"Retour",
+        panelTitle:"Authenticator",
+        secretLabel:"Veuillez entrer votre clé privée",
+        placeholder:"Clé privée",
+        copy:"Copier le code",
+        clear:"Effacer",
+        copied:"Copié",
+        copyBlocked:"Copie bloquée",
+        enterKeyError:"Entrez votre clé privée",
+        invalidKey:"Clé privée invalide",
+        footer:"© 2021–2026 Roshine Account Store. Tous droits réservés — votre fournisseur fiable."
+      },
+      de: {
+        nav:{home:"Home",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Kontakt"},
+        back:"Zurück",
+        panelTitle:"Authenticator",
+        secretLabel:"Bitte Private Key eingeben",
+        placeholder:"Private Key",
+        copy:"Code kopieren",
+        clear:"Löschen",
+        copied:"Kopiert",
+        copyBlocked:"Kopieren blockiert",
+        enterKeyError:"Bitte Private Key eingeben",
+        invalidKey:"Ungültiger Private Key",
+        footer:"© 2021–2026 Roshine Account Store. Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
+      },
+      ar: {
+        nav:{home:"الرئيسية",services:"الخدمات",warranty:"الضمان",faq:"الأسئلة",contact:"تواصل"},
+        back:"رجوع",
+        panelTitle:"Authenticator",
+        secretLabel:"يرجى إدخال Private Key",
+        placeholder:"Private Key",
+        copy:"نسخ الرمز",
+        clear:"مسح",
+        copied:"تم النسخ",
+        copyBlocked:"تم منع النسخ",
+        enterKeyError:"أدخل Private Key",
+        invalidKey:"Private Key غير صالح",
+        footer:"© 2021–2026 Roshine Account Store. جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
+      },
+      zh: {
+        nav:{home:"主页",services:"服务",warranty:"质保",faq:"FAQ",contact:"联系"},
+        back:"返回",
+        panelTitle:"Authenticator",
+        secretLabel:"请输入你的安全令 Private Key",
+        placeholder:"Private Key",
+        copy:"复制验证码",
+        clear:"清空",
+        copied:"已复制",
+        copyBlocked:"浏览器禁止复制",
+        enterKeyError:"请输入 Private Key",
+        invalidKey:"无效的 Private Key",
+        footer:"© 2021–2026 Roshine Account Store. All rights reserved — your reliable account supplier."
+      }
+    };
+
+    function detectLang(){
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && i18n[saved]) return saved;
+
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("zh")) return "zh";
+      if (nav.startsWith("fr")) return "fr";
+      if (nav.startsWith("de")) return "de";
+      if (nav.startsWith("ar")) return "ar";
+      return "en";
+    }
+
+    let currentLang = detectLang();
+    function t(key){
+      return (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key;
+    }
+
+    function applyLang(lang){
+      if (!i18n[lang]) lang = "en";
+      currentLang = lang;
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
+
+      const sel = document.getElementById("langSelect");
+      if (sel) sel.value = lang;
+
+      document.getElementById("navHome").textContent = i18n[lang].nav.home;
+      document.getElementById("navServices").textContent = i18n[lang].nav.services;
+      document.getElementById("navWarranty").textContent = i18n[lang].nav.warranty;
+      document.getElementById("navFaq").textContent = i18n[lang].nav.faq;
+      document.getElementById("navContact").textContent = i18n[lang].nav.contact;
+
+      document.getElementById("backBtnText").textContent = i18n[lang].back;
+
+      document.getElementById("panelTitleText").textContent = i18n[lang].panelTitle;
+      document.getElementById("secretLabel").textContent = i18n[lang].secretLabel;
+      document.getElementById("secret").placeholder = i18n[lang].placeholder;
+      document.getElementById("copy").textContent = i18n[lang].copy;
+      document.getElementById("clear").textContent = i18n[lang].clear;
+      document.getElementById("footer").textContent = i18n[lang].footer;
+    }
+
+    applyLang(currentLang);
+    document.getElementById("langSelect").addEventListener("change", e=>{
+      const lang = e.target.value;
+      applyLang(lang);
+      localStorage.setItem(LANG_KEY, lang);
+      gen();
+    });
+
+    function getKeyFromURL(){
+      const u = new URL(location.href);
+      const paramKey = u.searchParams.get("key");
+      if (paramKey && /^[0-9a-fA-F]+$/.test(paramKey)) return paramKey;
+
+      const parts = u.pathname.split("/").filter(Boolean);
+      if (parts.length){
+        const last = parts[parts.length - 1];
+        if (/^[0-9a-fA-F]+$/.test(last)) return last;
+      }
+      return null;
+    }
+
+    const $ = id => document.getElementById(id);
+
+    function hexToBytes(s){
+      s = s.trim().replace(/^0x/i,"").replace(/[^0-9a-f]/ig,"");
+      if (!s) throw new Error("ERR_EMPTY_KEY");
+      if (s.length % 2) throw new Error("ERR_INVALID_KEY");
+      return Uint8Array.from(s.match(/../g).map(x => parseInt(x,16)));
+    }
+    function counterBytes(c){
+      const b = new Uint8Array(8); let x = BigInt(c);
+      for (let i = 7; i >= 0; i--){
+        b[i] = Number(x & 0xffn);
+        x >>= 8n;
+      }
+      return b;
+    }
+    async function hmacSha1(key,msg){
+      const k = await crypto.subtle.importKey("raw", key, {name:"HMAC", hash:"SHA-1"}, false, ["sign"]);
+      return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));
+    }
+    function truncate(mac){
+      const o = mac[mac.length - 1] & 0x0f;
+      return (((mac[o]   & 0x7f) << 24) |
+              ((mac[o+1] & 0xff) << 16) |
+              ((mac[o+2] & 0xff) << 8)  |
+              ( mac[o+3] & 0xff)) >>> 0;
+    }
+    function fmt(n){
+      const raw = (n % (10**DIGITS)).toString().padStart(DIGITS, "0");
+      return raw.slice(0,4) + " " + raw.slice(4);
+    }
+
+    async function gen(){
+      const statusEl = $("status");
+      try{
+        const key = hexToBytes($("secret").value);
+        const ctr = Math.floor(Date.now()/1000 / PERIOD);
+        const mac = await hmacSha1(key, counterBytes(ctr));
+        $("code").textContent = fmt(truncate(mac));
+        if (statusEl){
+          statusEl.textContent = "";
+          statusEl.classList.remove("err","ok");
+        }
+      }catch(e){
+        $("code").textContent = "--------";
+        if (!statusEl) return;
+        let msg;
+        if (e.message === "ERR_EMPTY_KEY") msg = t("enterKeyError");
+        else if (e.message === "ERR_INVALID_KEY") msg = t("invalidKey");
+        else msg = e.message;
+        statusEl.textContent = msg;
+        statusEl.classList.add("err");
+        statusEl.classList.remove("ok");
+      }
+    }
+
+    function tick(){
+      const s   = Math.floor(Date.now()/1000);
+      const rem = PERIOD - (s % PERIOD);
+      $("remain").textContent = `${rem}s`;
+      $("bar").style.width    = ((PERIOD - rem) / PERIOD * 100) + "%";
+    }
+
+    let last = -1;
+    setInterval(() => {
+      tick();
+      const s = Math.floor(Date.now()/1000);
+      if (s !== last){
+        last = s;
+        gen();
+      }
+    }, 150);
+
+    $("secret").addEventListener("input", gen);
+
+    $("copy").addEventListener("click", async () => {
+      const v = $("code").textContent;
+      const statusEl = $("status");
+      if (v.includes("-")) return;
+      try{
+        await navigator.clipboard.writeText(v.replace(/\s/g,""));
+        if (statusEl){
+          statusEl.textContent = t("copied");
+          statusEl.classList.remove("err");
+          statusEl.classList.add("ok");
+        }
+      }catch{
+        if (statusEl){
+          statusEl.textContent = t("copyBlocked");
+          statusEl.classList.remove("ok");
+          statusEl.classList.add("err");
+        }
+      }
+    });
+
+    $("clear").addEventListener("click", () => {
+      $("secret").value = "";
+      $("code").textContent = "--------";
+      const statusEl = $("status");
+      if (statusEl){
+        statusEl.textContent = "";
+        statusEl.classList.remove("err","ok");
+      }
+    });
+
+    const urlKey = getKeyFromURL();
+    if (urlKey) $("secret").value = urlKey;
+
+    tick();
+    gen();
+  </script>
 </body>
 </html>
