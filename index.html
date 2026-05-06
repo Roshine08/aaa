@@ -341,7 +341,7 @@
           <li>✅ After payment, receive login info and the security handover package.</li>
         </ul>
         <div class="actions-group">
-          <a class="btn btn-primary" href="#accounts" id="btnListings">View Live Stock</a>
+          <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105" id="btnListings" target="_blank" rel="noopener">View Live Stock</a>
           <a class="btn btn-outline" href="https://discord.gg/ssrwuTweU" id="btnDiscord" target="_blank" rel="noopener">Order via Discord</a>
         </div>
       </div>
@@ -421,7 +421,7 @@
 
       async function loadAccounts() {
         try {
-          const response = await fetch('/api/accounts');
+          const response = await fetch('accounts.json');
           const data = await response.json();
           const grid = document.getElementById("accountsGrid");
           grid.innerHTML = '';
@@ -950,7 +950,8 @@
         document.getElementById("footTerms").textContent = t.footerNav.terms;
       }
 
-      document.getElementById("btnListings").href = "#accounts";
+      document.getElementById("btnListings").href = LINKS.sheet;
+      document.getElementById("btnListings").target = "_blank";
       document.getElementById("btnDiscord").href = LINKS.discord;
       document.getElementById("btnContact").href = LINKS.discord;
       document.getElementById("btnEmail").href = LINKS.email;
