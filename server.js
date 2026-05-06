@@ -142,6 +142,25 @@ client.on('messageCreate', (message) => {
     return message.reply(`🗑️ Removed account **#${accountId}** from the database.`);
   }
 
+  // Command: /setlink [id] [url]
+  else if (message.content.startsWith('/setlink')) {
+    const args = message.content.split(' ');
+    const accountId = parseId(args);
+    const url = args[2];
+    
+    if (!accountId || !url || !url.startsWith('http')) {
+      return message.reply('Usage: `/setlink [id] [imgur_link]`\nExample: `/setlink 40 https://imgur.com/xyz`');
+    }
+
+    const db = readDB();
+    const acc = db.accounts.find(a => a.id === accountId);
+    if (!acc) return message.reply(`❌ Account #${accountId} not found.`);
+    
+    acc.screenshot = url;
+    updateDB(db);
+    return message.reply(`📸 Updated the "View Skins" Imgur link for Account **#${accountId}**! Website is updated.`);
+  }
+
   // Command: /sold [#id] or /sold [id]
   else if (message.content.startsWith('/sold')) {
     const args = message.content.split(' ');
