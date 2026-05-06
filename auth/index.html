@@ -8,9 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 你原来的字体链接保留；实际生效字体已强制为 Helvetica -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800;900&display=swap">
-
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#05060b;
@@ -31,78 +29,60 @@
       --btn-bg: rgba(255,255,255,.03);
       --btn-border: rgba(255,255,255,.10);
       --btn-hover-bg: rgba(255,255,255,.060);
+      
+      --glass-bg: rgba(10, 14, 22, 0.5);
+      --glass-border: rgba(255, 255, 255, 0.08);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Outfit', sans-serif;
       color:var(--text);
       background: var(--bg);
       overflow-x:hidden;
+      line-height: 1.6;
     }
 
-    /* ===== Dynamic esports background (synced with Page A) ===== */
-    .bgfx{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      overflow:hidden;
+    /* Background Effects */
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      background: var(--bg);
     }
-    .bgfx::before{
-      content:"";
-      position:absolute; inset:-20%;
-      background:
-        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
-        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
-        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
-        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
-      animation: fogmove 10.5s ease-in-out infinite alternate;
-      opacity:.98;
-      will-change: transform;
-      transform: translate3d(0,0,0);
+    .bg-animation::before, .bg-animation::after, .bg-animation-3 {
+      content: ''; position: absolute; border-radius: 50%;
+      filter: blur(120px); opacity: 0.15;
+      animation: float 20s infinite alternate ease-in-out;
     }
-    @keyframes fogmove{
-      0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
-      100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+    .bg-animation::before {
+      width: 50vw; height: 50vw; background: var(--neon);
+      top: -10%; left: -10%;
     }
-
-    /* animated grid drift + glow layers */
-    .bgfx::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
-        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
-        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
-      background-size: 58px 58px, 58px 58px, auto, auto;
-      mix-blend-mode: screen;
-      opacity:.26;
-      animation: griddrift 14s linear infinite;
-      will-change: background-position;
-      transform: translate3d(0,0,0);
+    .bg-animation::after {
+      width: 60vw; height: 60vw; background: var(--neon2);
+      bottom: -20%; right: -10%; animation-delay: -5s;
     }
-    @keyframes griddrift{
-      0%{ background-position: 0 0, 0 0, center, center; }
-      100%{ background-position: 140px 140px, -140px 140px, center, center; }
+    .bg-animation-3 {
+      content: ''; position: absolute; border-radius: 50%;
+      filter: blur(120px); opacity: 0.12;
+      animation: float 20s infinite alternate ease-in-out;
+      width: 40vw; height: 40vw; background: var(--neon3);
+      top: 40%; left: 30%; animation-delay: -10s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5%, 10%) scale(1.1); }
     }
 
-    /* scanlines */
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.045),
-        rgba(255,255,255,.045) 1px,
-        transparent 1px,
-        transparent 12px
-      );
-      opacity:.05;
+    .scanlines {
+      position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.5;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -162,135 +142,44 @@
     .neon-border:hover::after{ opacity:1; }
     .neon-border:hover::before{ opacity:1; }
 
-    /* ===== Top nav (synced) ===== */
-    .top{
-      position:sticky;
-      top:14px;
-      z-index:50;
-      display:flex;
-      justify-content:center;
-      padding:0 0 14px;
+    .header {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      width: 95%; max-width: 1200px; z-index: 100;
+      background: rgba(18,22,34,0.58);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border); border-radius: 99px;
+      padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03) inset;
     }
-    .topbar{
-      width:var(--w);
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:var(--r2);
+    .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand img { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .brand .name { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.15em; color: #fff; white-space: nowrap; }
+    .nav { display: flex; gap: 24px; flex-wrap: nowrap; }
+    .nav a { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); transition: all 0.3s; }
+    .nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-      background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
-      border:1px solid rgba(255,255,255,.07);
-      box-shadow:
-        var(--shadow2),
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 0 28px rgba(41,182,255,.08),
-        0 0 26px rgba(183,124,255,.06);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      position:relative;
-      overflow:hidden;
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .lang-select {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+      color: var(--text); padding: 8px 16px; border-radius: 20px;
+      font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      outline: none; appearance: none; -webkit-appearance: none; text-align: center;
     }
-    .topbar::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
-        radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
-      opacity:.55;
-      pointer-events:none;
-    }
+    .lang-select option { background: #070a12; color: #fff; }
 
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      min-width:0;
-      flex:0 0 auto;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-      position:relative;
-      z-index:1;
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 24px; border-radius: 99px; font-weight: 700; font-size: 0.8rem;
+      letter-spacing: 0.06em; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: pointer; text-transform: uppercase; position: relative; overflow: hidden; text-align: center;
     }
-    .brand img{
-      width:22px; height:22px; border-radius:10px;
-      box-shadow:0 10px 20px rgba(0,0,0,.45);
-      flex:0 0 auto;
+    .btn-outline {
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      color: var(--text); backdrop-filter: blur(10px);
     }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-      opacity:.92;
-    }
-
-    .nav{
-      flex:1 1 auto;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-      padding:0 10px;
-      min-width:0;
-      position:relative;
-      z-index:1;
-    }
-    .nav a{
-      font-weight:700;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:rgba(231,239,255,.78);
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid transparent;
-      background:transparent;
-      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
-    }
-    .nav a:hover{
-      transform: translateY(-1px);
-      color:rgba(231,239,255,.96);
-      background: rgba(255,255,255,.045);
-      border-color: rgba(255,255,255,.08);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 18px 48px rgba(0,0,0,.40),
-        0 0 0 6px rgba(41,182,255,.06);
-    }
-
-    .right{
-      display:flex; align-items:center; gap:10px;
-      flex:0 0 auto;
-      position:relative;
-      z-index:1;
-    }
-    .pill{
-      height:38px;
-      padding:0 14px;
-      border-radius:var(--r2);
-      color:rgba(231,239,255,.90);
-      font-weight:700;
-      letter-spacing:.10em;
-      font-size:11px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
-    }
-    select.pill{
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-      padding:0 16px;
-      text-align:center;
-    }
-    select.pill option{
-      background:#070a12;
-      color:#e7efff;
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
     /* ===== Page ===== */
@@ -555,81 +444,57 @@
         0 0 0 6px rgba(41,182,255,.16);
     }
 
-    /* ===== Mobile (synced) ===== */
-    @media (max-width:760px){
-      .bgfx::after{ opacity:.12; } /* ✅ A 的移动端掉帧保护 */
-
-      .top{ top:10px; }
-      .topbar{
-        flex-wrap:wrap;
-        justify-content:space-between;
-        gap:10px;
-        padding:10px;
-      }
-      .brand{ flex:1 1 auto; }
-      .nav{
-        order:3;
-        width:100%;
-        justify-content:space-between;
-        gap:6px;
-        padding:0;
-      }
-      .nav a{
-        flex:1 1 auto;
-        text-align:center;
-        font-size:10px;
-        padding:10px 6px;
-      }
-      .right{ order:2; margin-left:auto; }
-      .pill{ height:36px; }
+    /* ===== Mobile & Reduced Motion ===== */
+    @media (max-width: 900px) {
+      .header { width: 95%; padding: 10px 16px; }
+      .header .nav { display: none; }
       .panel{ padding:20px 16px; }
       .row{ gap:10px; }
       button{ flex:1 1 100%; }
     }
+    @media (max-width: 480px) {
+      .header-actions .btn { display: none; }
+    }
 
-    /* ✅ 低端机/用户设置“减少动态”时，停止背景动画 */
     @media (prefers-reduced-motion: reduce){
-      .bgfx::before, .bgfx::after{ animation:none !important; }
+      .bg-animation::before, .bg-animation::after, .bg-animation-3 { animation:none !important; }
       .panel::after{ animation:none !important; opacity:.10 !important; }
-      body::before{ opacity:.03 !important; }
+      .scanlines{ opacity:.03 !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bgfx" aria-hidden="true"></div>
+  <div class="bg-animation"></div>
+  <div class="bg-animation-3"></div>
+  <div class="scanlines"></div>
 
-  <div class="top">
-    <div class="topbar">
-      <div class="brand">
-        <img src="/assets/logo.png" alt="Logo">
-        <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
-      </div>
-
-      <nav class="nav" aria-label="Primary">
-        <a href="/#home" id="navHome">Home</a>
-        <a href="/#services" id="navServices">Services</a>
-        <a href="/#warranty" id="navWarranty">Warranty</a>
-        <a href="/#faq" id="navFaq">FAQ</a>
-        <a href="/#contact" id="navContact">Contact</a>
-      </nav>
-
-      <div class="right">
-        <select class="pill neon-border" id="langSelect" title="Language" aria-label="Language">
-          <option value="en">EN</option>
-          <option value="fr">FR</option>
-          <option value="de">DE</option>
-          <option value="ar">AR</option>
-          <option value="zh">中文</option>
-        </select>
-
-        <!-- Synced with Page A right-side action -->
-        <a class="pill neon-border" href="/" id="backBtn" aria-label="Back">
-          <span id="backBtnText">Back</span>
-        </a>
-      </div>
+  <header class="header">
+    <div class="brand">
+      <img src="./logo.png" alt="Logo">
+      <span class="name" id="brandText">ROSHINE.</span>
     </div>
-  </div>
+    <nav class="nav">
+      <a href="/#home" id="navHome">Home</a>
+      <a href="/#accounts" id="navAccounts">Accounts</a>
+      <a href="/#services" id="navServices">Services</a>
+      <a href="/#warranty" id="navWarranty">Warranty</a>
+      <a href="/#faq" id="navFaq">FAQ</a>
+      <a href="/#contact" id="navContact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <select class="lang-select" id="langSelect" aria-label="Language">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="ar">AR</option>
+        <option value="zh">中文</option>
+      </select>
+      <a href="/" class="btn btn-outline" id="backBtn" style="padding: 8px 16px; font-size: 0.85rem;">
+        <span id="backBtnText">Back</span>
+      </a>
+    </div>
+  </header>
 
   <main class="wrap">
     <div class="page">
@@ -665,7 +530,7 @@
 
     const i18n = {
       en: {
-        nav:{home:"Home",services:"Services",warranty:"Warranty",faq:"FAQ",contact:"Contact"},
+        nav:{home:"Home",accounts:"Accounts",services:"Services",warranty:"Warranty",faq:"FAQ",contact:"Contact"},
         back:"Back",
         panelTitle:"Authenticator",
         secretLabel:"Please enter your Private Key",
@@ -679,7 +544,7 @@
         footer:"© 2021–2026 Roshine Account Store. All rights reserved — your reliable account supplier."
       },
       fr: {
-        nav:{home:"Accueil",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Contact"},
+        nav:{home:"Accueil",accounts:"Comptes",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Contact"},
         back:"Retour",
         panelTitle:"Authenticator",
         secretLabel:"Veuillez entrer votre clé privée",
@@ -693,7 +558,7 @@
         footer:"© 2021–2026 Roshine Account Store. Tous droits réservés — votre fournisseur fiable."
       },
       de: {
-        nav:{home:"Home",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Kontakt"},
+        nav:{home:"Home",accounts:"Konten",services:"Services",warranty:"Garantie",faq:"FAQ",contact:"Kontakt"},
         back:"Zurück",
         panelTitle:"Authenticator",
         secretLabel:"Bitte Private Key eingeben",
@@ -707,7 +572,7 @@
         footer:"© 2021–2026 Roshine Account Store. Alle Rechte vorbehalten — dein zuverlässiger Anbieter."
       },
       ar: {
-        nav:{home:"الرئيسية",services:"الخدمات",warranty:"الضمان",faq:"الأسئلة",contact:"تواصل"},
+        nav:{home:"الرئيسية",accounts:"الحسابات",services:"الخدمات",warranty:"الضمان",faq:"الأسئلة",contact:"تواصل"},
         back:"رجوع",
         panelTitle:"Authenticator",
         secretLabel:"يرجى إدخال Private Key",
@@ -721,7 +586,7 @@
         footer:"© 2021–2026 Roshine Account Store. جميع الحقوق محفوظة — المورّد الموثوق للحسابات."
       },
       zh: {
-        nav:{home:"主页",services:"服务",warranty:"质保",faq:"FAQ",contact:"联系"},
+        nav:{home:"主页",accounts:"账号",services:"服务",warranty:"质保",faq:"FAQ",contact:"联系"},
         back:"返回",
         panelTitle:"Authenticator",
         secretLabel:"请输入你的安全令 Private Key",
@@ -764,6 +629,7 @@
       if (sel) sel.value = lang;
 
       document.getElementById("navHome").textContent = i18n[lang].nav.home;
+      if(document.getElementById("navAccounts")) document.getElementById("navAccounts").textContent = i18n[lang].nav.accounts;
       document.getElementById("navServices").textContent = i18n[lang].nav.services;
       document.getElementById("navWarranty").textContent = i18n[lang].nav.warranty;
       document.getElementById("navFaq").textContent = i18n[lang].nav.faq;
