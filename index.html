@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Roshine Account Store</title>
   <meta name="description" content="Premium Overwatch accounts with secure delivery." />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <link rel="icon" href="./assets/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -477,7 +480,7 @@
 
       async function loadAccounts() {
         try {
-          const response = await fetch('accounts.json');
+          const response = await fetch('accounts.json?t=' + new Date().getTime(), { cache: 'no-store' });
           const data = await response.json();
           const grid = document.getElementById("accountsGrid");
           grid.innerHTML = '';
