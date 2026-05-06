@@ -1,1015 +1,500 @@
 <!DOCTYPE html>
-
-<html dir="ltr" lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>Roshine Account Store</title><meta content="Premium Overwatch accounts with secure delivery." name="description"/>
-<link href="/assets/logo.png" rel="icon"/>
-<style>
-    :root{
-      --bg:#05060b;
-      --text:#e7efff;
-      --muted:#9aa8c6;
-
-      /* esports neon */
-      --neon:#29b6ff;
-      --neon2:#b77cff;
-      --neon3:#33ffcc;
-
-      --glass: rgba(12, 16, 28, .42);
-      --glass2: rgba(10, 14, 22, .30);
-
-      --line2: rgba(255,255,255,.06);
-
-      --shadow: 0 26px 72px rgba(0,0,0,.62);
-      --shadow2: 0 10px 26px rgba(0,0,0,.42);
-
-      --r: 22px;
-      --r2: 999px;
-      --w: min(1100px, 92vw);
-
-      /* button tokens */
-      --btn-bg: rgba(255,255,255,.03);
-      --btn-border: rgba(255,255,255,.10);
-      --btn-hover-bg: rgba(255,255,255,.060);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Roshine Account Store</title>
+  <meta name="description" content="Premium Overwatch accounts with secure delivery." />
+  <link rel="icon" href="./assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060b;
+      --text: #e7efff;
+      --text-muted: #9aa8c6;
+      --neon: #29b6ff;
+      --neon2: #b77cff;
+      --neon3: #33ffcc;
+      --glass-bg: rgba(10, 14, 22, 0.5);
+      --glass-border: rgba(255, 255, 255, 0.08);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      color:var(--text);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Background Effects */
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
       background: var(--bg);
-      overflow-x:hidden;
+    }
+    .bg-animation::before, .bg-animation::after, .bg-animation-3 {
+      content: ''; position: absolute; border-radius: 50%;
+      filter: blur(120px); opacity: 0.15;
+      animation: float 20s infinite alternate ease-in-out;
+    }
+    .bg-animation::before {
+      width: 50vw; height: 50vw; background: var(--neon);
+      top: -10%; left: -10%;
+    }
+    .bg-animation::after {
+      width: 60vw; height: 60vw; background: var(--neon2);
+      bottom: -20%; right: -10%; animation-delay: -5s;
+    }
+    .bg-animation-3 {
+      content: ''; position: absolute; border-radius: 50%;
+      filter: blur(120px); opacity: 0.12;
+      animation: float 20s infinite alternate ease-in-out;
+      width: 40vw; height: 40vw; background: var(--neon3);
+      top: 40%; left: 30%; animation-delay: -10s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5%, 10%) scale(1.1); }
     }
 
-    /* ===== Dynamic esports background (CSS only) ===== */
-    .bgfx{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      overflow:hidden;
-    }
-    .bgfx::before{
-      content:"";
-      position:absolute; inset:-20%;
-      background:
-        radial-gradient(900px 700px at 20% 25%, rgba(41,182,255,.20), transparent 60%),
-        radial-gradient(900px 700px at 80% 28%, rgba(183,124,255,.20), transparent 62%),
-        radial-gradient(900px 800px at 50% 115%, rgba(51,255,204,.12), transparent 62%),
-        radial-gradient(1200px 900px at 50% -10%, rgba(120,150,255,.12), transparent 62%);
-      filter: blur(0px);
-      animation: fogmove 10.5s ease-in-out infinite alternate;
-      opacity:.98;
-      will-change: transform;
-      transform: translate3d(0,0,0);
-    }
-    @keyframes fogmove{
-      0%{ transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
-      100%{ transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+    .scanlines {
+      position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.5;
     }
 
-    /* animated grid drift */
-    .bgfx::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px),
-        radial-gradient(900px 500px at 40% 0%, rgba(41,182,255,.10), transparent 60%),
-        radial-gradient(900px 500px at 70% 10%, rgba(183,124,255,.08), transparent 60%);
-      background-size: 58px 58px, 58px 58px, auto, auto;
-      mix-blend-mode: screen;
-      opacity:.26;
-      animation: griddrift 14s linear infinite;
-      will-change: background-position;
-      transform: translate3d(0,0,0);
+    a { text-decoration: none; color: inherit; }
+    ul, ol { list-style: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    .header {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      width: 95%; max-width: 1200px; z-index: 100;
+      background: rgba(18,22,34,0.58);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border); border-radius: 99px;
+      padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03) inset;
     }
-    @keyframes griddrift{
-      0%{ background-position: 0 0, 0 0, center, center; }
-      100%{ background-position: 140px 140px, -140px 140px, center, center; }
+    .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand img { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .brand .name { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.15em; color: #fff; white-space: nowrap; }
+    .nav { display: flex; gap: 24px; flex-wrap: nowrap; }
+    .nav a { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); transition: all 0.3s; }
+    .nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .lang-select {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+      color: var(--text); padding: 8px 16px; border-radius: 20px;
+      font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      outline: none; appearance: none; -webkit-appearance: none; text-align: center;
+    }
+    .lang-select option { background: #070a12; color: #fff; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 24px; border-radius: 99px; font-weight: 700; font-size: 0.8rem;
+      letter-spacing: 0.06em; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: pointer; text-transform: uppercase; position: relative; overflow: hidden; text-align: center;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon), var(--neon2)); color: #fff; border: none;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 20px rgba(41,182,255,0.3);
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: all 0.5s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0,0,0,0.4), 0 0 30px rgba(183,124,255,0.5); }
+    .btn-primary:hover::before { left: 100%; }
+
+    .btn-outline {
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      color: var(--text); backdrop-filter: blur(10px);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
-    /* scanlines */
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.045),
-        rgba(255,255,255,.045) 1px,
-        transparent 1px,
-        transparent 12px
-      );
-      opacity:.05;
+    /* Hero */
+    .hero { padding: 80px 24px 8vh; text-align: center; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .hero-kicker {
+      display: inline-block; padding: 6px 14px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border); border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+      color: var(--text-muted); margin-bottom: 20px; letter-spacing: 0.12em; text-transform: uppercase; backdrop-filter: blur(10px);
     }
-
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ width:var(--w); margin:0 auto; padding:22px 0 72px; position:relative; z-index:1; }
-
-    /* ===== Top nav ===== */
-    .top{
-      position:sticky;
-      top:14px;
-      z-index:50;
-      display:flex;
-      justify-content:center;
-      padding:0 0 14px;
-    }
-
-    .topbar{
-      width:var(--w);
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:var(--r2);
-
-      background:linear-gradient(180deg, rgba(18,22,34,.58), rgba(10,12,18,.42));
-      border:1px solid rgba(255,255,255,.07);
-      box-shadow:
-        var(--shadow2),
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 0 28px rgba(41,182,255,.08),
-        0 0 26px rgba(183,124,255,.06);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      position:relative;
-      overflow:hidden;
-    }
-    .topbar::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 180px at 18% 0%, rgba(41,182,255,.14), transparent 55%),
-        radial-gradient(700px 220px at 82% 10%, rgba(183,124,255,.12), transparent 58%);
-      opacity:.55;
-      pointer-events:none;
-    }
-
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      min-width:0;
-      flex:0 0 auto;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-      position:relative;
-      z-index:1;
-    }
-    .brand img{
-      width:22px; height:22px; border-radius:10px;
-      box-shadow:0 10px 20px rgba(0,0,0,.45);
-      flex:0 0 auto;
-    }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-      opacity:.92;
-    }
-
-    .nav{
-      flex:1 1 auto;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-      padding:0 10px;
-      min-width:0;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav a{
-      font-weight:700;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:rgba(231,239,255,.78);
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid transparent;
-      background:transparent;
-      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
-    }
-    .nav a:hover{
-      transform: translateY(-1px);
-      color:rgba(231,239,255,.96);
-      background: rgba(255,255,255,.045);
-      border-color: rgba(255,255,255,.08);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 18px 48px rgba(0,0,0,.40),
-        0 0 0 6px rgba(41,182,255,.06);
-    }
-
-    .right{
-      display:flex; align-items:center; gap:10px;
-      flex:0 0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    /* ===== Neon gradient border hover (core) ===== */
-    .neon-border{
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--btn-border);
-      background: var(--btn-bg);
-      box-shadow:
-        0 18px 48px rgba(0,0,0,.42),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform .15s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    /* gradient stroke */
-    .neon-border::after{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      padding:1px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.65), rgba(183,124,255,.65), rgba(51,255,204,.45), rgba(41,182,255,.0));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-    /* subtle highlight sweep */
-    .neon-border::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 180px at 20% 0%, rgba(255,255,255,.14), transparent 55%),
-        radial-gradient(520px 200px at 85% 15%, rgba(41,182,255,.20), transparent 55%),
-        radial-gradient(520px 220px at 50% 120%, rgba(183,124,255,.14), transparent 60%);
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-
-    .neon-border:hover{
-      transform: translateY(-1px);
-      background: var(--btn-hover-bg);
-      border-color: rgba(255,255,255,.14);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.05) inset,
-        0 22px 56px rgba(0,0,0,.60),
-        0 0 38px rgba(41,182,255,.16),
-        0 0 30px rgba(183,124,255,.11);
-    }
-    .neon-border:hover::after{ opacity:1; }
-    .neon-border:hover::before{ opacity:1; }
-
-    .pill{
-      height:38px;
-      padding:0 14px;
-      border-radius:var(--r2);
-      color:rgba(231,239,255,.90);
-      font-weight:700;
-      letter-spacing:.10em;
-      font-size:11px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
-    }
-    select.pill{
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-      padding:0 16px;
-      text-align:center;
-    }
-    select.pill option{
-      background:#070a12;
-      color:#e7efff;
-    }
-
-    .auth-pill{
-      padding:0 16px;
-      gap:8px;
-    }
-
-    /* ===== Hero ===== */
-    .hero{
-      min-height: calc(100svh - 130px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 40px 0 30px;
-    }
-    .hero-inner{ width:100%; text-align:center; }
-
-    .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      color:rgba(231,239,255,.70);
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-      margin-bottom:16px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .title{
-      margin:0;
-      font-size: clamp(40px, 6.2vw, 78px);
-      font-weight:900;
-      letter-spacing:.09em;
-      text-transform:uppercase;
-      color:rgba(231,239,255,.92);
-      text-shadow:
-        0 30px 90px rgba(0,0,0,.78),
-        0 0 28px rgba(41,182,255,.12),
-        0 0 26px rgba(183,124,255,.10);
-    }
-
-    .hero-subbrand{
-      margin: 10px auto 0;
-      font-size: 12px;
-      letter-spacing: .26em;
-      text-transform: uppercase;
-      color: rgba(231,239,255,.62);
-      font-weight: 700;
-      line-height: 1.2;
-      text-shadow:
-        0 20px 60px rgba(0,0,0,.55),
-        0 0 18px rgba(41,182,255,.10);
-
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      padding: 0 10px;
-    }
-    .hero-subbrand::before,
-    .hero-subbrand::after{
-      content:"";
-      height:1px;
-      width:48px;
-      background: linear-gradient(90deg, transparent, rgba(231,239,255,.55), transparent);
-      opacity:.85;
-      transform: translateY(.5px);
-    }
-
-    .subline{
-      margin:14px auto 0;
-      max-width: 74ch;
-      color: rgba(154,168,198,.92);
-      font-size: 15px;
-      line-height:1.75;
-    }
-
-    .cta{
-      margin-top:22px;
-      display:flex;
-      justify-content:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      min-width: 220px;
-      height: 48px;
-      padding:0 18px;
-      border-radius:16px;
-      color:rgba(231,239,255,.92);
-      font-weight:700;
-      letter-spacing:.08em;
-      font-size:12px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .btn.primary{
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.22),
-          rgba(183,124,255,.16),
-          rgba(51,255,204,.12),
-          rgba(41,182,255,.22)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.14), rgba(183,124,255,.06));
-      background-blend-mode: screen, normal;
-
-      border:1px solid rgba(41,182,255,.34);
-      color: rgba(231,239,255,.95);
-      box-shadow:
-        0 18px 52px rgba(0,0,0,.44),
-        0 0 40px rgba(41,182,255,.20),
-        0 0 28px rgba(183,124,255,.12),
-        0 0 0 1px rgba(255,255,255,.03) inset;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position:relative;
-      overflow:hidden;
-      transition: transform .15s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
-    }
-    .btn.primary:hover{
-      transform: translateY(-1px);
-      background:
-        conic-gradient(
-          from 210deg,
-          rgba(41,182,255,.30),
-          rgba(183,124,255,.22),
-          rgba(51,255,204,.16),
-          rgba(41,182,255,.30)
-        ),
-        linear-gradient(180deg, rgba(41,182,255,.18), rgba(183,124,255,.08));
-      background-blend-mode: screen, normal;
-
-      border-color: rgba(41,182,255,.50);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.06) inset,
-        0 26px 64px rgba(0,0,0,.62),
-        0 0 52px rgba(41,182,255,.28),
-        0 0 38px rgba(183,124,255,.16);
-    }
-
-    .btn.primary.neon-border::after{
-      opacity:.35;
-      background: linear-gradient(120deg,
-        rgba(41,182,255,.0),
-        rgba(41,182,255,.85),
-        rgba(183,124,255,.85),
-        rgba(51,255,204,.60),
-        rgba(41,182,255,.0)
-      );
-    }
-    .btn.primary.neon-border:hover::after{ opacity:1; }
-
-    .scrollhint{
-      margin: 26px auto 0;
-      width: auto;
-      height: auto;
-      border: 0;
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-
-      display: inline-block;
-      font-size: 34px;
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: 0;
-
-      color: rgba(231,239,255,.72);
-      text-shadow:
-        0 14px 34px rgba(0,0,0,.65),
-        0 0 18px rgba(41,182,255,.14),
-        0 0 16px rgba(183,124,255,.10);
-
-      pointer-events: none;
-      user-select: none;
-
-      animation: bob 2.4s ease-in-out infinite;
-    }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(8px); }
-    }
-
-    /* ===== Sections ===== */
-    section{ padding: 84px 0 0; }
-
-    .section-head{
-      text-align:center;
-      margin:0 auto 20px;
-      width:min(900px, 92vw);
-    }
-
-    .section-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:var(--r2);
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      color:rgba(231,239,255,.70);
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset;
-    }
-
-    .section-title{
-      margin:14px 0 0;
-      font-size: clamp(30px, 4.0vw, 52px);
-      font-weight:900;
-      letter-spacing:.02em;
-      color:rgba(231,239,255,.86);
-      text-shadow: 0 0 18px rgba(41,182,255,.08);
-    }
-
-    .section-desc{
-      margin:10px auto 0;
-      max-width: 78ch;
-      color: rgba(154,168,198,.90);
-      font-size: 14px;
-      line-height:1.75;
-    }
-
-    .glass-block{
-      width: min(980px, 92vw);
-      margin: 26px auto 0;
-      padding: 22px 20px;
-      border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      border: 1px solid rgba(255,255,255,.06);
-      box-shadow:
-        var(--shadow),
-        0 0 0 1px rgba(255,255,255,.035) inset,
-        0 0 34px rgba(41,182,255,.06),
-        0 0 26px rgba(183,124,255,.05);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      position:relative;
-      overflow:hidden;
-    }
-    .glass-block::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(900px 240px at 20% 0%, rgba(41,182,255,.10), transparent 58%),
-        radial-gradient(900px 260px at 85% 12%, rgba(183,124,255,.09), transparent 60%);
-      opacity:.55;
-      pointer-events:none;
-    }
-
-    .list{
-      margin:0;
-      padding:0 0 0 18px;
-      text-align:left;
-      color: rgba(154,168,198,.92);
-      font-size: 14px;
-      line-height:1.8;
-      position:relative;
-      z-index:1;
-    }
-    .list li{ margin:10px 0; }
-
-    .section-actions{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:18px;
-      position:relative;
-      z-index:1;
-    }
-
-    /* ===== Warranty: high-conversion cards ===== */
-    .warranty-grid{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:14px;
-      margin-top: 2px;
-    }
-    .wcard{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.03);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.02) inset,
-        0 16px 42px rgba(0,0,0,.44);
-      padding: 14px 14px 12px;
-      overflow:hidden;
-      position:relative;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      transition: transform .15s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
-    }
-    .wcard::after{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      padding:1px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, rgba(41,182,255,.0), rgba(41,182,255,.60), rgba(183,124,255,.55), rgba(51,255,204,.40), rgba(41,182,255,.0));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:.0;
-      pointer-events:none;
-      transition: opacity .18s ease;
-    }
-    .wcard:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.12);
-      background: rgba(255,255,255,.045);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 22px 56px rgba(0,0,0,.58),
-        0 0 34px rgba(41,182,255,.12);
-    }
-    .wcard:hover::after{ opacity:.9; }
-
-    .wtop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 8px;
-    }
-    .wtitle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:900;
-      letter-spacing:.02em;
-      color: rgba(231,239,255,.92);
-      font-size: 13px;
-      line-height: 1.25;
-    }
-    .wicon{
-      width: 30px;
-      height: 30px;
-      border-radius: 12px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.07);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
-      flex: 0 0 auto;
-      font-size: 16px;
-    }
-    .wdesc{
-      margin:0;
-      color: rgba(154,168,198,.92);
-      font-size: 13px;
-      line-height: 1.65;
-    }
-    .wbadge{
-      flex:0 0 auto;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-weight: 900;
-      font-size: 10px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: rgba(231,239,255,.86);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+    .hero-title {
+      font-size: clamp(1.6rem, 3.5vw, 3rem); font-weight: 900; line-height: 1.1; margin-bottom: 16px;
+      background: linear-gradient(to right, #fff, #b7c7e5); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; letter-spacing: 0.06em;
       white-space: nowrap;
     }
-    .wbadge.primary{
-      border-color: rgba(41,182,255,.26);
-      background: rgba(41,182,255,.10);
+    @media (max-width: 768px) {
+      .hero-title { white-space: normal; font-size: clamp(1.6rem, 7vw, 2.4rem); }
     }
-    .wbadge.paid{
-      border-color: rgba(183,124,255,.25);
-      background: rgba(183,124,255,.10);
+    .hero-subbrand {
+      font-size: clamp(0.75rem, 1.8vw, 1rem); font-weight: 700; color: var(--neon);
+      margin-bottom: 20px; letter-spacing: 0.25em; text-transform: uppercase;
+    }
+    .hero-intro { max-width: 580px; margin: 0 auto 36px; font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-kicker {
+      display: inline-block; padding: 5px 12px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border); border-radius: 10px; font-size: 0.7rem; font-weight: 800;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;
+    }
+    .section-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; margin-bottom: 12px; color: #fff; }
+    .section-desc { max-width: 540px; margin: 0 auto; color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Glass Panels */
+    .glass-panel {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 32px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.02) inset;
+      position: relative; overflow: hidden;
+    }
+    .glass-panel::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%); pointer-events: none;
     }
 
-    @media (max-width: 980px){
-      .warranty-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Services */
+    .services-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; position: relative; z-index: 1; }
+    .services-list li {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      padding: 18px 16px; border-radius: 16px; font-size: 0.875rem; color: var(--text-muted); transition: all 0.3s;
+      display: flex; flex-direction: column; align-items: center; text-align: center; line-height: 1.55;
     }
-    @media (max-width: 640px){
-      .warranty-grid{ grid-template-columns: 1fr; }
+    .services-list li:hover {
+      background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
+    .actions-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    
+    .narrow-panel { max-width: 800px; margin: 0 auto; }
 
-    /* footer */
-    .footer{
-      margin-top: 86px;
-      padding-top: 26px;
-      border-top: 1px solid rgba(255,255,255,.06);
-      text-align:center;
-      color: rgba(154,168,198,.78);
+    /* Accounts Grid */
+    .accounts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; position: relative; z-index: 1; }
+    .account-card {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 24px; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 16px;
     }
-    .footer .line1{
-      font-weight:700;
-      letter-spacing:.08em;
-      color: rgba(231,239,255,.72);
-      margin-bottom:8px;
-      font-size:12px;
-      text-transform: uppercase;
-    }
-    .footer .line2{
-      font-size:12px;
-      line-height:1.6;
-      color: rgba(154,168,198,.72);
-    }
+    .account-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.04); box-shadow: 0 15px 30px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
+    .ac-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px; }
+    .ac-id { font-size: 1rem; font-weight: 800; color: #fff; }
+    .ac-status { font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.05em; text-transform: uppercase; background: rgba(255,255,255,0.05); }
+    .status-instock { color: var(--neon); border: 1px solid rgba(41,182,255,0.3); }
+    .status-sold { color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
+    .status-pending { color: var(--neon2); border: 1px solid rgba(183,124,255,0.3); }
+    .ac-price { font-size: 1.4rem; font-weight: 900; color: var(--neon3); letter-spacing: 0.03em; margin: 2px 0; }
+    .ac-level { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+    .ac-highlights { flex-grow: 1; font-size: 0.85rem; line-height: 1.5; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
+    .ac-details { display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: var(--text-muted); }
+    .ac-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+    .ac-actions .btn { padding: 9px; font-size: 0.75rem; }
 
-    /* ===== Footer nav ===== */
-    .footnav{
-      margin: 14px auto 0;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:10px;
+    /* Warranty Cards */
+    .warranty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1; }
+    .warranty-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 28px; transition: all 0.3s ease; position: relative; overflow: hidden;
     }
-    .footnav a{
-      font-weight:800;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color: rgba(231,239,255,.70);
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.06);
-      background: rgba(255,255,255,.02);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
-      transition: transform .15s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, color .15s ease;
+    .warranty-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
     }
-    .footnav a:hover{
-      transform: translateY(-1px);
-      color: rgba(231,239,255,.92);
-      background: rgba(255,255,255,.045);
-      border-color: rgba(255,255,255,.10);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.03) inset,
-        0 18px 48px rgba(0,0,0,.40),
-        0 0 0 6px rgba(41,182,255,.06);
+    .warranty-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+    .warranty-card:hover::after { opacity: 1; }
+
+    .wcard-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .wcard-title-wrap { display: flex; align-items: center; gap: 12px; }
+    .wcard-icon {
+      font-size: 1.4rem; background: rgba(255,255,255,0.05); width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
     }
+    .wcard-title { font-weight: 700; font-size: 0.9rem; line-height: 1.3; }
+    .wcard-badge { font-size: 0.65rem; font-weight: 800; padding: 3px 7px; border-radius: 7px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .badge-primary { background: rgba(41,182,255,0.15); color: var(--neon); border: 1px solid rgba(41,182,255,0.3); }
+    .badge-paid { background: rgba(183,124,255,0.15); color: var(--neon2); border: 1px solid rgba(183,124,255,0.3); }
+    .wcard-desc { color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; }
 
-    /* focus */
-    .neon-border:focus-visible, .nav a:focus-visible{
-      outline:none;
-      box-shadow:
-        0 0 0 2px rgba(41,182,255,.42),
-        0 0 0 6px rgba(41,182,255,.16);
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 1; }
+    .faq-list li {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      padding: 16px 22px; border-radius: 14px; font-size: 0.875rem; color: var(--text-muted); transition: all 0.3s; line-height: 1.6;
     }
+    .faq-list li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
 
-    /* ===== Performance knobs ===== */
-    @media (max-width: 900px){
-      .nav{ gap:10px; }
-      .nav a{ padding:10px 8px; }
+    /* Footer */
+    .footer { margin-top: 40px; border-top: 1px solid var(--glass-border); padding: 32px 0; text-align: center; }
+    .footer-line1 { font-weight: 700; font-size: 0.8rem; color: var(--text); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .footer-line2 { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 18px; }
+    .footer-nav { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+    .footer-nav a { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); transition: color 0.3s; }
+    .footer-nav a:hover { color: #fff; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .header { width: 95%; padding: 10px 16px; }
+      .header .nav { display: none; }
+      .hero { padding: 160px 0 100px; }
+      .glass-panel { padding: 32px 20px; }
     }
-
-    @media (max-width: 760px){
-      .bgfx::after{ opacity:.12; }
-
-      .top{ top:10px; }
-      .topbar{
-        flex-wrap:wrap;
-        justify-content:space-between;
-        gap:10px;
-        padding:10px;
-      }
-      .brand{ flex:1 1 auto; }
-      .nav{
-        order:3;
-        width:100%;
-        justify-content:space-between;
-        gap:6px;
-        padding:0;
-      }
-      .nav a{
-        flex:1 1 auto;
-        text-align:center;
-        font-size:10px;
-        padding:10px 6px;
-      }
-      .right{ order:2; margin-left:auto; }
-      .pill{ height:36px; }
-      .btn{ width:100%; min-width:0; }
-      section{ padding-top: 68px; }
-      .glass-block{ padding:18px 16px; }
-
-      .hero-subbrand::before,
-      .hero-subbrand::after{
-        width:34px;
-        opacity:.75;
-      }
-
-      .scrollhint{ font-size: 36px; }
-    }
-
-    @media (max-width: 380px){
-      .brand .name{ font-size:10px; }
-      .pill{ padding:0 12px; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .bgfx::before, .bgfx::after{ animation:none !important; }
-      .scrollhint{ animation:none !important; }
-      body::before{ opacity:.03; }
-    }
-
-    body, button, input, select, textarea,
-    .brand .name, .nav a, .pill, .kicker, .title,
-    .hero-subbrand, .section-kicker, .section-title, .footer .line1, .btn{
-      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    @media (max-width: 480px) {
+      .header-actions .btn { display: none; }
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
-<div aria-hidden="true" class="bgfx"></div>
 
-<!-- Sticky Top -->
-<div class="top" id="home">
-  <div aria-label="Top navigation" class="topbar" role="navigation">
-    <div aria-label="Brand" class="brand">
-      <img alt="Logo" src="/assets/logo.png"/>
-      <div class="name" id="brandText">ROSHINE ACCOUNT STORE.</div>
+  <div class="bg-animation"><div class="bg-animation-3"></div></div>
+  <div class="scanlines"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">
+      <img src="./assets/logo.png" alt="Logo">
+      <span class="name" id="brandText">ROSHINE.</span>
     </div>
-    <nav aria-label="Primary" class="nav">
-      <a href="https://roshine.love/" id="navHome">Home</a>
+    <nav class="nav">
+      <a href="/" id="navHome">Home</a>
+      <a href="#accounts" id="navAccounts">Accounts</a>
       <a href="#services" id="navServices">Services</a>
       <a href="#warranty" id="navWarranty">Warranty</a>
       <a href="#faq" id="navFaq">FAQ</a>
       <a href="#contact" id="navContact">Contact</a>
     </nav>
-    <div class="right">
-      <select aria-label="Language" class="pill neon-border" id="langSelect" title="Language">
+    <div class="header-actions">
+      <select class="lang-select" id="langSelect" aria-label="Language">
         <option value="en">EN</option>
         <option value="fr">FR</option>
         <option value="de">DE</option>
         <option value="ar">AR</option>
         <option value="zh">中文</option>
       </select>
-      <a aria-label="Authenticator" class="pill neon-border auth-pill" href="/auth/" id="authBtn">
+      <a href="./auth/" class="btn btn-outline" id="authBtn" style="padding: 8px 16px; font-size: 0.85rem;">
         <span id="authBtnText">Authenticator</span>
       </a>
     </div>
-  </div>
-</div>
+  </header>
 
-<main class="wrap">
-
-  <!-- Fullscreen Hero -->
-  <div class="hero">
-    <div class="hero-inner">
-      <div class="kicker" id="heroKicker">⚡ Trusted since 2021</div>
-      <h1 class="title" id="heroTitle">ROSHINE</h1>
-      <div class="hero-subbrand" id="heroSubbrand">Overwatch Account Store</div>
-      <p class="subline" id="heroIntro">
-        Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support.
-        Five years in operation, built for consistency, clarity, and buyer confidence.
+  <main class="container">
+    
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="hero-kicker" id="heroKicker">⚡ Trusted since 2021</div>
+      <h1 class="hero-title" id="heroTitle">ROSHINE ACCOUNT STORE</h1>
+      <div class="hero-subbrand" id="heroSubbrand" style="display:none;"></div>
+      <p class="hero-intro" id="heroIntro">
+        Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support. Five years in operation, built for consistency, clarity, and buyer confidence.
       </p>
-      <div class="cta" id="heroCta">
-        <a class="btn primary neon-border" href="#services" id="ctaExplore">View Stock &amp; Purchase</a>
+      <div class="hero-cta" id="heroCta">
+        <a href="#services" class="btn btn-primary" id="ctaExplore">View Stock &amp; Purchase</a>
       </div>
-      <div aria-hidden="true" class="scrollhint">⌄</div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Services -->
-  <section id="services">
-    <div class="section-head">
-      <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
-      <h2 class="section-title" id="servicesTitle">Listings &amp; Ordering</h2>
-      <p class="section-desc" id="servicesDesc">
-        Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.
-      </p>
-    </div>
-    <div class="glass-block">
-      <ol class="list" id="servicesList">
-        <li>📄 Open the listings and filter by price, rank, or skins.</li>
-        <li>🧾 Copy the account ID (or screenshot the row you want).</li>
-        <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
-        <li>✅ After payment, receive login info and the security handover package.</li>
-      </ol>
-      <div class="section-actions">
-        <a class="btn primary neon-border" href="https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105" id="btnListings" rel="noopener" target="_blank">
-          View stock (Google Sheet)
-        </a>
-        <a class="btn neon-border" href="https://discord.gg/ssrwuTweU" id="btnDiscord" rel="noopener" target="_blank">
-          Order via Discord
-        </a>
+    <!-- Accounts -->
+    <section class="section" id="accounts">
+      <div class="section-header">
+        <div class="section-kicker" id="accountsKicker">🎮 INVENTORY</div>
+        <h2 class="section-title" id="accountsTitle">Live Accounts</h2>
+        <p class="section-desc" id="accountsDesc">Browse our currently available stock. Select an account and order via Discord.</p>
       </div>
-    </div>
-  </section>
+      <div class="accounts-grid" id="accountsGrid">
+        <!-- Accounts will be dynamically injected here -->
+      </div>
+    </section>
 
-  <!-- Warranty -->
-  <section id="warranty">
-    <div class="section-head">
-      <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
-      <h2 class="section-title" id="warrantyTitle">Warranty &amp; Security</h2>
-      <p class="section-desc" id="warrantyDesc">
-        Clear scope, transparent process, long-term protection.
-      </p>
-    </div>
-    <div class="glass-block">
-      <div class="warranty-grid" id="warrantyGrid"></div>
-    </div>
-  </section>
+    <!-- Services -->
+    <section class="section" id="services">
+      <div class="section-header">
+        <div class="section-kicker" id="servicesKicker">✨ SERVICES</div>
+        <h2 class="section-title" id="servicesTitle">Listings &amp; Ordering</h2>
+        <p class="section-desc" id="servicesDesc">
+          Browse our live inventory above, then order via Discord by sending the account ID or a screenshot.
+        </p>
+      </div>
+      <div class="glass-panel">
+        <ul class="services-list" id="servicesList">
+          <li>📄 Open the listings and filter by price, rank, or skins.</li>
+          <li>🧾 Copy the account ID (or screenshot the row you want).</li>
+          <li>💬 Join Discord and send the ID/screenshot to confirm availability and total.</li>
+          <li>✅ After payment, receive login info and the security handover package.</li>
+        </ul>
+        <div class="actions-group">
+          <a class="btn btn-primary" href="#accounts" id="btnListings">View Live Stock</a>
+          <a class="btn btn-outline" href="https://discord.gg/ssrwuTweU" id="btnDiscord" target="_blank" rel="noopener">Order via Discord</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="section-head">
-      <div class="section-kicker" id="faqKicker">❓ FAQ</div>
-      <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
-      <p class="section-desc" id="faqDesc">
-        Quick answers to the questions that most buyers ask before ordering.
-      </p>
-    </div>
-    <div class="glass-block">
-      <ol class="list" id="faqList">
-        <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
-        <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
-        <li id="faq3">How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.</li>
-        <li id="faq4">Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.</li>
-        <li id="faq5"></li>
-      </ol>
-    </div>
-  </section>
+    <!-- Warranty -->
+    <section class="section" id="warranty">
+      <div class="section-header">
+        <div class="section-kicker" id="warrantyKicker">🛡️ WARRANTY</div>
+        <h2 class="section-title" id="warrantyTitle">Warranty &amp; Security</h2>
+        <p class="section-desc" id="warrantyDesc">
+          Clear scope, transparent process, long-term protection.
+        </p>
+      </div>
+      <div class="glass-panel" style="padding: 32px; background: transparent; border: none; box-shadow: none;">
+        <div class="warranty-grid" id="warrantyGrid"></div>
+      </div>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="section-head">
-      <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
-      <h2 class="section-title" id="contactTitle">Reach us</h2>
-      <p class="section-desc" id="contactDesc">
-        For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
-      </p>
-    </div>
-    <div class="section-actions" style="margin-top:16px;">
-      <a class="btn primary neon-border" href="https://discord.gg/ssrwuTweU" id="btnContact" rel="noopener" target="_blank">
-        Discord
-      </a>
-      <a class="btn neon-border" href="mailto:roshine_store@roshine.love" id="btnEmail">
-        Email
-      </a>
-    </div>
-  </section>
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-header">
+        <div class="section-kicker" id="faqKicker">❓ FAQ</div>
+        <h2 class="section-title" id="faqTitle">Frequently Asked Questions</h2>
+        <p class="section-desc" id="faqDesc">
+          Quick answers to the questions that most buyers ask before ordering.
+        </p>
+      </div>
+      <div class="glass-panel narrow-panel">
+        <ul class="faq-list" id="faqList">
+          <li id="faq1">How often is the list updated? — The Google Sheet is the source of truth, and sold accounts are marked quickly.</li>
+          <li id="faq2">Payment methods? — Credit card, PayPal, crypto, and selected gift cards. Confirm availability and fees on Discord.</li>
+          <li id="faq3">How fast is delivery? — Most orders are delivered within 5 minutes after payment. Rare top-tier accounts may require additional preparation time.</li>
+          <li id="faq4">Are the accounts safe? — All accounts come from real players, not mass-produced scripts or studios. Each has normal usage history with no restrictions.</li>
+          <li id="faq5"></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="section-header">
+        <div class="section-kicker" id="contactKicker">💬 CONTACT</div>
+        <h2 class="section-title" id="contactTitle">Reach us</h2>
+        <p class="section-desc" id="contactDesc">
+          For the fastest response, message us on Discord with the account ID (or a screenshot). You can also email us anytime.
+        </p>
+      </div>
+      <div class="glass-panel narrow-panel" style="text-align: center; padding: 40px;">
+        <div class="actions-group">
+          <a class="btn btn-primary" href="https://discord.gg/ssrwuTweU" id="btnContact" target="_blank" rel="noopener">Discord</a>
+          <a class="btn btn-outline" href="mailto:roshine_store@roshine.love" id="btnEmail">Email</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <!-- Footer -->
-  <footer aria-label="Footer" class="footer">
-    <div class="line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
-    <div class="line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
-    <nav aria-label="Footer navigation" class="footnav">
-      <a href="https://roshine.love/" id="footHome">Home</a>
-      <a href="#services" id="footServices">Services</a>
-      <a href="#contact" id="footContact">Contact</a>
-      <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
-      <a href="https://roshine.love/terms" id="footTerms">Terms</a>
-    </nav>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-line1" id="footerLine1">© 2021–2026 Roshine Account Store.</div>
+      <div class="footer-line2" id="footerLine2">All rights reserved — your reliable account supplier.</div>
+      <nav class="footer-nav">
+        <a href="https://roshine.love/" id="footHome">Home</a>
+        <a href="#services" id="footServices">Services</a>
+        <a href="#contact" id="footContact">Contact</a>
+        <a href="https://roshine.love/privacy" id="footPrivacy">Privacy</a>
+        <a href="https://roshine.love/terms" id="footTerms">Terms</a>
+      </nav>
+    </div>
   </footer>
 
-</main>
 
-<script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      async function loadAccounts() {
+        try {
+          const response = await fetch('/api/accounts');
+          const data = await response.json();
+          const grid = document.getElementById("accountsGrid");
+          grid.innerHTML = '';
+          
+          data.accounts.forEach(acct => {
+            const { id, level, status, highlights, weapons, balance, rank, nameChange, screenshot, price } = acct;
+
+            let statusClass = 'status-instock';
+            if (status.toLowerCase().includes('sold')) statusClass = 'status-sold';
+            if (status.toLowerCase().includes('pending')) statusClass = 'status-pending';
+
+            const card = document.createElement('div');
+            card.className = 'account-card';
+            card.innerHTML = `
+              <div class="ac-header">
+                <span class="ac-id">#${id}</span>
+                <span class="ac-status ${statusClass}">${status}</span>
+              </div>
+              <div class="ac-price">${price}</div>
+              <div class="ac-level">${level}</div>
+              <div class="ac-highlights">${highlights}</div>
+              <div class="ac-details">
+                ${rank ? `<div class="ac-detail"><strong>Rank:</strong><br>${rank}</div>` : ''}
+                ${balance ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Balance & Playtime:</strong><br>${balance}</div>` : ''}
+                ${weapons ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Weapons:</strong><br>${weapons}</div>` : ''}
+                ${nameChange ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Name Change:</strong> ${nameChange}</div>` : ''}
+              </div>
+              <div class="ac-actions">
+                <a href="${screenshot || '#'}" target="_blank" class="btn btn-outline">📸 View Skins</a>
+                <a href="https://discord.gg/ssrwuTweU" target="_blank" class="btn btn-primary">🛒 Purchase</a>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        } catch(e) {
+          console.error("Error fetching accounts:", e);
+        }
+      }
+      loadAccounts();
+    });
+
     const LANG_KEY = "roshine_lang";
     const LINKS = {
       sheet: "https://docs.google.com/spreadsheets/d/1s9sxHj3EVNLUlRb3li9XV8QKBxr2jI0cr12tTgvnB3s/edit?gid=327074105#gid=327074105",
       discord: "https://discord.gg/ssrwuTweU",
       email: "mailto:roshine_store@roshine.love",
-      auth: "/auth/"
+      auth: "./auth/"
     };
 
     const i18n = {
       en: {
         metaTitle:"Roshine Account Store",
         metaDesc:"Premium Overwatch accounts with secure delivery.",
-        nav: { home:"Home", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
+        nav: { home:"Home", accounts:"Accounts", services:"Services", warranty:"Warranty", faq:"FAQ", contact:"Contact" },
+        accountsKicker:"🎮 INVENTORY",
+        accountsTitle:"Live Accounts",
+        accountsDesc:"Browse our currently available stock. Select an account and order via Discord.",
         auth:"Authenticator",
         heroKicker:"⚡ Trusted since 2021",
-        heroTitle:"ROSHINE",
-        heroSubbrand:"Overwatch Account Store",
+        heroTitle:"ROSHINE ACCOUNT STORE",
+        heroSubbrand:"",
         heroIntro:"Since 2021, Roshine Account Store has delivered curated Overwatch accounts with a streamlined purchase flow and long-term support. Five years in operation, built for consistency, clarity, and buyer confidence.",
         ctaExplore:"View Stock & Purchase",
         servicesKicker:"✨ SERVICES",
         servicesTitle:"Listings & Ordering",
-        servicesDesc:"Browse the live inventory in Google Sheet, then order via Discord by sending the account ID or a screenshot.",
+        servicesDesc:"Browse our live inventory above, then order via Discord by sending the account ID or a screenshot.",
         servicesList:[
           "📄 Open the listings and filter by price, rank, or skins.",
           "🧾 Copy the account ID (or screenshot the row you want).",
           "💬 Join Discord and send the ID/screenshot to confirm availability and total.",
           "✅ After payment, receive login info and the security handover package."
         ],
-        btnListings:"View stock (Google Sheet)",
+        btnListings:"View Live Stock",
         btnDiscord:"Order via Discord",
 
         warrantyKicker:"🛡️ WARRANTY",
@@ -1333,33 +818,34 @@
 
       cards.forEach(c=>{
         const card = document.createElement("div");
-        card.className = "wcard";
+        card.className = "warranty-card";
 
         const top = document.createElement("div");
-        top.className = "wtop";
+        top.className = "wcard-top";
 
         const titleWrap = document.createElement("div");
-        titleWrap.className = "wtitle";
+        titleWrap.className = "wcard-title-wrap";
 
         const icon = document.createElement("span");
-        icon.className = "wicon";
+        icon.className = "wcard-icon";
         icon.textContent = c.icon || "🛡️";
 
         const title = document.createElement("span");
+        title.className = "wcard-title";
         title.textContent = c.title || "";
 
         titleWrap.appendChild(icon);
         titleWrap.appendChild(title);
 
         const badge = document.createElement("span");
-        badge.className = "wbadge" + (c.badgeType === "paid" ? " paid" : " primary");
+        badge.className = "wcard-badge " + (c.badgeType === "paid" ? "badge-paid" : "badge-primary");
         badge.textContent = c.badge || "";
 
         top.appendChild(titleWrap);
         top.appendChild(badge);
 
         const desc = document.createElement("p");
-        desc.className = "wdesc";
+        desc.className = "wcard-desc";
         desc.textContent = c.desc || "";
 
         card.appendChild(top);
@@ -1375,7 +861,6 @@
       document.documentElement.lang = lang;
       document.documentElement.dir  = (lang === "ar" ? "rtl" : "ltr");
 
-      // SEO/meta
       if (t.metaTitle) document.title = t.metaTitle;
       const md = document.querySelector('meta[name="description"]');
       if (md && t.metaDesc) md.setAttribute("content", t.metaDesc);
@@ -1384,6 +869,7 @@
       if (sel) sel.value = lang;
 
       document.getElementById("navHome").textContent = t.nav.home;
+      if (t.nav.accounts) document.getElementById("navAccounts").textContent = t.nav.accounts;
       document.getElementById("navServices").textContent = t.nav.services;
       document.getElementById("navWarranty").textContent = t.nav.warranty;
       document.getElementById("navFaq").textContent = t.nav.faq;
@@ -1393,9 +879,21 @@
 
       document.getElementById("heroKicker").textContent = t.heroKicker;
       document.getElementById("heroTitle").textContent = t.heroTitle;
-      document.getElementById("heroSubbrand").textContent = t.heroSubbrand || "Overwatch Account Store";
+      
+      const subbrand = document.getElementById("heroSubbrand");
+      if (t.heroSubbrand) {
+        subbrand.textContent = t.heroSubbrand;
+        subbrand.style.display = "block";
+      } else {
+        subbrand.style.display = "none";
+      }
+      
       document.getElementById("heroIntro").textContent = t.heroIntro;
       document.getElementById("ctaExplore").textContent = t.ctaExplore;
+
+      if (t.accountsKicker) document.getElementById("accountsKicker").textContent = t.accountsKicker;
+      if (t.accountsTitle) document.getElementById("accountsTitle").textContent = t.accountsTitle;
+      if (t.accountsDesc) document.getElementById("accountsDesc").textContent = t.accountsDesc;
 
       document.getElementById("servicesKicker").textContent = t.servicesKicker;
       document.getElementById("servicesTitle").textContent = t.servicesTitle;
@@ -1426,9 +924,8 @@
         a.href = LINKS.auth;
         a.id = "faqAuthLink";
         a.style.fontWeight = "800";
-        a.style.color = "rgba(231,239,255,.92)";
-        a.style.borderBottom = "1px solid rgba(41,182,255,.28)";
-        a.style.paddingBottom = "1px";
+        a.style.color = "var(--neon)";
+        a.style.textDecoration = "underline";
         a.textContent = "Authenticator";
         faq5.appendChild(a);
         faq5.appendChild(document.createTextNode(", paste your Private Key from the account info you received, then copy the code into the Battle.net app to verify."));
@@ -1453,7 +950,7 @@
         document.getElementById("footTerms").textContent = t.footerNav.terms;
       }
 
-      document.getElementById("btnListings").href = LINKS.sheet;
+      document.getElementById("btnListings").href = "#accounts";
       document.getElementById("btnDiscord").href = LINKS.discord;
       document.getElementById("btnContact").href = LINKS.discord;
       document.getElementById("btnEmail").href = LINKS.email;
