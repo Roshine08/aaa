@@ -433,8 +433,8 @@
       const drops = [];
 
       function initRain() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        width = canvas.width = window.innerWidth || document.documentElement.clientWidth || 1080;
+        height = canvas.height = window.innerHeight || document.documentElement.clientHeight || 1920;
         drops.length = 0;
         const numDrops = Math.floor(width / 15); // Adjust density
         for (let i = 0; i < numDrops; i++) {
@@ -451,6 +451,7 @@
       }
 
       window.addEventListener('resize', initRain);
+      window.addEventListener('load', initRain);
       initRain();
 
       function drawRain() {
@@ -607,7 +608,6 @@
           "💬 Join Discord and send the ID/screenshot to confirm availability and total.",
           "✅ After payment, receive login info and the security handover package."
         ],
-        btnListings:"View Live Stock",
         btnDiscord:"Order via Discord",
 
         warrantyKicker:"🛡️ WARRANTY",
@@ -669,7 +669,6 @@
           "💬 Rejoignez Discord et envoyez l’ID/la capture pour confirmer.",
           "✅ Après paiement, recevez les accès et le pack de sécurité."
         ],
-        btnListings:"Voir le stock (Google Sheet)",
         btnDiscord:"Commander via Discord",
 
         warrantyKicker:"🛡️ GARANTIE",
@@ -731,7 +730,6 @@
           "💬 Discord beitreten und ID/Screenshot zur Bestätigung senden.",
           "✅ Nach Zahlung: Login-Daten und Sicherheits-Übergabepaket erhalten."
         ],
-        btnListings:"Bestand ansehen (Google Sheet)",
         btnDiscord:"Über Discord bestellen",
 
         warrantyKicker:"🛡️ GARANTIE",
@@ -793,7 +791,6 @@
           "💬 انضم إلى Discord وأرسل ID/اللقطة للتأكيد.",
           "✅ بعد الدفع: استلام بيانات الدخول وحزمة التسليم الأمني."
         ],
-        btnListings:"عرض المخزون (Google Sheet)",
         btnDiscord:"اطلب عبر Discord",
 
         warrantyKicker:"🛡️ الضمان",
@@ -855,7 +852,6 @@
           "💬 加入 Discord 发送 ID/截图，确认库存与总价。",
           "✅ 付款后交付登录信息与安全资料包。"
         ],
-        btnListings:"查看库存（Google Sheet）",
         btnDiscord:"通过 Discord 下单",
 
         warrantyKicker:"🛡️ 质保",
@@ -1012,7 +1008,6 @@
       document.getElementById("servicesTitle").textContent = t.servicesTitle;
       document.getElementById("servicesDesc").textContent = t.servicesDesc;
       setList("servicesList", t.servicesList);
-      document.getElementById("btnListings").textContent = t.btnListings;
       document.getElementById("btnDiscord").textContent = t.btnDiscord;
 
       document.getElementById("warrantyKicker").textContent = t.warrantyKicker;
@@ -1063,8 +1058,6 @@
         document.getElementById("footTerms").textContent = t.footerNav.terms;
       }
 
-      document.getElementById("btnListings").href = LINKS.sheet;
-      document.getElementById("btnListings").target = "_blank";
       document.getElementById("btnDiscord").href = LINKS.discord;
       document.getElementById("btnContact").href = LINKS.discord;
       document.getElementById("btnEmail").href = LINKS.email;
