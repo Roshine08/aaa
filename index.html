@@ -433,6 +433,25 @@
             if (status.toLowerCase().includes('sold')) statusClass = 'status-sold';
             if (status.toLowerCase().includes('pending')) statusClass = 'status-pending';
 
+            // Style the Level
+            let styledLevel = level;
+            if (level.includes('OW1')) {
+              styledLevel = `<span style="color: #facc15; font-weight: 800; text-shadow: 0 0 8px rgba(250, 204, 21, 0.4);">Lv. ${level}</span>`;
+            } else if (level) {
+              styledLevel = `<span style="color: #e2e8f0; font-weight: 600;">Lv. ${level}</span>`;
+            }
+
+            // Highlight valuable skins automatically (lines with ✨)
+            let styledHighlights = highlights;
+            if (styledHighlights) {
+              styledHighlights = styledHighlights.split('<br>').map(line => {
+                if (line.includes('✨')) {
+                  return `<span style="color: #facc15; font-weight: 600;">${line}</span>`;
+                }
+                return line;
+              }).join('<br>');
+            }
+
             const card = document.createElement('div');
             card.className = 'account-card';
             card.innerHTML = `
@@ -441,17 +460,23 @@
                 <span class="ac-status ${statusClass}">${status}</span>
               </div>
               <div class="ac-price">${price}</div>
-              <div class="ac-level">${level}</div>
-              <div class="ac-highlights">${highlights}</div>
+              <div class="ac-level">${styledLevel}</div>
+              <div class="ac-highlights">${styledHighlights}</div>
               <div class="ac-details">
                 ${rank ? `<div class="ac-detail"><strong>Rank:</strong><br>${rank}</div>` : ''}
                 ${balance ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Balance & Playtime:</strong><br>${balance}</div>` : ''}
                 ${weapons ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Weapons:</strong><br>${weapons}</div>` : ''}
                 ${nameChange ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Name Change:</strong> ${nameChange}</div>` : ''}
+                ${screenshot ? `
+                  <div class="ac-detail" style="margin-top: 8px;">
+                    <strong>Screenshot:</strong> 
+                    ${screenshot.includes('http') ? `<a href="${screenshot.match(/https?:\/\/[^\s]+/)[0]}" target="_blank" style="color: var(--neon); text-decoration: underline;">📸 View Skins</a>` : `<span style="color: var(--text-muted);">${screenshot} (Link Missing)</span>`}
+                  </div>
+                ` : ''}
               </div>
               <div class="ac-actions">
-                <a href="${screenshot || '#'}" target="_blank" class="btn btn-outline">📸 View Skins</a>
-                <a href="https://discord.gg/ssrwuTweU" target="_blank" class="btn btn-primary">🛒 Purchase</a>
+                <a href="${screenshot && screenshot.includes('http') ? screenshot.match(/https?:\/\/[^\s]+/)[0] : '#'}" target="_blank" class="btn btn-outline" ${!(screenshot && screenshot.includes('http')) ? 'onclick="alert(\'Imgur link is missing from this account!\'); return false;"' : ''}>📸 View Skins</a>
+                <a href="https://discord.gg/ssrwuTweU" target="_blank" class="btn btn-primary">Buy Now</a>
               </div>
             `;
             grid.appendChild(card);
