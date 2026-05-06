@@ -483,12 +483,7 @@
                 ${balance ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Balance & Playtime:</strong><br>${balance}</div>` : ''}
                 ${weapons ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Weapons:</strong><br>${weapons}</div>` : ''}
                 ${nameChange ? `<div class="ac-detail" style="margin-top: 8px;"><strong>Name Change:</strong> ${nameChange}</div>` : ''}
-                ${screenshot ? `
-                  <div class="ac-detail" style="margin-top: 8px;">
-                    <strong>Screenshot:</strong> 
-                    ${screenshot.includes('http') ? `<a href="${screenshot.match(/https?:\/\/[^\s]+/)[0]}" target="_blank" style="color: var(--neon); text-decoration: underline;">📸 View Skins</a>` : `<span style="color: var(--text-muted);">${screenshot} (Link Missing)</span>`}
-                  </div>
-                ` : ''}
+
               </div>
               <div class="ac-actions">
                 <a href="${screenshot && screenshot.includes('http') ? screenshot.match(/https?:\/\/[^\s]+/)[0] : '#'}" target="_blank" class="btn btn-outline" ${!(screenshot && screenshot.includes('http')) ? 'onclick="alert(\'Imgur link is missing from this account!\'); return false;"' : ''}>📸 View Skins</a>
